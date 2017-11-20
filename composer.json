@@ -2,14 +2,14 @@
 	"name": "hs11/codegenerator",
 	"type": "phpbb-extension",
 	"description": "Code Generator for phpBB 3.1",
-	"homepage": "https://github.com/phpbb/phpbb-ext-hs11-codegenerator",
+	"homepage": "https://github.com/msaulohenrique/codegenerator/",
 	"version": "0.1.0",
 	"time": "2017-11-20",
 	"license": "GPL-2.0",
 	"authors": [{
 			"name": "henrique.seven2011",
-			"email": "nickvergessen@gmx.de",
-			"homepage": "https://github.com/nickvergessen/",
+			"email": "henrique.seven2011@hotmail.com",
+			"homepage": "http://www.suportephpbb.com.br/memberlist.php?mode=viewprofile&u=30238",
 			"role": "Lead Developer"
 		}],
 	"require": {
