@@ -3,7 +3,7 @@ Code Generator for phpBB 3.1
 
 ## Installation
 
-Clone into phpBB/ext/acme/demo:
+Clone into phpBB/ext/hs11/codegenerator:
 
     $ git clone https://github.com/msaulohenrique/codegenerator.git phpBB/ext/hs11/codegenerator
 
