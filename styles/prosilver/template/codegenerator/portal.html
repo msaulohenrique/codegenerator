@@ -1,0 +1,152 @@
+<!-- DEFINE $CG_PAGE = 'portal' -->
+<!-- INCLUDE overall_header.html -->
+
+	<h2>{L_CODE_GENERATOR}</h2>
+<div class="panel bg3">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<div style="width: 100%;">
+	<!-- INCLUDE codegenerator/menu.html -->
+	<div id="cp-main" class="ucp-main">
+	<h2>{L_CAT_PORTAL}</h2>
+	<form name="formfs" onSubmit="return erro();" method="post" action="{U_PORTAL_ACTION}">
+	
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<p>{L_FIELDS_REQUIRED}</p>
+	
+	<dt><label><h3>Bloco 1</h3></label></dt>
+
+	<fieldset>
+	<dl>
+	<dt><label>* Título:</label></dt>
+	<dd><input type="text" name="titulo1"  class=":required inputbox" id="titulo1"></dd>
+	
+	<dt><label>* Imagem:</label></dt>
+	<dd><input type="text" name="imagem1"  class=":required inputbox" id="imagem1"></dd>
+	
+	<dt><label>* Compartilhamento:</label></dt>
+	<dd><select name="compartilhamento1" id="select_up">
+		 <option value="{L_SELECT}">{L_SELECT}</option>
+		 <option>http</option>
+		 <option>torrent</option>
+		 <option>pando</option>
+		 <option>ed2k</option>
+		 <option>pando</option>
+		 <option>p2m</option>
+		 </select></dd>
+
+	
+	<dt><label>* Categoria:</label></dt>
+	<dd><input type="text" name="categoria1"  class=":required inputbox" id="categoria1"></dd>
+	
+	<dt><label>* Sub-Categoria:</label></dt>
+	<dd><input type="text" name="subcategoria1"  class=":required inputbox" id="subcategoria1"></dd>
+	
+	<dt><label>* {L_SIZE}:</label></dt>
+	<dd><input type="text" name="tamanho1"  class=":required inputbox" id="tamanho1"></dd>
+	
+	<dt><label>* Autor:</label></dt>
+	<dd><input type="text" name="autor1"  class=":required inputbox" id="autor1"></dd>
+	
+	<dt><label>* Tópico ID:</label></dt>
+	<dd><input type="text" name="topico1"  class=":required inputbox" id="topico1"></dd>
+	</dl>
+	</fieldset>
+	
+	<dt><label><h3>Bloco 2</h3></label></dt>
+
+	<fieldset>
+	<dl>
+	<dt><label>* Título:</label></dt>
+	<dd><input type="text" name="titulo2"  class=":required inputbox" id="titulo2"></dd>
+	
+	<dt><label>* Imagem:</label></dt>
+	<dd><input type="text" name="imagem2"  class=":required inputbox" id="imagem2"></dd>
+	
+	<dt><label>* Compartilhamento:</label></dt>
+	<dd><select name="compartilhamento2" id="select_up">
+		 <option value="{L_SELECT}">{L_SELECT}</option>
+		 <option>http</option>
+		 <option>torrent</option>
+		 <option>pando</option>
+		 <option>ed2k</option>
+		 <option>pando</option>
+		 <option>p2m</option>
+		 </select></dd>
+		 
+	<dt><label>* Categoria:</label></dt>
+	<dd><input type="text" name="categoria2"  class=":required inputbox" id="categoria2"></dd>
+		
+	<dt><label>* Sub-Categoria:</label></dt>
+	<dd><input type="text" name="subcategoria3"  class=":required inputbox" id="subcategoria3"></dd>
+	
+	<dt><label>* {L_SIZE}:</label></dt>
+	<dd><input type="text" name="tamanho2"  class=":required inputbox" id="tamanho2"></dd>
+	
+	<dt><label>* Autor:</label></dt>
+	<dd><input type="text" name="autor2"  class=":required inputbox" id="autor2"></dd>
+	
+	<dt><label>* Tópico ID:</label></dt>
+	<dd><input type="text" name="topico2"  class=":required inputbox" id="topico2"></dd>
+	</dl>
+	</fieldset>
+	
+	<dt><label><h3>Bloco 3</h3></label></dt>
+
+	<fieldset>
+	<dl>
+	<dt><label>* Título:</label></dt>
+	<dd><input type="text" name="titulo3"  class=":required inputbox" id="titulo3"></dd>
+	
+	<dt><label>* Imagem:</label></dt>
+	<dd><input type="text" name="imagem3"  class=":required inputbox" id="imagem3"></dd>
+	
+	<dt><label>* Compartilhamento:</label></dt>
+	<dd><select name="compartilhamento3" id="select_up">
+		 <option value="{L_SELECT}">{L_SELECT}</option>
+		 <option>http</option>
+		 <option>torrent</option>
+		 <option>pando</option>
+		 <option>ed2k</option>
+		 <option>pando</option>
+		 <option>p2m</option>
+		 </select></dd>
+
+	
+	<dt><label>* Categoria:</label></dt>
+	<dd><input type="text" name="categoria3"  class=":required inputbox" id="categoria3"></dd>
+		
+	<dt><label>* Sub-Categoria:</label></dt>
+	<dd><input type="text" name="subcategoria3"  class=":required inputbox" id="subcategoria3"></dd>
+	
+	<dt><label>* {L_SIZE}:</label></dt>
+	<dd><input type="text" name="tamanho3"  class=":required inputbox" id="tamanho3"></dd>
+
+	<dt><label>* Autor:</label></dt>
+	<dd><input type="text" name="autor3"  class=":required inputbox" id="autor3"></dd>
+	
+	<dt><label>* Tópico ID:</label></dt>
+	<dd><input type="text" name="topico3"  class=":required inputbox" id="topico3"></dd>
+	</dl>
+	</fieldset>
+	
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<fieldset class="submit-buttons">
+	{S_HIDDEN_FIELDS}<input type="reset" value="{L_RESET}" name="reset" class="button2" />&nbsp; 
+	<input type="submit" name="submit" value="{L_SUBMIT}" class="button1" />
+	{S_FORM_TOKEN}
+</fieldset>
+</form>
+
+</div>
+	<div class="clear"></div>
+	</div><div class="copyright" style="text-align: right;">{L_COPYRIGHT}<br />
+		{L_CODE_GENERATOR_TRANSLATION_INFO}</div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<!-- INCLUDE jumpbox.html -->
+
+<!-- INCLUDE overall_footer.html -->

@@ -1,0 +1,44 @@
+<!-- DEFINE $CG_PAGE = 'news' -->
+<!-- INCLUDE overall_header.html -->
+
+	<h2>{L_CODE_GENERATOR}</h2>
+<div class="panel bg3">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<div style="width: 100%;">
+	<!-- INCLUDE codegenerator/menu.html -->
+	<div id="cp-main" class="ucp-main">
+	<h2>{L_CAT_NEWS}</h2>
+
+
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+
+<p>* Selecione o código abaixo precionando CTRL+A, depois CTRL+C, logo depois vá ao fórum na parte em que deseja postar e clique com o botão direito COLAR ou precione CTRL+V.</p>
+		<hr />
+			<div style="text-align: center;">
+<textarea name="message" id="message" rows="1" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">{A_TITULO}</textarea>
+</br>
+		<textarea name="message" id="message" rows="15" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">
+[divs][center][size=150]{A_TITULO}[/center][/size]
+[center][size=100]{A_DESCRICAO}[/center][/size][/divs]
+[divs][center][shot]{A_IMG_DES}[/shot][/center]
+
+{A_TEXTO}
+
+[center]• [b]Fonte:[/b] [url={A_LINK}]{A_FONTE}[/url][/center][/divs]</textarea>
+			</div>
+
+
+<span class="corners-bottom"><span></span></span></div>
+</div>
+</div>
+	<div class="clear"></div>
+	</div><div class="copyright" style="text-align: right;">{L_COPYRIGHT}<br />
+		{L_CODE_GENERATOR_TRANSLATION_INFO}</div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<!-- INCLUDE jumpbox.html -->
+
+<!-- INCLUDE overall_footer.html -->

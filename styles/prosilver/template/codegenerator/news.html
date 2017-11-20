@@ -1,0 +1,58 @@
+<!-- DEFINE $CG_PAGE = 'news' -->
+<!-- INCLUDE overall_header.html -->
+
+	<h2>{L_CODE_GENERATOR}</h2>
+<div class="panel bg3">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<div style="width: 100%;">
+	<!-- INCLUDE codegenerator/menu.html -->
+	<div id="cp-main" class="ucp-main">
+	<h2>{L_CAT_NEWS}</h2>
+	<form name="formfs" onSubmit="return erro();" method="post" action="{U_NEWS_ACTION}">
+	
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<p>{L_FIELDS_REQUIRED}</p>
+	
+	<dt><label><h3>{L_SPECIFICATIONS}</h3></label></dt>
+	
+	<fieldset>
+	<dl>
+	<dt><label>* Título:</label></dt>
+	<dd><input type="text" name="titulo"  class=":required inputbox" id="titulo"></dd>
+	
+	<dt><label>* Descrição:</label></dt>
+	<dd><input type="text" name="descricao"  class=":required inputbox" id="descricao"></dd>
+	
+	<dt><label>* Imagem:</label></dt>
+	<dd><input type="text" name="img_des"  class=":required inputbox" id="img_des"></dd>
+	
+	<dt><label>* Texto:</label></dt>
+	<dd><textarea class=":required inputbox" name="texto" rows="3" cols="30" id="texto"></textarea></dd>
+	
+	<dt><label>* Fonte:</label></dt>
+	<dd><input type="text" name="fonte"  class=":required inputbox" id="fonte"></dd>
+	
+	<dt><label>* Link:</label></dt>
+	<dd><input type="text" name="link"  class=":required inputbox" id="link"></dd>
+
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<fieldset class="submit-buttons">
+	{S_HIDDEN_FIELDS}<input type="reset" value="{L_RESET}" name="reset" class="button2" />&nbsp; 
+	<input type="submit" name="submit" value="{L_SUBMIT}" class="button1" />
+	{S_FORM_TOKEN}
+</fieldset>
+</form>
+
+</div>
+	<div class="clear"></div>
+	</div><div class="copyright" style="text-align: right;">{L_COPYRIGHT}<br />
+		{L_CODE_GENERATOR_TRANSLATION_INFO}</div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<!-- INCLUDE jumpbox.html -->
+
+<!-- INCLUDE overall_footer.html -->

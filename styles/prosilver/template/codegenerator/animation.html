@@ -1,0 +1,187 @@
+<!-- DEFINE $CG_PAGE = 'animation' -->
+<!-- INCLUDE overall_header.html -->
+
+	<h2>{L_CODE_GENERATOR}</h2>
+<div class="panel bg3">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<div style="width: 100%;">
+	<!-- INCLUDE codegenerator/menu.html -->
+	<div id="cp-main" class="ucp-main">
+	<h2>{L_CAT_ANIMATION}</h2>
+	<form name="formfs" onSubmit="return erro();" method="post" action="{U_ANIMATION_ACTION}">
+
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<p>{L_FIELDS_REQUIRED}</p>
+	
+	<dt><label><h3>{L_DATA_FILE}</h3></label></dt>
+		
+	<fieldset>
+		<dl>
+		<dt><label>* {L_NAME}:</label></dt>
+		<dd><input type="text" name="traduzido"  class=":required inputbox" id="traduzido"></dd>
+		
+		<dt><label>* {L_ORIGINAL_NAME}:</label></dt>
+		<dd><input type="text" name="nome"  class=":required inputbox" id="nome"></dd>
+		
+		<dt><label>* {L_SEASON}: </label></dt>
+		<dd><input type="text" name="temporada"  class=":required inputbox" id="temporada"></dd>
+		
+		<dt><label>* {L_EPISOSE}:</label></dt>
+		<dd><input type="text" name="nome_episodio"  class=":required inputbox" id="nome_episodio"></dd>
+		
+		<dt><label>FanSuber:</label></dt>
+		<dd><input type="text" name="fan"  class="inputbox" id="fan"></dd>
+		
+		<dt><label>* Idioma Áudio:</label></dt>
+		<dd><input type="text" name="idioma"  class=":required inputbox" id="idioma"></dd>
+		
+		<dt><label>* {L_GROUP}:</label></dt>
+		<dd><input type="text" name="grupo"  class=":required inputbox" id="grupo"></dd>
+		
+		<dt><label>* {L_UPLOADER}:</label></dt>
+		<dd><input type="text" name="uploader"  class=":required inputbox" id="uploader"></dd>
+		
+		<dt><label>* Ripado Por:</label></dt>
+		<dd><input type="text" name="rip"  class=":required inputbox" id="rip"></dd>
+		
+		<dt><label>* {L_POSTER}:</label></dt>
+		<dd><input type="text" name="poster"  class=":required inputbox" id="poster"></dd>
+		</dl>
+		</fieldset>
+	
+	
+		<dt><label><h3>{L_SPECIFICATIONS}</h3></label></dt>
+		
+		<fieldset>
+		<dl>
+		<dt><label>* Video Codec:</label></dt>
+		<dd><input type="text" name="video_codec"  class=":required inputbox" id="video_codec"></dd>
+		
+		<dt><label>* Video Bitrate:</label></dt>
+		<dd><input type="text" name="video_bitrate"  class=":required inputbox" id="video_bitrate"></dd>
+		
+		<dt><label>* Áudio Codec:</label></dt>
+		<dd><input type="text" name="audio_codec"  class=":required inputbox" id="audio_codec"></dd>
+		
+		<dt><label>* Áudio Bitrate:</label></dt>
+		<dd><input type="text" name="audio_bitrate"  class=":required inputbox" id="audio_bitrate"></dd>
+		
+		<dt><label>* Resolução:</label></dt>
+		<dd><input type="text" name="resolucao"  class=":required inputbox" id="resolucao"></dd>
+		
+		<dt><label>* Frame Rate:</label></dt>
+		<dd><input type="text" name="frame_rate"  class=":required inputbox" id="frame_rate"></dd>
+		
+		<dt><label>* Qualidade:</label></dt>
+		<dd><select name="qualidade" id="qualidade" class=":required">
+		<option value="{L_SELECT}">{L_SELECT}</option>
+		<option>DVDRip</option>
+		<option>DVDScreen</option>
+		<option>DVD-R</option>
+		<option>RatDVD</option>
+		<option>TeleCine</option>
+		<option>TeleSync</option>
+		<option>CAM</option>
+		<option>TVRip</option>
+		<option>VHSRip</option>
+		<option>RMVB</option>
+		 <option>Blu-ray Rip</option>
+		 <option>Blu-ray</option>
+		 <option>Blu-ray Disc</option>
+		<option>Outro</option>
+		</select></dd>
+		
+		<dt><label>* {L_SIZE}:</label></dt>
+		<dd><input type="text" name="tamanho"  class=":required inputbox" id="tamanho"></dd>
+		
+		<dt><label>* Mídias:</label></dt>
+		<dd><select name="midias" id="midias" class=":required">
+		<option value="{L_SELECT}">{L_SELECT}</option>
+		<option>1 CD</option>
+		<option>2 CD</option>
+		<option>3 CD</option>
+		<option>4 CD</option>
+		<option>Acima de 4 CD</option>
+		<option>----------DVDs----------</option>
+		<option>1 DVD</option>
+		<option>2 DVD</option>
+		<option>3 DVD</option>
+		<option>4 DVD</option>
+		<option>Acima de 4 DVD</option>
+		</select></dd>
+		
+		<dt><label>* Duração:</label></dt>
+		<dd><input type="text" name="duracao"  class=":required inputbox" id="duracao"></dd>
+		
+		<dt><label>* Site Oficial:</label></dt>
+		<dd><input type="text" name="site"  class=":required inputbox" id="site"></dd>
+		</dl>
+		</fieldset>
+	
+	<dt><label><h3>SCREENSHOTS</h3></label></dt>
+	
+	<fieldset>
+		<dl>
+		<dt><label>* 1ª Screen:</label></dt>
+		<dd><input type="text" name="screen1"  class=":required inputbox" id="screen1"></dd>
+		
+		<dt><label>* 2ª Screen:</label></dt>
+		<dd><input type="text" name="screen2"  class=":required inputbox" id="screen2"></dd>		
+		</dl>
+	</fieldset>
+	
+	<fieldset>
+		<hr />
+		<dl>
+		<dt><label>* {L_SYNOPSIS}</label></dt>
+		<dd><textarea class=":required inputbox" name="descricao" rows="3" cols="30" id="descricao"></textarea></dd>
+		</dl>
+	</fieldset>
+	
+	<fieldset>
+		<hr />
+		<dl>
+		<dt><label>{L_OTHER_INFORMATION}</label></dt>
+		<dd><textarea class="inputbox" name="outras_info" rows="3" cols="30" id="outras_info"></textarea></dd>
+		</dl>
+	</fieldset>
+	
+	<fieldset>
+		<hr />
+        <dt><label>* Compartilhamento:</label></dt>
+		<dd><label><input type="checkbox" name="compartilhamento_http" value="[http]" id="compartilhamento"> http </label>
+		<label><input type="checkbox" name="compartilhamento_torrent" value="[torrent]" id="compartilhamento" onClick="javascript:div('torrent');"> Torrent </label> 
+		<label><input type="checkbox" name="compartilhamento_pando" value="[pando]" id="compartilhamento" onClick="javascript:div('pando');" > Pando </label> 
+		<label><input type="checkbox" name="compartilhamento_ed2k" value="[ed2k]" id="compartilhamento"> Ed2k - Emule </label>
+		<label><input type="checkbox" name="compartilhamento_p2m" value="[p2m]" id="compartilhamento"> P2m </label>
+		</dd>
+    </fieldset>	
+	
+	<fieldset>
+		<hr />
+		<dt><label>* {L_DOWNLOAD}</label></dt>
+		<dd><textarea class=":required inputbox" name="http" rows="3" cols="30" id="http"></textarea></dd>
+		</dl>
+	</fieldset>
+	
+<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<fieldset class="submit-buttons">
+	{S_HIDDEN_FIELDS}<input type="reset" value="{L_RESET}" name="reset" class="button2" />&nbsp; 
+	<input type="submit" name="submit" value="{L_SUBMIT}" class="button1" />
+	{S_FORM_TOKEN}
+</fieldset>
+</form>
+
+</div>
+	<div class="clear"></div>
+	</div><div class="copyright" style="text-align: right;">{L_COPYRIGHT}<br />
+		{L_CODE_GENERATOR_TRANSLATION_INFO}</div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<!-- INCLUDE jumpbox.html -->
+
+<!-- INCLUDE overall_footer.html -->

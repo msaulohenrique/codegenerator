@@ -1,0 +1,21 @@
+<!-- IF $CG_COMMENTS -->
+This file is to change the side menu. This menu is add with INCLUDE on Code Generator templates.
+<!-- ENDIF -->
+
+<div id="cp-menu" class="cp-menu">
+	<div id="navigation" class="navigation" role="navigation">
+		<ul>
+			<li <!-- IF $CG_PAGE == 'main' --> id="active-subsection" class="active-subsection"<!-- ENDIF -->><a href="{U_CODE_GENERATOR}"><span>{L_MAIN_PAGE}</span></a></li>
+			<li <!-- IF $CG_PAGE == 'animation' --> id="active-subsection" class="active-subsection"<!-- ENDIF -->><a href="{U_ANIMATION}"><span>{L_CAT_ANIMATION}</span></a></li>
+			<li <!-- IF $CG_PAGE == 'ebooks' --> id="active-subsection" class="active-subsection"<!-- ENDIF -->><a href="{U_EBOOK}"><span>{L_CAT_BOOKS}</span></a></li>
+			<li <!-- IF $CG_PAGE == 'games' --> id="active-subsection" class="active-subsection"<!-- ENDIF -->><a href="{U_GAMES}"><span>{L_CAT_GAMES}</span></a></li>
+			<li <!-- IF $CG_PAGE == 'gamespc' --> id="active-subsection" class="active-subsection"<!-- ENDIF -->><a href="{U_GAMESPC}"><span>{L_CAT_GAMESPC}</span></a></li>
+			<li <!-- IF $CG_PAGE == 'movies' --> id="active-subsection" class="active-subsection"<!-- ENDIF -->><a href="{U_MOVIES}"><span>{L_CAT_MOVIE}</span></a></li>
+			<li <!-- IF $CG_PAGE == 'music' --> id="active-subsection" class="active-subsection"<!-- ENDIF -->><a href="{U_MUSIC}"><span>{L_CAT_MUSIC}</span></a></li>
+			<li <!-- IF $CG_PAGE == 'soft' --> id="active-subsection" class="active-subsection"<!-- ENDIF -->><a href="{U_SOFT}"><span>{L_CAT_SOFT}</span></a></li>
+			<li <!-- IF $CG_PAGE == 'tvshow' --> id="active-subsection" class="active-subsection"<!-- ENDIF -->><a href="{U_TVSHOW}"><span>{L_CAT_TVSHOW}</span></a></li>
+			<li <!-- IF $CG_PAGE == 'news' --> id="active-subsection" class="active-subsection"<!-- ENDIF -->><a href="{U_NEWS}"><span>{L_CAT_NEWS}</span></a></li>
+			<li <!-- IF $CG_PAGE == 'uportal' --> id="active-subsection" class="active-subsection"<!-- ENDIF -->><a href="{U_UPORTAL}"><span>{L_CAT_PORTAL}</span></a></li>
+		</ul>
+	</div>
+</div>

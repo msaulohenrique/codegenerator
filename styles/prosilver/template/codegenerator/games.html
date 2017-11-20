@@ -1,0 +1,203 @@
+<!-- DEFINE $CG_PAGE = 'games' -->
+<!-- INCLUDE overall_header.html -->
+
+	<h2>{L_CODE_GENERATOR}</h2>
+<div class="panel bg3">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<div style="width: 100%;">
+	<!-- INCLUDE codegenerator/menu.html -->
+	<div id="cp-main" class="ucp-main">
+	<h2>{L_CAT_GAMES}</h2>
+	<form name="formfs" onSubmit="return erro();" method="post" action="{U_GAMES_ACTION}">	
+
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<p>{L_FIELDS_REQUIRED}</p>
+	
+	<dt><label><h3>{L_GAME_DATA}</h3></label></dt>
+	
+	<fieldset>
+	<dl>
+	
+	<dt><label>* {L_NAME}:</label></dt>
+	<dd><input type="text" name="nome"  class=":required inputbox" id="nome"></dd>
+	
+	<dt><label>* Fabricante:</label></dt>
+	<dd><input type="text" name="fabricante"  class=":required inputbox" id="fabricante"></dd>
+	
+	<dt><label>* {L_RELEASE_YEAR}:</label></dt>
+	<dd><input type="text" name="ano"  class=":required inputbox" id="ano"></dd>
+	
+	<dt><label>* Idioma:</label></dt>
+	<dd><input type="text" name="idioma"  class=":required inputbox" id="idioma"></dd>
+	
+	<dt><label>* {L_GROUP}:</label></dt>
+	<dd><input type="text" name="grupo"  class=":required inputbox" id="grupo"></dd>
+	
+	<dt><label>* {L_UPLOADER}:</label></dt>
+	<dd><input type="text" name="uploader"  class=":required inputbox" id="uploader"></dd>
+	
+	<dt><label>* Senha:</label></dt>
+	<dd><input type="text" name="senha"  class=":required inputbox" id="senha"></dd>
+	
+	<dt><label>* {L_POSTER}</label></dt>
+	<dd><input type="text" name="poster"  class=":required inputbox" id="poster"></dd>
+	</dl>
+	</fieldset>
+	
+	<dt><label><h3>{L_SPECIFICATIONS}</h3></label></dt>
+	
+	<fieldset>
+	<dl>
+	<dt><label>* Sistema - Video:</label></dt>
+	<dd><select name="sistema" id="select36" >
+	  <option value="{L_SELECT}">{L_SELECT}</option>
+	  <option value="PALM">PALM</option>
+	  <option value="NTSC">NTSC</option>
+	</select></dd>
+	
+	<dt><label>* {L_GENRE}:</label></dt>
+	<dd><select name="genero" id="select37">
+	  <option value="{L_SELECT}">{L_SELECT}</option>
+	  <option>Ação</option>
+	  <option>Aventura</option>
+	  <option>Corrida</option>
+	  <option>Esporte</option>
+	  <option>Estratêgia/RPG</option>
+	  <option>Futebol</option>
+	  <option>Guerra/Shooter</option>
+	  <option>Infantil</option>
+	  <option>Luta</option>
+	  <option>Simulador de Pessoas</option>
+	  <option>Simulador de Vôo</option>
+	</select></dd>
+	
+	<dt><label>* Console:</label></dt>
+	<dd><input type="text" name="console"  class=":required inputbox" id="console"></dd>
+	
+	<dt><label>* Distribuidor:</label></dt>
+	<dd><input type="text" name="distribuidor"  class=":required inputbox" id="distribuidor"></dd>
+	
+	<dt><label>* Nº Jogadores:</label></dt>
+	<dd><select name="jogadores" id="select38" >
+	<option value="{L_SELECT}">{L_SELECT}</option>
+	  <option>0</option>
+	  <option value="1">1</option>
+	  <option value="2">2</option>
+	  <option value="3">3</option>
+	  <option value="4">4</option>
+	  <option value="5">5</option>
+	  <option value="6">6</option>
+	  <option value="7">7</option>
+	  <option value="8">8</option>
+	  <option value="9">9</option>
+	  <option value="10">10</option>
+	  <option value="11">11</option>
+	  <option value="12">12</option>
+	  <option value="13">13</option>
+	  <option value="14">14</option>
+	  <option value="15">15</option>
+	  <option value="16">16</option>
+	  <option value="17">17</option>
+	  <option value="18">18</option>
+	  <option value="19">19</option>
+	  <option value="20">20</option>
+	</select></dd>
+	
+	<dt><label>* Multiplay:</label></dt>
+	<dd><select name="multiplay" id="select39" >
+	  <option value="{L_SELECT}">{L_SELECT}</option>
+	  <option value="Sim">Sim</option>
+	  <option value="N&atilde;o">Não</option>
+	</select></dd>
+	
+	<dt><label>* {L_SIZE}:</label></dt>
+	<dd><input type="text" name="tamanho"  class=":required inputbox" id="tamanho"></dd>
+	
+	<dt><label>* Midias:</label></dt>
+	<dd><select name="midias" id="select40">
+	  <option value="{L_SELECT}">{L_SELECT}</option>
+	  <option>1 CD</option>
+	  <option>2 CD</option>
+	  <option>3 CD</option>
+	  <option>4 CD</option>
+	  <option>Acima de 4 CD</option>
+	  <option>----------DVDs----------</option>
+	  <option>1 DVD</option>
+	  <option>2 DVD</option>
+	  <option>3 DVD</option>
+	  <option>4 DVD</option>
+	  <option>Acima de 4 DVD</option>
+	</select></dd>
+	
+	<dt><label>* Site Oficial:</label></dt>
+	<dd><input type="text" name="site"  class=":required inputbox" id="site"></dd>
+	</dl>
+	</fieldset>
+	
+	<dt><label><h3>SCREENSHOTS</h3></label></dt>
+	
+	<fieldset>
+	<dl>
+	<dt><label>* 1ª Screen:</label></dt>
+	<dd><input type="text" name="screen1"  class=":required inputbox" id="screen1"></dd>
+	
+	<dt><label>2ª Screen:</label></dt>
+	<dd><input type="text" name="screen2"  class="inputbox" id="screen2"></dd>
+	</dl>
+	</fieldset>
+	
+	<fieldset>
+		<hr />
+		<dl>
+		<dt><label>* {L_DESCRIPTION}</label></dt>
+		<dd><textarea class=":required inputbox" name="descricao" rows="3" cols="30" id="descricao"></textarea></dd>
+		</dl>
+	</fieldset>
+	
+	<fieldset>
+		<hr />
+		<dl>
+		<dt><label>{L_OTHER_INFORMATION}</label></dt>
+		<dd><textarea class="inputbox" name="outras_info" rows="3" cols="30" id="outras_info"></textarea></dd>
+		</dl>
+	</fieldset>
+	
+	<fieldset>
+		<hr />
+        <dt><label>* Compartilhamento:</label></dt>
+		<dd><label><input type="checkbox" name="compartilhamento_http" value="[http]" id="compartilhamento"> http </label>
+		<label><input type="checkbox" name="compartilhamento_torrent" value="[torrent]" id="compartilhamento" onClick="javascript:div('torrent');"> Torrent </label> 
+		<label><input type="checkbox" name="compartilhamento_pando" value="[pando]" id="compartilhamento" onClick="javascript:div('pando');" > Pando </label> 
+		<label><input type="checkbox" name="compartilhamento_ed2k" value="[ed2k]" id="compartilhamento"> Ed2k - Emule </label>
+		<label><input type="checkbox" name="compartilhamento_p2m" value="[p2m]" id="compartilhamento"> P2m </label>
+		</dd>
+    </fieldset>	
+	
+	<fieldset>
+		<hr />
+		<dt><label>* {L_DOWNLOAD}</label></dt>
+		<dd><textarea class=":required inputbox" name="http" rows="3" cols="30" id="http"></textarea></dd>
+		</dl>
+	</fieldset>
+	
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<fieldset class="submit-buttons">
+	{S_HIDDEN_FIELDS}<input type="reset" value="{L_RESET}" name="reset" class="button2" />&nbsp; 
+	<input type="submit" name="submit" value="{L_SUBMIT}" class="button1" />
+	{S_FORM_TOKEN}
+</fieldset>
+</form>
+
+</div>
+	<div class="clear"></div>
+	</div><div class="copyright" style="text-align: right;">{L_COPYRIGHT}<br />
+		{L_CODE_GENERATOR_TRANSLATION_INFO}</div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<!-- INCLUDE jumpbox.html -->
+
+<!-- INCLUDE overall_footer.html -->

@@ -1,0 +1,3 @@
+hs11_codegenerator_controller:
+    path: /codegenerator/{name}
+    defaults: { _controller: hs11.codegenerator.controller:handle }
