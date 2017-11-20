@@ -1,5 +1,5 @@
 # Code Generator Extension
-Code Generator for phpBB 3.1
+Code Generator for phpBB 3.1 & 3.2
 
 ## Installation
 
