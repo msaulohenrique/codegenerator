@@ -79,7 +79,27 @@ class main_listener implements EventSubscriberInterface
 	public function add_page_header_link()
 	{
 		$this->template->assign_vars(array(
-			'U_CODEGENERATOR_PAGE'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'main')),
+			'U_CODE_GENERATOR'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'main')),
+			'U_ANIMATION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'animation')),
+			'U_ANIMATION_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'animation_action')),
+			'U_EBOOK'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'ebook')),
+			'U_EBOOK_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'ebook_action')),
+			'U_GAMES'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'games')),
+			'U_GAMES_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'games_action')),
+			'U_GAMESPC'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'gamespc')),
+			'U_GAMESPC_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'gamespc_action')),
+			'U_MOVIES'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'movies')),
+			'U_MOVIES_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'movies_action')),
+			'U_MUSIC'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'music')),
+			'U_MUSIC_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'music_action')),
+			'U_SOFT'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'soft')),
+			'U_SOFT_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'soft_action')),
+			'U_TVSHOW'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'tvshow')),
+			'U_TVSHOW_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'tvshow_action')),
+			'U_NEWS'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'news')),
+			'U_NEWS_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'news_action')),
+			'U_PORTAL'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'portal')),
+			'U_PORTAL_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'portal_action')),
 		));
 	}
 

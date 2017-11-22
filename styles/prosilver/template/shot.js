@@ -29,7 +29,7 @@ Your fair use and other rights are in no way affected by the above.
 var hs = {
 
 // Apply your own settings here, or override them in the html file.  
-graphicsDir : 'styles/prosilver/theme/images/',
+graphicsDir : 'ext/hs11/codegenerator/styles/prosilver/theme/images/',
 restoreCursor : "zoomout.cur", // necessary for preload
 fullExpandIcon : 'fullexpand.gif',
 expandSteps : 10, // number of steps in zoom. Each step lasts for duration/step milliseconds.

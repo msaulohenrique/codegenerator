@@ -1,0 +1,123 @@
+/* CSS Prosilver Code Generator
+---------------------------------- */
+
+.codegenerator-top-left {
+	margin-right: 9px; /* clip right corner */
+	background-image: url("./images/codegenerator.gif");
+	height: 9px; /* vertical: show first half of the image with the top-corners in it */
+	font-size: 2px; /* correct height for IE */
+}
+.codegenerator-top-right {
+	margin-top: -9px; /* to level of top-left corner */
+	margin-left: 9px; /* clip left corner */
+	background-image: url("./images/codegenerator.gif"); 
+	background-position: 100% 0; /* show bg-image starting at the right */
+	height: 9px; 
+	font-size: 2px;
+}
+.codegenerator-bottom-left {
+	margin-right: 9px; /* clip right corner */
+	background-image: url("./images/codegenerator.gif");
+	background-position: 0 -9px; /* show under half of the image */
+	height: 9px;
+	font-size: 2px;
+}
+.codegenerator-bottom-right {
+	margin-top: -9px; /* to level of bottom-left corner */
+	margin-left: 9px; /* clip left corner */
+	background-image: url("./images/codegenerator.gif"); 
+	background-position: 100% -9px; /* under half, right side */
+	height: 9px; 
+	font-size: 2px; 
+}
+.codegenerator-inside {
+	border-left: 1px solid #C00000;
+	border-right: 1px solid #C00000;
+	background: #EFEFEF;
+	color: #000000;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.codegenerator-notopgap {
+	margin-top: 0;
+}
+.codegenerator-nobottomgap {
+	margin-bottom: 0;
+}
+
+.codegenerator-column1 {
+	float: left;
+	clear: left;
+	width: 49%;
+}
+
+.codegenerator-column2 {
+	float: right;
+	clear: right;
+	width: 49%;
+}
+
+.codegenerator-divp {
+	width: 33%;
+	float: left;
+	display: inline;
+}
+.codegenerator-h6p {
+	padding-top: 10px;
+	height: 40px;
+        font-size: 18px;
+	color: blue;
+	text-align: center;
+}
+/* SHOT */
+.highslide {
+	cursor: url(images/zoomin.cur), pointer;
+    outline: none;
+}
+.highslide img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.highslide:hover img {
+  border: 1px solid #428bca;
+}
+
+.highslide-image {
+    border-bottom: 1px solid white;
+}
+.highslide-image-blur {
+}
+.highslide-caption {
+    display: none;
+    border-radius: 4px;
+    border-bottom: 1px solid white;
+    font-family: Verdana, Helvetica;
+    font-size: 10pt;
+    padding: 5px;
+    background-color: #f0ad4e;
+}
+.highslide-loading {
+    display: block;
+	color: black;
+	font-size: 9px;
+	font-weight: bold;
+	text-transform: uppercase;
+    text-decoration: none;
+	padding: 3px;
+	border-top: 1px solid white;
+	border-bottom: 1px solid white;
+    background-color: white;
+    padding-left: 22px;
+    background-image: url(images/loader.gif);
+    background-repeat: no-repeat;
+    background-position: 3px 1px;
+	border-radius: 4px;
+}
+.highslide-display-block {
+    display: block;
+	border-radius: 4px;
+}
+.highslide-display-none {
+    display: none;
+	border-radius: 4px;
+}
