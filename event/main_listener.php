@@ -14,7 +14,7 @@ namespace hs11\codegenerator\event;
  * @ignore
  */
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
+use phpbb\files\factory;
 /**
  * Code Generator Event listener.
  */
@@ -41,6 +41,9 @@ class main_listener implements EventSubscriberInterface
 
 	/** @var string phpEx */
 	protected $php_ext;
+	
+	/** @var factory */
+	protected $files_factory;
 
 	/**
 	 * Constructor
@@ -49,13 +52,15 @@ class main_listener implements EventSubscriberInterface
 	 * @param \phpbb\template\template	$template	Template object
 	 * @param \phpbb\user               $user       User object
 	 * @param string                    $php_ext    phpEx
+	 * @param factory			$files_factory
 	 */
-	public function __construct(\phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, $php_ext)
+	public function __construct(\phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, $php_ext, factory $files_factory = null)
 	{
 		$this->helper   = $helper;
 		$this->template = $template;
 		$this->user     = $user;
 		$this->php_ext  = $php_ext;
+		$this->files_factory 		= $files_factory;
 	}
 
 	/**
@@ -100,6 +105,7 @@ class main_listener implements EventSubscriberInterface
 			'U_NEWS_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'news_action')),
 			'U_PORTAL'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'portal')),
 			'U_PORTAL_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'portal_action')),
+			'PHPBB_IS_32'				=> ($this->files_factory !== null) ? true : false,
 		));
 		
 	}
