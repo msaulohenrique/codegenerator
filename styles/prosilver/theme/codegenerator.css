@@ -1,5 +1,62 @@
 /* CSS Prosilver Code Generator
 ---------------------------------- */
+div.vanadium-invalid {
+    border-color: red !important;
+    border-style: solid !important;
+}
+
+div.vanadium-valid {
+    border-color: green !important;
+    border-style: solid !important;
+}
+
+.vanadium-message-value {
+    font-style: italic;
+    text-decoration: underline;
+}
+
+.vanadium-advice.vanadium-invalid, .vanadium-advice.vanadium-invalid * {
+    color: red;
+}
+
+input.vanadium-valid {
+    background-color: greenyellow;
+}
+
+input.vanadium-invalid {
+    background-color: pink;
+}
+
+input.vanadium-valid ~ .vanadium-valid-advice {
+    display: inline !important;
+    color: green;
+}
+
+textarea.vanadium-valid {
+    background-color: greenyellow;
+}
+
+textarea.vanadium-invalid {
+    background-color: pink;
+}
+
+textarea.vanadium-valid ~ .vanadium-valid-advice {
+    display: inline !important;
+    color: green;
+}
+
+select.vanadium-valid {
+    background-color: greenyellow;
+}
+
+select.vanadium-invalid {
+    background-color: pink;
+}
+
+select.vanadium-valid ~ .vanadium-valid-advice {
+    display: inline !important;
+    color: green;
+}
 
 .codegenerator-top-left {
 	margin-right: 9px; /* clip right corner */

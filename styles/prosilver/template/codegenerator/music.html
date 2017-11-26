@@ -19,15 +19,15 @@
 		<fieldset>
 		<dl>
 		<dt><label>* {L_ORIGIN}:</label></dt>
-		<dd><select name="origem" id="origem" style="width: auto;">
-			<option value="{L_SELECT}">{L_SELECT}</option>
+		<dd><select name="origem" id="origem" style="width: auto;" class=":required">
+			<option selected="selected" value="">{L_SELECT}</option>
 			<option>Nacional</option>
 			<option>Internacional</option>
 			</select></dd>
 
 		<dt><label>* {L_GENRE}:</label></dt>
-		<dd><select name="genero" id="genero">
-		<option value="{L_SELECT}">{L_SELECT}</option>
+		<dd><select name="genero" id="genero" class=":required">
+		<option selected="selected" value="">{L_SELECT}</option>
 		<option>-------------------------</option>
 		<option>Axé</option>
 		<option>Black Music</option>
@@ -89,8 +89,8 @@
 		<fieldset>
 		<dl>
 		<dt><label>* {L_AUDIO_CODEC}:</label></dt>
-		<dd><select name="codec" id="codec">
-		<option value="{L_SELECT}">{L_SELECT}</option>
+		<dd><select name="codec" id="codec" class=":required">
+		<option selected="selected" value="">{L_SELECT}</option>
 		<option>MP3</option>
 		<option>MP4</option>
 		<option>Wave</option>
@@ -98,8 +98,8 @@
 		</select> </dd>
 		
 		<dt><label>* {L_QUALITY}:</label></dt>
-		<dd><select name="qualidade" id="select6">
-		<option value="{L_SELECT}">{L_SELECT}</option>
+		<dd><select name="qualidade" id="select6" class=":required">
+		<option selected="selected" value="">{L_SELECT}</option>
 		<option>Inf. 64Kbps</option>
 		<option>64Kbps</option>
 		<option>128Kbps</option>

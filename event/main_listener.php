@@ -101,6 +101,7 @@ class main_listener implements EventSubscriberInterface
 			'U_PORTAL'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'portal')),
 			'U_PORTAL_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'portal_action')),
 		));
+		
 	}
 
 	/**
@@ -129,4 +130,5 @@ class main_listener implements EventSubscriberInterface
 		$forum_row['FORUM_NAME'] .= ' :: Code Generator Event ::';
 		$event['forum_row'] = $forum_row;
 	}
+	
 }

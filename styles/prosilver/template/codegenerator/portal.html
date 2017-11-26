@@ -8,7 +8,7 @@
 	<!-- INCLUDE codegenerator/menu.html -->
 	<div id="cp-main" class="cp-main ucp-main panel-container">
 	<h2>{L_CAT_PORTAL}</h2>
-	<form name="formfs" onSubmit="return erro();" method="post" action="{U_UPORTAL_ACTION}">
+	<form name="formfs" onSubmit="return erro();" method="post" action="{U_PORTAL_ACTION}">
 	
 <div class="panel">
 	<div class="inner"><span class="corners-top"><span></span></span>
@@ -25,8 +25,8 @@
 	<dd><input type="text" name="imagem1"  class=":required inputbox" id="imagem1"></dd>
 	
 	<dt><label>* Compartilhamento:</label></dt>
-	<dd><select name="compartilhamento1" id="select_up">
-		 <option value="{L_SELECT}">{L_SELECT}</option>
+	<dd><select name="compartilhamento1" id="select_up" class=":required">
+		 <option selected="selected" value="">{L_SELECT}</option>
 		 <option>http</option>
 		 <option>torrent</option>
 		 <option>pando</option>
@@ -64,8 +64,8 @@
 	<dd><input type="text" name="imagem2"  class=":required inputbox" id="imagem2"></dd>
 	
 	<dt><label>* Compartilhamento:</label></dt>
-	<dd><select name="compartilhamento2" id="select_up">
-		 <option value="{L_SELECT}">{L_SELECT}</option>
+	<dd><select name="compartilhamento2" id="select_up" class=":required">
+		 <option selected="selected" value="">{L_SELECT}</option>
 		 <option>http</option>
 		 <option>torrent</option>
 		 <option>pando</option>
@@ -102,8 +102,8 @@
 	<dd><input type="text" name="imagem3"  class=":required inputbox" id="imagem3"></dd>
 	
 	<dt><label>* Compartilhamento:</label></dt>
-	<dd><select name="compartilhamento3" id="select_up">
-		 <option value="{L_SELECT}">{L_SELECT}</option>
+	<dd><select name="compartilhamento3" id="select_up" class=":required">
+		 <option selected="selected" value="">{L_SELECT}</option>
 		 <option>http</option>
 		 <option>torrent</option>
 		 <option>pando</option>
