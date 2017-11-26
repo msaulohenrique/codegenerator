@@ -1,5 +1,6 @@
 # Code Generator Extension
 Code Generator for phpBB 3.1 & 3.2
+![Image DEMO](https://i.imgur.com/zvRXULX.png)
 
 ## Installation
 
