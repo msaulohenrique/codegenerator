@@ -129,12 +129,13 @@ class main_listener implements EventSubscriberInterface
 	 * Modifies the names of the forums on index
 	 *
 	 * @param \phpbb\event\data	$event	Event object
+	 *
+	 * public function display_forums_modify_template_vars($event)
+	 * {
+	 *	$forum_row = $event['forum_row'];
+	 *	$forum_row['FORUM_NAME'] .= ' :: Code Generator Event ::';
+	 *	$event['forum_row'] = $forum_row;
+	 * }
 	 */
-	public function display_forums_modify_template_vars($event)
-	{
-		$forum_row = $event['forum_row'];
-		$forum_row['FORUM_NAME'] .= ' :: Code Generator Event ::';
-		$event['forum_row'] = $forum_row;
-	}
 	
 }
