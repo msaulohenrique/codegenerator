@@ -8,9 +8,13 @@
 	"license": "GPL-2.0",
 	"authors": [{
 			"name": "henrique.seven2011",
-			"email": "henrique.seven2011@hotmail.com",
 			"homepage": "http://www.suportephpbb.com.br/memberlist.php?mode=viewprofile&u=30238",
-			"role": "Lead Developer"
+			"role": "Developer"
+		},
+		{
+			"name": "_Vinny_",
+			"homepage": "https://github.com/vinny",
+			"role": "Developer and Author"
 		}],
 	"require": {
 		"php": ">=5.3.3",
