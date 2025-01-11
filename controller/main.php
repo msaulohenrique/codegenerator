@@ -58,26 +58,25 @@ class main
 	public function handle($name)
 	{
 	    // MUSIC
-	$artista = $this->request->variable('artista', '');
-	$album = $this->request->variable('album', '');
-	$poster = $this->request->variable('poster', '');
-	$faixas = $this->request->variable('faixas', '');
-	$origem = $this->request->variable('origem', '');
-	$genero = $this->request->variable('genero', '');
-	$ano = $this->request->variable('ano', '');
-	$gravadora = $this->request->variable('gravadora', '');
-	$codec= $this->request->variable('codec', '');
-	$qualidade = $this->request->variable('qualidade', '');
-	$tamanho = $this->request->variable('tamanho', '');
-	$grupo = $this->request->variable('grupo', '');
-	$uploader = $this->request->variable('uploader', '');
-	$outras_info = $this->request->variable('outras_info', '');
-	$http = $this->request->variable('http', '');
-	$compartilhamento_http = $this->request->variable('compartilhamento_http', '');
-	$compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
-	$compartilhamento_pando = $this->request->variable('compartilhamento_pando', '');
-	$compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
-	$compartilhamento_p2m = $this->request->variable('compartilhamento_p2m', '');
+    	$artista = $this->request->variable('artista', '');
+    	$album = $this->request->variable('album', '');
+    	$poster = $this->request->variable('poster', '');
+    	$faixas = $this->request->variable('faixas', '');
+    	$origem = $this->request->variable('origem', '');
+    	$genero = $this->request->variable('genero', '');
+    	$ano = $this->request->variable('ano', '');
+    	$gravadora = $this->request->variable('gravadora', '');
+    	$codec= $this->request->variable('codec', '');
+    	$qualidade = $this->request->variable('qualidade', '');
+    	$tamanho = $this->request->variable('tamanho', '');
+    	$grupo = $this->request->variable('grupo', '');
+    	$uploader = $this->request->variable('uploader', '');
+    	$outras_info = $this->request->variable('outras_info', '');
+    	$http = $this->request->variable('http', '');
+    	$compartilhamento_http = $this->request->variable('compartilhamento_http', '');
+    	$compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
+    	$compartilhamento_magnet = $this->request->variable('compartilhamento_magnet', '');
+    	$compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
 
 $this->template->assign_vars(array(
 		'A_ARTISTA'=> $artista,
@@ -97,9 +96,8 @@ $this->template->assign_vars(array(
 		'A_HTTP'=> $http,
 		'A_COMPARTILHAMENTO_HTTP'=> $compartilhamento_http,
 		'A_COMPARTILHAMENTO_TORRENT'=> $compartilhamento_torrent,
-		'A_COMPARTILHAMENTO_PANDO'=> $compartilhamento_pando,
+		'A_COMPARTILHAMENTO_MAGNET'=> $compartilhamento_magnet,
 		'A_COMPARTILHAMENTO_ED2K'=> $compartilhamento_ed2k,
-		'A_COMPARTILHAMENTO_P2M'=> $compartilhamento_p2m,
 ));
 
 // ANIMATION
@@ -108,6 +106,8 @@ $this->template->assign_vars(array(
 	$descricao = $this->request->variable('descricao', '');
 	$screen1 = $this->request->variable('screen1', '');
 	$screen2 = $this->request->variable('screen2', '');
+	$screen3 = $this->request->variable('screen3', '');
+	$screen4 = $this->request->variable('screen4', '');
 	$traduzido = $this->request->variable('traduzido', '');
 	$temporada = $this->request->variable('temporada', '');
 	$nome_episodio = $this->request->variable('nome_episodio', '');
@@ -122,18 +122,18 @@ $this->template->assign_vars(array(
 	$audio_codec = $this->request->variable('audio_codec', '');
 	$audio_bitrate = $this->request->variable('audio_bitrate', '');
 	$resolucao = $this->request->variable('resolucao', '');
+	$legendas= $this->request->variable('legendas', '');
+	$formato= $this->request->variable('formato', '');
 	$frame_rate = $this->request->variable('frame_rate', '');
-	$grupo = $this->request->variable('grupo', '');
+	$frame_rate = $this->request->variable('frame_rate', '');
 	$rip = $this->request->variable('rip', '');
-	$uploader = $this->request->variable('uploader', '');
 	$site = $this->request->variable('site', '');
 	$outras_info = $this->request->variable('outras_info', '');
 	$http = $this->request->variable('http', '');
 	$compartilhamento_http = $this->request->variable('compartilhamento_http', '');
-	$compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
-	$compartilhamento_pando = $this->request->variable('compartilhamento_pando', '');
-	$compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
-	$compartilhamento_p2m = $this->request->variable('compartilhamento_p2m', '');
+    $compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
+    $compartilhamento_magnet = $this->request->variable('compartilhamento_magnet', '');
+    $compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
 
 	$this->template->assign_vars(array(
 		'A_NOME'=> $nome,
@@ -141,6 +141,8 @@ $this->template->assign_vars(array(
 		'A_DESCRICAO'=> $descricao,
 		'A_SCREEN1'=> $screen1,
 		'A_SCREEN2'=> $screen2,
+		'A_SCREEN3'=> $screen3,
+		'A_SCREEN4'=> $screen4,
 		'A_TRADUZIDO'=> $traduzido,
 		'A_TEMPORADA'=> $temporada,
 		'A_NOME_EPI'=> $nome_episodio,
@@ -155,18 +157,17 @@ $this->template->assign_vars(array(
 		'A_AUDIO_C'=> $audio_codec,
 		'A_AUDIO_B'=> $audio_bitrate,
 		'A_RESOLUCAO'=> $resolucao,
+		'A_LEGENDAS'=> $legendas,
+		'A_FORMATO'=> $formato,
 		'A_FRAME_R'=> $frame_rate,
-		'A_GRUPO'=> $grupo,
 		'A_RIP'=> $rip,
-		'A_UPLOADER'=> $uploader,
 		'A_SITE'=> $site,
 		'A_OUTRAS_INFO'=> $outras_info,
 		'A_HTTP'=> $http,
 		'A_COMPARTILHAMENTO_HTTP'=> $compartilhamento_http,
 		'A_COMPARTILHAMENTO_TORRENT'=> $compartilhamento_torrent,
-		'A_COMPARTILHAMENTO_PANDO'=> $compartilhamento_pando,
+		'A_COMPARTILHAMENTO_MAGNET'=> $compartilhamento_magnet,
 		'A_COMPARTILHAMENTO_ED2K'=> $compartilhamento_ed2k,
-		'A_COMPARTILHAMENTO_P2M'=> $compartilhamento_p2m,
 ));
 
 // EBOOK
@@ -182,10 +183,9 @@ $this->template->assign_vars(array(
 	$uploader = $this->request->variable('uploader', '');
 	$http = $this->request->variable('http', '');
 	$compartilhamento_http = $this->request->variable('compartilhamento_http', '');
-	$compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
-	$compartilhamento_pando = $this->request->variable('compartilhamento_pando', '');
-	$compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
-	$compartilhamento_p2m = $this->request->variable('compartilhamento_p2m', '');
+    $compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
+    $compartilhamento_magnet = $this->request->variable('compartilhamento_magnet', '');
+    $compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
 
 $this->template->assign_vars(array(
 		'A_NOME'=> $nome,
@@ -201,9 +201,8 @@ $this->template->assign_vars(array(
 		'A_HTTP'=> $http,
 		'A_COMPARTILHAMENTO_HTTP'=> $compartilhamento_http,
 		'A_COMPARTILHAMENTO_TORRENT'=> $compartilhamento_torrent,
-		'A_COMPARTILHAMENTO_PANDO'=> $compartilhamento_pando,
+		'A_COMPARTILHAMENTO_MAGNET'=> $compartilhamento_magnet,
 		'A_COMPARTILHAMENTO_ED2K'=> $compartilhamento_ed2k,
-		'A_COMPARTILHAMENTO_P2M'=> $compartilhamento_p2m,
 ));
 
 // MOVIES
@@ -238,10 +237,9 @@ $this->template->assign_vars(array(
 	$outras_info = $this->request->variable('outras_info', '');
 	$http = $this->request->variable('http', '');
 	$compartilhamento_http = $this->request->variable('compartilhamento_http', '');
-	$compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
-	$compartilhamento_pando = $this->request->variable('compartilhamento_pando', '');
-	$compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
-	$compartilhamento_p2m = $this->request->variable('compartilhamento_p2m', '');
+    $compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
+    $compartilhamento_magnet = $this->request->variable('compartilhamento_magnet', '');
+    $compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
 
 $this->template->assign_vars(array(
 		'A_NOME'=> $nome,
@@ -276,9 +274,8 @@ $this->template->assign_vars(array(
 		'A_HTTP'=> $http,
 		'A_COMPARTILHAMENTO_HTTP'=> $compartilhamento_http,
 		'A_COMPARTILHAMENTO_TORRENT'=> $compartilhamento_torrent,
-		'A_COMPARTILHAMENTO_PANDO'=> $compartilhamento_pando,
+		'A_COMPARTILHAMENTO_MAGNET'=> $compartilhamento_magnet,
 		'A_COMPARTILHAMENTO_ED2K'=> $compartilhamento_ed2k,
-		'A_COMPARTILHAMENTO_P2M'=> $compartilhamento_p2m,
 ));
 
 // GAMES
@@ -305,10 +302,9 @@ $this->template->assign_vars(array(
 	$outras_info = $this->request->variable('outras_info', '');
 	$http = $this->request->variable('http', '');
 	$compartilhamento_http = $this->request->variable('compartilhamento_http', '');
-	$compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
-	$compartilhamento_pando = $this->request->variable('compartilhamento_pando', '');
-	$compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
-	$compartilhamento_p2m = $this->request->variable('compartilhamento_p2m', '');
+    $compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
+    $compartilhamento_magnet = $this->request->variable('compartilhamento_magnet', '');
+    $compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
 	
 $this->template->assign_vars(array(
 		'A_NOME'=> $nome,
@@ -335,9 +331,8 @@ $this->template->assign_vars(array(
 		'A_HTTP'=> $http,
 		'A_COMPARTILHAMENTO_HTTP'=> $compartilhamento_http,
 		'A_COMPARTILHAMENTO_TORRENT'=> $compartilhamento_torrent,
-		'A_COMPARTILHAMENTO_PANDO'=> $compartilhamento_pando,
+		'A_COMPARTILHAMENTO_MAGNET'=> $compartilhamento_magnet,
 		'A_COMPARTILHAMENTO_ED2K'=> $compartilhamento_ed2k,
-		'A_COMPARTILHAMENTO_P2M'=> $compartilhamento_p2m,
 
 ));
 
@@ -364,10 +359,9 @@ $this->template->assign_vars(array(
 	$outras_info = $this->request->variable('outras_info', '');
 	$http = $this->request->variable('http', '');
 	$compartilhamento_http = $this->request->variable('compartilhamento_http', '');
-	$compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
-	$compartilhamento_pando = $this->request->variable('compartilhamento_pando', '');
-	$compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
-	$compartilhamento_p2m = $this->request->variable('compartilhamento_p2m', '');
+    	$compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
+    	$compartilhamento_magnet = $this->request->variable('compartilhamento_magnet', '');
+    	$compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
 	
 $this->template->assign_vars(array(
 		'A_NAME'=> $nome,
@@ -393,9 +387,8 @@ $this->template->assign_vars(array(
 		'A_HTTP'=> $http,
 		'A_COMPARTILHAMENTO_HTTP'=> $compartilhamento_http,
 		'A_COMPARTILHAMENTO_TORRENT'=> $compartilhamento_torrent,
-		'A_COMPARTILHAMENTO_PANDO'=> $compartilhamento_pando,
+		'A_COMPARTILHAMENTO_MAGNET'=> $compartilhamento_magnet,
 		'A_COMPARTILHAMENTO_ED2K'=> $compartilhamento_ed2k,
-		'A_COMPARTILHAMENTO_P2M'=> $compartilhamento_p2m,
 
 		
 ));
@@ -427,10 +420,9 @@ $this->template->assign_vars(array(
 	$outras_info = $this->request->variable('outras_info', '');
 	$http = $this->request->variable('http', '');
 	$compartilhamento_http = $this->request->variable('compartilhamento_http', '');
-	$compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
-	$compartilhamento_pando = $this->request->variable('compartilhamento_pando', '');
-	$compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
-	$compartilhamento_p2m = $this->request->variable('compartilhamento_p2m', '');
+    $compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
+    $compartilhamento_magnet = $this->request->variable('compartilhamento_magnet', '');
+    $compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
 
 $this->template->assign_vars(array(
 		'A_NAME'=> $nome,
@@ -460,9 +452,8 @@ $this->template->assign_vars(array(
 		'A_HTTP'=> $http,
 		'A_COMPARTILHAMENTO_HTTP'=> $compartilhamento_http,
 		'A_COMPARTILHAMENTO_TORRENT'=> $compartilhamento_torrent,
-		'A_COMPARTILHAMENTO_PANDO'=> $compartilhamento_pando,
+		'A_COMPARTILHAMENTO_MAGNET'=> $compartilhamento_magnet,
 		'A_COMPARTILHAMENTO_ED2K'=> $compartilhamento_ed2k,
-		'A_COMPARTILHAMENTO_P2M'=> $compartilhamento_p2m,
 
 
 ));
@@ -490,10 +481,9 @@ $this->template->assign_vars(array(
 	$outras_info = $this->request->variable('outras_info', '');
 	$http = $this->request->variable('http', '');
 	$compartilhamento_http = $this->request->variable('compartilhamento_http', '');
-	$compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
-	$compartilhamento_pando = $this->request->variable('compartilhamento_pando', '');
-	$compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
-	$compartilhamento_p2m = $this->request->variable('compartilhamento_p2m', '');
+    $compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
+    $compartilhamento_magnet = $this->request->variable('compartilhamento_magnet', '');
+    $compartilhamento_ed2k = $this->request->variable('compartilhamento_ed2k', '');
 
 $this->template->assign_vars(array(
 		'A_NAME'=> $nome,
@@ -519,10 +509,8 @@ $this->template->assign_vars(array(
 		'A_HTTP'=> $http,
 		'A_COMPARTILHAMENTO_HTTP'=> $compartilhamento_http,
 		'A_COMPARTILHAMENTO_TORRENT'=> $compartilhamento_torrent,
-		'A_COMPARTILHAMENTO_PANDO'=> $compartilhamento_pando,
+		'A_COMPARTILHAMENTO_MAGNET'=> $compartilhamento_magnet,
 		'A_COMPARTILHAMENTO_ED2K'=> $compartilhamento_ed2k,
-		'A_COMPARTILHAMENTO_P2M'=> $compartilhamento_p2m,
-
 ));
 
 // NEWS
@@ -568,6 +556,7 @@ $this->template->assign_vars(array(
 	$subcategoria3 = $this->request->variable('subcategoria3', '');
 	$autor3 = $this->request->variable('autor3', '');
 	$topico3 = $this->request->variable('topico3', '');
+	
 $this->template->assign_vars(array(
 		'A_TITULO1'=> $titulo1,
 		'A_IMAGEM1'=> $imagem1,
@@ -594,6 +583,7 @@ $this->template->assign_vars(array(
 		'A_AUTOR3'=> $autor3,
 		'A_TOPICO3'=> $topico3,
 ));
+        
 
 	    if($name == "music") {
 	        return $this->helper->render('codegenerator/music.html', $this->user->lang('CAT_MUSIC'));
