@@ -16,47 +16,53 @@
 <p>* Selecione o código abaixo precionando CTRL+A, depois CTRL+C, logo depois vá ao fórum na parte em que deseja postar e clique com o botão direito COLAR ou precione CTRL+V.</p>
 		<hr />
 		<div style="text-align: center;">
-<textarea name="message" id="message" rows="1" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">{A_COMPARTILHAMENTO_HTTP}{A_COMPARTILHAMENTO_TORRENT}{A_COMPARTILHAMENTO_PANDO}{A_COMPARTILHAMENTO_ED2K}{A_COMPARTILHAMENTO_P2M} ({A_TEMPORADA}/{A_NOME_EPI})</textarea>
-</br>
+<textarea name="message" id="message" rows="1" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">{A_COMPARTILHAMENTO_HTTP}{A_COMPARTILHAMENTO_TORRENT}{A_COMPARTILHAMENTO_MAGNET}{A_COMPARTILHAMENTO_ED2K} {A_NOME} ({% if A_NOME_EPI %}{A_NOME_EPI}/{A_TEMPORADA}{% elseif A_TEMPORADA %}{A_TEMPORADA}{% endif %})</textarea>
+<br />
 <textarea name="message" id="message" rows="15" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">
-[divs][center][size=170]{A_NOME}[/size][/center][/divs]
-
-[columns1][center][size=150]{L_POSTER}[/size][/center][divs]
-[poster]{A_POSTER}[/poster][/divs]
-[center][size=150]{L_SYNOPSIS}[/size][/center][divs]{A_DESCRICAO}[/divs]
-
-[center][size=150]SCREENSHOTS[/size][/center][divs]
-[shot]{A_SCREEN1}[/shot][shot]{A_SCREEN2}[/shot][/divs]
-
-[center][size=150]{L_OTHER_INFORMATION}[/size][/center][divs]
-{A_OUTRAS_INFO}[/divs]
-[/columns1] [columns2][center][size=150]{L_DATA_FILE}[/size][/center][divs]
-• [b]Nome:[/b] {A_NOME}
-• [b]Titulo Traduzido:[/b] {A_TRADUZIDO}
-• [b]Temporada:[/b] {A_TEMPORADA}
-• [b]Nome do Episodio:[/b] {A_NOME_EPI}
-• [b]Fansuber:[/b] {A_FAN}
-• [b]Idioma do Áudio:[/b] {A_IDIOMA}
-• [b]Quant. de Mídias:[/b] {A_MIDIAS}
-• [b]Duração:[/b] {A_DURACAO}[/divs]
-
-[center][size=150]{L_SPECIFICATIONS}[/size][/center][divs]
-• [b]Tamanho:[/b] {A_TAMANHO}
-• [b]Qualidade:[/b] {A_QUALIDADE}
-• [b]Video Codec:[/b] {A_VIDEO_C}
-• [b]Video Bitrate:[/b] {A_VIDEO_B}
-• [b]Audio Codec:[/b] {A_AUDIO_C}
-• [b]Audio Bitrate:[/b] {A_AUDIO_B}
-• [b]Resolucão:[/b] {A_RESOLUCAO}
-• [b]Frame Rate:[/b] {A_FRAME_R}
-• [b]Compartilhamento:[/b] {A_COMPARTILHAMENTO}
-• [b]Grupo:[/b] {A_GRUPO}
-• [b]Ripado por:[/b] {A_RIP}
-• [b]Upload:[/b] {A_UPLOADER}
-• [b]Site Oficial:[/b] {A_SITE}[/divs]
-
-[center][size=150]Download[/size][/center][divs][center]{A_HTTP}[/center][/divs]
-[/columns2]</textarea>
+[table][tr][td2col]LINK DA IMAGEM DO TOPO[/td2col][/tr]
+[tr][td2col][b][size=150]{A_NOME}[/size][/b]
+[size=100]({% if A_NOME_EPI %}{A_NOME_EPI}/{A_TEMPORADA}{% elseif A_TEMPORADA %}{A_TEMPORADA}{% endif %})[/size]
+[/td2col][/tr]
+[tr][tdrodape]Poster[/tdrodape][tdrodape]Sinopse[/tdrodape][/tr]
+[tr][tdvtop][center][poster]{A_POSTER}[/poster][/center][/tdvtop][tdvtop]{A_DESCRICAO}[/tdvtop][/tr]
+[tr][td2rodape]ScreenShots[/td2rodape][/tr]
+[tr][td2col][center]
+[ashot]{A_SCREEN1}[/ashot][ashot]{A_SCREEN2}[/ashot]{% if A_SCREEN3 %}[ashot]{A_SCREEN3}[/ashot]{% endif %}{% if A_SCREEN4 %}[ashot]{A_SCREEN4}[/ashot]{% endif %}
+Clique na imagem para ver em tamanho real
+[/center][/td2col][/tr]
+[tr][tdrodape]Dados do Anime[/tdrodape][tdrodape]Dados Técnicos[/tdrodape][/tr]
+[tr][tdvtop]
+[b]Nome Original do Anime:[/b] {A_NOME}
+{% if A_NOME_EPI %}
+[b]Nome do episódio:[/b] {A_NOME_EPI}
+{% endif %}
+[b]Nome da Temporada:[/b] {A_TEMPORADA}
+[b]Idioma do Áudio:[/b] {A_IDIOMA}
+[b]Tempo de Duração:[/b] {A_DURACAO}
+{% if A_SITE %}[b]Site Oficial:[/b] {A_SITE}{% endif %}
+[/tdvtop][tdvtop]
+[b]Qualidade do Vídeo:[/b] {A_QUALIDADE}
+{% if A_VIDEO_C %}[b]Vídeo Codec:[/b] {A_VIDEO_C}{% endif %}
+{% if A_VIDEO_B %}[b]Vídeo Bitrate:[/b] {A_VIDEO_B}{% endif %}
+{% if A_AUDIO_C %}[b]Áudio Codec:[/b] {A_AUDIO_C}{% endif %}
+{% if A_AUDIO_B %}[b]Áudio Bitrate:[/b] {A_AUDIO_B}{% endif %}
+[b]Legenda:[/b] {A_LEGENDAS}
+{% if A_FORMATO %}[b]Formato do Vídeo:[/b] {A_FORMATO}{% endif %}
+[b]Resolução:[/b] {A_RESOLUCAO}
+{% if A_FRAME_R %}[b]Frame Rate:[/b] {A_FRAME_R}{% endif %}
+[/tdvtop][/tr]
+[tr][td2rodape]Informações Gerais[/td2rodape][/tr]
+[tr][td2col][left]
+[b]Quantidade de Mídias:[/b] {A_MIDIAS}
+[b]Tamanho:[/b] {A_TAMANHO}
+{% if A_FAN %}[b]Fansubber:[/b] {A_FAN}{% endif %}
+{% if A_RIP %}[b]Ripado por:[/b] {A_RIP}{% endif %}
+[/left][/td2col][/tr]
+{% if L_OTHER_INFORMATION %}[tr][td2rodape]Outras Informações[/td2rodape][/tr]
+[tr][tdvtop][left]{L_OTHER_INFORMATION}[/left][/tdvtop][/tr]{% endif %}
+[tr][td2rodape]Download[/td2rodape][/tr]
+[tr][td2col][center]{A_HTTP}[/center][/td2col][/tr][/table]
+</textarea>
 			</div>
 	<span class="corners-bottom"><span></span></span></div>
 </div>

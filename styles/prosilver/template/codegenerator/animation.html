@@ -27,8 +27,8 @@
 		<dt><label>* {L_SEASON}: </label></dt>
 		<dd><input type="text" name="temporada"  class=":required inputbox" id="temporada"></dd>
 		
-		<dt><label>* {L_EPISOSE}:</label></dt>
-		<dd><input type="text" name="nome_episodio"  class=":required inputbox" id="nome_episodio"></dd>
+		<dt><label>{L_EPISOSE}:</label><small>Obrigatório em postagem de episódio único/individual</small></dt>
+		<dd><input type="text" name="nome_episodio"  class="inputbox" id="nome_episodio"></dd>
 		
 		<dt><label>FanSuber:</label></dt>
 		<dd><input type="text" name="fan"  class="inputbox" id="fan"></dd>
@@ -36,14 +36,8 @@
 		<dt><label>* Idioma Áudio:</label></dt>
 		<dd><input type="text" name="idioma"  class=":required inputbox" id="idioma"></dd>
 		
-		<dt><label>* {L_GROUP}:</label></dt>
-		<dd><input type="text" name="grupo"  class=":required inputbox" id="grupo"></dd>
-		
-		<dt><label>* {L_UPLOADER}:</label></dt>
-		<dd><input type="text" name="uploader"  class=":required inputbox" id="uploader"></dd>
-		
-		<dt><label>* Ripado Por:</label></dt>
-		<dd><input type="text" name="rip"  class=":required inputbox" id="rip"></dd>
+		<dt><label>Ripado Por:</label></dt>
+		<dd><input type="text" name="rip"  class="inputbox" id="rip"></dd>
 		
 		<dt><label>* {L_POSTER}:</label></dt>
 		<dd><input type="text" name="poster"  class=":required inputbox" id="poster"></dd>
@@ -55,41 +49,69 @@
 		
 		<fieldset>
 		<dl>
-		<dt><label>* Video Codec:</label></dt>
-		<dd><input type="text" name="video_codec"  class=":required inputbox" id="video_codec"></dd>
+		<dt><label>Video Codec:</label><small>Codec de Vídeo. Ex:DviX, XviD, etc...</small></dt>
+		<dd><input type="text" name="video_codec"  class="inputbox" id="video_codec"></dd>
 		
-		<dt><label>* Video Bitrate:</label></dt>
-		<dd><input type="text" name="video_bitrate"  class=":required inputbox" id="video_bitrate"></dd>
+		<dt><label>Video Bitrate:</label><small>Bitrate de Vídeo. Ex: 600 kb/s</small></dt>
+		<dd><input type="text" name="video_bitrate"  class="inputbox" id="video_bitrate"></dd>
 		
-		<dt><label>* Áudio Codec:</label></dt>
-		<dd><input type="text" name="audio_codec"  class=":required inputbox" id="audio_codec"></dd>
+		<dt><label>Áudio Codec:</label><small>Codec de Áudio. Ex: Mp3</small></dt>
+		<dd><input type="text" name="audio_codec"  class="inputbox" id="audio_codec"></dd>
 		
-		<dt><label>* Áudio Bitrate:</label></dt>
-		<dd><input type="text" name="audio_bitrate"  class=":required inputbox" id="audio_bitrate"></dd>
+		<dt><label>Áudio Bitrate:</label><small>Bitrate de Áudio. Ex: 128 kb/s</small></dt>
+		<dd><input type="text" name="audio_bitrate"  class="inputbox" id="audio_bitrate"></dd>
 		
-		<dt><label>* Resolução:</label></dt>
+		<dt><label>* Resolução:</label><small>Resolução do Vídeo. Ex: 1280x720</small></dt>
 		<dd><input type="text" name="resolucao"  class=":required inputbox" id="resolucao"></dd>
 		
-		<dt><label>* Frame Rate:</label></dt>
-		<dd><input type="text" name="frame_rate"  class=":required inputbox" id="frame_rate"></dd>
+		<dt><label>Formato de Tela:</label><small>A proporção. Ex: 4:3, 16:9...</small></dt>
+		<dd><input type="text" name="formato"  class=" inputbox" id="frame_rate"></dd>
+		
+		<dt><label>Frame Rate:</label><small>Os FPS do filme. Ex: 29.970 fps</small></dt>
+		<dd><input type="text" name="frame_rate"  class=" inputbox" id="frame_rate"></dd>
 		
 		<dt><label>* Qualidade:</label></dt>
-		<dd><select name="qualidade" id="qualidade" class=":required">
+		<dd>
+		<select name="qualidade" id="qualidade" class=":required">
+    		<option selected="selected" value="">{L_SELECT}</option>
+    		<option value="3D">3D</option>
+            <option value="BD-25">BD-25</option>
+            <option value="BDRip">BDRip</option>
+            <option value="Blu Ray">Blu Ray</option>
+            <option value="BRRip">BRRip</option>
+            <option value="CAM">CAM</option>
+            <option value="DVD-5">DVD-5</option>
+            <option value="DVD-9">DVD-9</option>
+            <option value="DVDrip">DVDrip</option>
+            <option value="DVD-R">DVD-R</option>
+            <option value="DVDScreen">DVDScreen</option>
+            <option value="HDDVD">HDDVD</option>
+            <option value="HD 720p">HD 720p</option>
+            <option value="HD 1080p">HD 1080p</option>
+            <option value="HDTV">HDTV</option>
+            <option value="PDTV">PDTV</option>
+            <option value="R5">R5</option>
+            <option value="RatDVD">RatDVD</option>
+            <option value="Remux">Remux</option>
+            <option value="Screener">Screener</option>
+            <option value="TeleCine">TeleCine</option>
+            <option value="TeleSync">TeleSync</option>
+            <option value="TVRip">TVRip</option>
+            <option value="VHSRip">VHSRip</option>
+            <option value="WEBRip">WEBRip</option>
+            <option value="WEB-DL">WEB-DL</option>
+            <option value="Workprint">Workprint</option>
+            <option value="Outros">Outros</option>
+		</select>
+		</dd>
+		
+		<dt><label>* Legendas:</label></dt>
+		<dd><select name="legendas" id="legendas" class=":required">
 		<option selected="selected" value="">{L_SELECT}</option>
-		<option>DVDRip</option>
-		<option>DVDScreen</option>
-		<option>DVD-R</option>
-		<option>RatDVD</option>
-		<option>TeleCine</option>
-		<option>TeleSync</option>
-		<option>CAM</option>
-		<option>TVRip</option>
-		<option>VHSRip</option>
-		<option>RMVB</option>
-		 <option>Blu-ray Rip</option>
-		 <option>Blu-ray</option>
-		 <option>Blu-ray Disc</option>
-		<option>Outro</option>
+		<option>Anexada(s) ao Post</option>
+		<option>Embutida</option>
+		<option>No Arquivo</option>
+		<option>Sem Legenda</option>
 		</select></dd>
 		
 		<dt><label>* {L_SIZE}:</label></dt>
@@ -98,24 +120,17 @@
 		<dt><label>* Mídias:</label></dt>
 		<dd><select name="midias" id="midias" class=":required">
 		<option selected="selected" value="">{L_SELECT}</option>
-		<option>1 CD</option>
-		<option>2 CD</option>
-		<option>3 CD</option>
-		<option>4 CD</option>
-		<option>Acima de 4 CD</option>
-		<option>----------DVDs----------</option>
-		<option>1 DVD</option>
-		<option>2 DVD</option>
-		<option>3 DVD</option>
-		<option>4 DVD</option>
-		<option>Acima de 4 DVD</option>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
 		</select></dd>
 		
 		<dt><label>* Duração:</label></dt>
 		<dd><input type="text" name="duracao"  class=":required inputbox" id="duracao"></dd>
 		
-		<dt><label>* Site Oficial:</label></dt>
-		<dd><input type="text" name="site"  class=":required inputbox" id="site"></dd>
+		<dt><label>Site Oficial:</label></dt>
+		<dd><input type="url" name="site"  class="inputbox" id="site"></dd>
 		</dl>
 		</fieldset>
 	
@@ -124,10 +139,18 @@
 	<fieldset>
 		<dl>
 		<dt><label>* 1ª Screen:</label></dt>
-		<dd><input type="text" name="screen1"  class=":required inputbox" id="screen1"></dd>
+		<dd><input type="text" name="screen1"  class=":required :url inputbox" id="screen1"></dd>
 		
 		<dt><label>* 2ª Screen:</label></dt>
-		<dd><input type="text" name="screen2"  class=":required inputbox" id="screen2"></dd>		
+		<dd><input type="text" name="screen2"  class=":required :url inputbox" id="screen2"></dd>		
+		</dl>
+		
+		<dl>
+		<dt><label>3ª Screen:</label></dt>
+		<dd><input type="url" name="screen3"  class="inputbox" id="screen3"></dd>
+		
+		<dt><label>4ª Screen:</label></dt>
+		<dd><input type="url" name="screen4"  class="inputbox" id="screen4"></dd>		
 		</dl>
 	</fieldset>
 	
@@ -149,18 +172,20 @@
 	
 	<fieldset>
 		<hr />
+		<dl>
         <dt><label>* Compartilhamento:</label></dt>
-		<dd><label><input type="checkbox" name="compartilhamento_http" value="[http]" id="compartilhamento"> http </label>
+		<dd><label><input type="checkbox" name="compartilhamento_http" value="[http]" id="compartilhamento"> Http </label>
 		<label><input type="checkbox" name="compartilhamento_torrent" value="[torrent]" id="compartilhamento" onClick="javascript:div('torrent');"> Torrent </label> 
-		<label><input type="checkbox" name="compartilhamento_pando" value="[pando]" id="compartilhamento" onClick="javascript:div('pando');" > Pando </label> 
+		<label><input type="checkbox" name="compartilhamento_magnet" value="[pando]" id="compartilhamento" onClick="javascript:div('magnet');" > Magnet </label> 
 		<label><input type="checkbox" name="compartilhamento_ed2k" value="[ed2k]" id="compartilhamento"> Ed2k - Emule </label>
-		<label><input type="checkbox" name="compartilhamento_p2m" value="[p2m]" id="compartilhamento"> P2m </label>
 		</dd>
+		</dl>
     </fieldset>	
 	
 	<fieldset>
 		<hr />
-		<dt><label>* {L_DOWNLOAD}</label></dt>
+		<dl>
+		<dt><label>* {L_DOWNLOAD}</label><small>Somente LINKS aonde poderá ser feito o download, e só 1 link por linha.</small></dt>
 		<dd><textarea class=":required inputbox" name="http" rows="3" cols="30" id="http"></textarea></dd>
 		</dl>
 	</fieldset>

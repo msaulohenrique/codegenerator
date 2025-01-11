@@ -1,316 +1,298 @@
-/******************************************************************************
-Name:    Highslide JS
-Version: 3.1.10 (May 22 2007)
-Author:  Torstein Hønsi
-Support: http://vikjavev.no/highslide/forum
-Email:   See http://vikjavev.no/megsjol
-
-Licence:
-Highslide JS is licensed under a Creative Commons Attribution-NonCommercial 2.5
-License (http://creativecommons.org/licenses/by-nc/2.5/).
-
-You are free:
-	* to copy, distribute, display, and perform the work
-	* to make derivative works
-
-Under the following conditions:
-	* Attribution. You must attribute the work in the manner  specified by  the
-	  author or licensor.
-	* Noncommercial. You may not use this work for commercial purposes.
-
-* For  any  reuse  or  distribution, you  must make clear to others the license
-  terms of this work.
-* Any  of  these  conditions  can  be  waived  if  you  get permission from the 
-  copyright holder.
-
-Your fair use and other rights are in no way affected by the above.
-******************************************************************************/
-
-var hs = {
-
-// Apply your own settings here, or override them in the html file.  
-graphicsDir : 'ext/hs11/codegenerator/styles/prosilver/theme/images/',
-restoreCursor : "zoomout.cur", // necessary for preload
-fullExpandIcon : 'fullexpand.gif',
-expandSteps : 10, // number of steps in zoom. Each step lasts for duration/step milliseconds.
+/** 
+ * Name:    Highslide JS
+ * Version: 5.0.0 (2016-05-24)
+ * Config:  default
+ * Author:  Torstein Hønsi
+ * Support: www.highslide.com/support
+ * License: MIT
+ */
+if (!hs) { var hs = {
+// Language strings
+lang : {
+	cssDirection: 'ltr',
+	loadingText : 'Loading...',
+	loadingTitle : 'Click to cancel',
+	focusTitle : 'Click to bring to front',
+	fullExpandTitle : 'Expand to actual size (f)',
+	creditsText : 'Powered by <i>Highslide JS</i>',
+	creditsTitle : 'Go to the Highslide JS homepage',
+	restoreTitle : 'Click to close image, click and drag to move. Use arrow keys for next and previous.'
+},
+// See http://highslide.com/ref for examples of settings  
+graphicsDir : 'highslide/graphics/',
+expandCursor : 'zoomin.cur', // null disables
+restoreCursor : 'zoomout.cur', // null disables
 expandDuration : 250, // milliseconds
-restoreSteps : 10,
 restoreDuration : 250,
-allowMultipleInstances: true,
-hideThumbOnExpand : true,
-captionSlideSpeed : 1, // set to 0 to disable slide in effect
-outlineWhileAnimating : false, // not recommended for image popups, animation gets jerky on slow systems.
-outlineStartOffset : 3, // ends at 10
-marginLeft : 10,
-marginRight : 35, // leave room for scrollbars + outline
-marginTop : 10,
-marginBottom : 35, // leave room for scrollbars + outline
+marginLeft : 15,
+marginRight : 15,
+marginTop : 15,
+marginBottom : 15,
 zIndexCounter : 1001, // adjust to other absolutely positioned elements
-fullExpandTitle : 'Expandir para o Tamanho Original',
-restoreTitle : 'Clique para fechar a imagem, clique e arraste para mover.',
-focusTitle : 'Click to bring to front',
-loadingText : 'Carregando...',
-loadingTitle : 'Clique para cancelar',
 loadingOpacity : 0.75,
-showCredits : false, // you can set this to false if you want
+allowMultipleInstances: true,
+numberOfImagesToPreload : 5,
+outlineWhileAnimating : 2, // 0 = never, 1 = always, 2 = HTML only 
+outlineStartOffset : 3, // ends at 10
+padToMinWidth : false, // pad the popup width to make room for wide caption
+fullExpandPosition : 'bottom right',
+fullExpandOpacity : 1,
+showCredits : true, // you can set this to false if you want
+creditsHref : 'http://highslide.com/',
+creditsTarget : '_self',
+enableKeyListener : true,
+openerTagNames : ['a'], // Add more to allow slideshow indexing
 
-// These settings can also be overridden inline for each image
-anchor : 'auto', // where the image expands from
-align : 'auto', // position in the client (overrides anchor)
-targetX: null, // the id of a target element
-targetY: null,
-captionId : null,
-captionTemplateId : null,
-slideshowGroup : null, // defines groups for next/previous links and keystrokes
-spaceForCaption : 30, // leaves space below images with captions
+dragByHeading: true,
 minWidth: 200,
 minHeight: 200,
 allowSizeReduction: true, // allow the image to reduce to fit client size. If false, this overrides minWidth and minHeight
 outlineType : 'drop-shadow', // set null to disable outlines
-wrapperClassName : null, // for enhanced css-control
-enableKeyListener : true,
-
-		
 // END OF YOUR SETTINGS
 
 
 // declare internal properties
-preloadTheseImages : new Array(),
+preloadTheseImages : [],
 continuePreloading: true,
-expandedImagesCounter : 0,
-expanders : new Array(),
-overrides : new Array(
-	'anchor',
-	'align',
-	'targetX',
-	'targetY',
+expanders : [],
+overrides : [
+	'allowSizeReduction',
+	'useBox',
 	'outlineType',
 	'outlineWhileAnimating',
-	'spaceForCaption', 
+	'captionId',
+	'captionText',
+	'captionEval',
+	'captionOverlay',
+	'headingId',
+	'headingText',
+	'headingEval',
+	'headingOverlay',
+	'creditsPosition',
+	'dragByHeading',
+	
+	'width',
+	'height',
+	
 	'wrapperClassName',
 	'minWidth',
 	'minHeight',
-	'captionId',
-	'captionTemplateId',
-	'allowSizeReduction',
+	'maxWidth',
+	'maxHeight',
+	'pageOrigin',
 	'slideshowGroup',
-	'enableKeyListener'
-),
-overlays : new Array(),
-pendingOutlines : new Array(),
-origNodes : new Array(),
+	'easing',
+	'easingClose',
+	'fadeInOut',
+	'src'
+],
+overlays : [],
+idCounter : 0,
+oPos : {
+	x: ['leftpanel', 'left', 'center', 'right', 'rightpanel'],
+	y: ['above', 'top', 'middle', 'bottom', 'below']
+},
+mouse: {},
+headingOverlay: {},
+captionOverlay: {},
+timers : [],
+
+pendingOutlines : {},
+clones : {},
+onReady: [],
+uaVersion: document.documentMode ||	parseFloat((navigator.userAgent.toLowerCase().match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [0,'0'])[1]),
 ie : (document.all && !window.opera),
-safari : navigator.userAgent.indexOf("Safari") != -1,
-hasFocused : false,
+//ie : navigator && /MSIE [678]/.test(navigator.userAgent), // ie9 compliant?
+safari : /Safari/.test(navigator.userAgent),
+geckoMac : /Macintosh.+rv:1\.[0-8].+Gecko/.test(navigator.userAgent),
 
 $ : function (id) {
-	return document.getElementById(id);
+	if (id) return document.getElementById(id);
 },
 
 push : function (arr, val) {
 	arr[arr.length] = val;
 },
 
-createElement : function (tag, attribs, styles, parent) {
+createElement : function (tag, attribs, styles, parent, nopad) {
 	var el = document.createElement(tag);
-	if (attribs) hs.setAttribs(el, attribs);
+	if (attribs) hs.extend(el, attribs);
+	if (nopad) hs.setStyles(el, {padding: 0, border: 'none', margin: 0});
 	if (styles) hs.setStyles(el, styles);
 	if (parent) parent.appendChild(el);	
 	return el;
 },
 
-setAttribs : function (el, attribs) {
-	for (var x in attribs) {
-		el[x] = attribs[x];
-	}
+extend : function (el, attribs) {
+	for (var x in attribs) el[x] = attribs[x];
+	return el;
 },
 
 setStyles : function (el, styles) {
 	for (var x in styles) {
-		try { el.style[x] = styles[x]; }
-		catch (e) {}
+		if (hs.ieLt9 && x == 'opacity') {
+			if (styles[x] > 0.99) el.style.removeAttribute('filter');
+			else el.style.filter = 'alpha(opacity='+ (styles[x] * 100) +')';
+		}
+		else el.style[x] = styles[x];		
 	}
 },
+animate: function(el, prop, opt) {
+	var start,
+		end,
+		unit;
+	if (typeof opt != 'object' || opt === null) {
+		var args = arguments;
+		opt = {
+			duration: args[2],
+			easing: args[3],
+			complete: args[4]
+		};
+	}
+	if (typeof opt.duration != 'number') opt.duration = 250;
+	opt.easing = Math[opt.easing] || Math.easeInQuad;
+	opt.curAnim = hs.extend({}, prop);
+	for (var name in prop) {
+		var e = new hs.fx(el, opt , name );
+		
+		start = parseFloat(hs.css(el, name)) || 0;
+		end = parseFloat(prop[name]);
+		unit = name != 'opacity' ? 'px' : '';
+		
+		e.custom( start, end, unit );
+	}	
+},
+css: function(el, prop) {
+	if (el.style[prop]) {
+		return el.style[prop];
+	} else if (document.defaultView) {
+		return document.defaultView.getComputedStyle(el, null).getPropertyValue(prop);
 
-ieVersion : function () {
-	arr = navigator.appVersion.split("MSIE");
-	return parseFloat(arr[1]);
+	} else {
+		if (prop == 'opacity') prop = 'filter';
+		var val = el.currentStyle[prop.replace(/\-(\w)/g, function (a, b){ return b.toUpperCase(); })];
+		if (prop == 'filter') 
+			val = val.replace(/alpha\(opacity=([0-9]+)\)/, 
+				function (a, b) { return b / 100 });
+		return val === '' ? 1 : val;
+	} 
 },
 
-clientInfo : function ()	{
-	var iebody = document.compatMode && document.compatMode != "BackCompat" 
-		? document.documentElement : document.body;
+getPageSize : function () {
+	var d = document, w = window, iebody = d.compatMode && d.compatMode != 'BackCompat' 
+		? d.documentElement : d.body,
+		ieLt9 = hs.ie && (hs.uaVersion < 9 || typeof pageXOffset == 'undefined');
 	
-	this.width = hs.ie ? iebody.clientWidth : self.innerWidth;
-	this.height = hs.ie ? iebody.clientHeight : self.innerHeight;
-	this.scrollLeft = hs.ie ? iebody.scrollLeft : pageXOffset;
-	this.scrollTop = hs.ie ? iebody.scrollTop : pageYOffset;
-} ,
+	var width = ieLt9 ? iebody.clientWidth : 
+			(d.documentElement.clientWidth || self.innerWidth),
+		height = ieLt9 ? iebody.clientHeight : self.innerHeight;
+	hs.page = {
+		width: width,
+		height: height,		
+		scrollLeft: ieLt9 ? iebody.scrollLeft : pageXOffset,
+		scrollTop: ieLt9 ? iebody.scrollTop : pageYOffset
+	};
+	return hs.page;
+},
 
-position : function(el)	{ 
-	var parent = el;
-	var p = { x: parent.offsetLeft, y: parent.offsetTop };
-	while (parent.offsetParent)	{
-		parent = parent.offsetParent;
-		p.x += parent.offsetLeft;
-		p.y += parent.offsetTop;
-		if (parent != document.body && parent != document.documentElement) {
-			p.x -= parent.scrollLeft;
-			p.y -= parent.scrollTop;
+getPosition : function(el)	{
+	var p = { x: el.offsetLeft, y: el.offsetTop };
+	while (el.offsetParent)	{
+		el = el.offsetParent;
+		p.x += el.offsetLeft;
+		p.y += el.offsetTop;
+		if (el != document.body && el != document.documentElement) {
+			p.x -= el.scrollLeft;
+			p.y -= el.scrollTop;
 		}
 	}
 	return p;
-}, 
-
-expand : function(a, params, contentType) {
-	try {
-		new HsExpander(a, params, contentType);
-		return false;
-		
-	} catch (e) {
-		return true;
-	}
-	
 },
 
+expand : function(a, params, custom, type) {
+	if (!a) a = hs.createElement('a', null, { display: 'none' }, hs.container);
+	if (typeof a.getParams == 'function') return params;	
+	try {	
+		new hs.Expander(a, params, custom);
+		return false;
+	} catch (e) { return true; }
+},
+
+
 focusTopmost : function() {
-	var topZ = 0;
-	var topmostKey = -1;
-	for (i = 0; i < hs.expanders.length; i++) {
-		if (hs.expanders[i]) {
-			if (hs.expanders[i].wrapper.style.zIndex && hs.expanders[i].wrapper.style.zIndex > topZ) {
-				topZ = hs.expanders[i].wrapper.style.zIndex;
-				
+	var topZ = 0, 
+		topmostKey = -1,
+		expanders = hs.expanders,
+		exp,
+		zIndex;
+	for (var i = 0; i < expanders.length; i++) {
+		exp = expanders[i];
+		if (exp) {
+			zIndex = exp.wrapper.style.zIndex;
+			if (zIndex && zIndex > topZ) {
+				topZ = zIndex;				
 				topmostKey = i;
 			}
 		}
 	}
 	if (topmostKey == -1) hs.focusKey = -1;
-	else hs.expanders[topmostKey].focus();
-}, 
-
-
-closeId : function(elId) { // for text links
-	for (i = 0; i < hs.expanders.length; i++) {
-		if (hs.expanders[i] && (hs.expanders[i].thumb.id == elId || hs.expanders[i].a.id == elId)) {
-			hs.expanders[i].doClose();
-			return;
-		}
-	}
-},
-
-close : function(el) {
-	var key = hs.getWrapperKey(el);
-	if (hs.expanders[key]) hs.expanders[key].doClose();
-	return false;
-},
-
-
-toggleImages : function(closeId, expandEl) {
-	if (closeId) hs.closeId(closeId);
-	if (hs.ie) expandEl.href = expandEl.href.replace('about:(blank)?', ''); // mysterious IE thing
-	hs.toggleImagesExpandEl = expandEl;
-	return false;
-},
-
-getAdjacentAnchor : function(key, op) {
-	var aAr = document.getElementsByTagName('A');
-	var hsAr = new Array;
-	var activeI = -1;
-	var j = 0;
-	for (i = 0; i < aAr.length; i++) {
-		if (hs.isHsAnchor(aAr[i]) && ((hs.expanders[key].slideshowGroup == hs.getParam(aAr[i], 'slideshowGroup')))) {
-			hsAr[j] = aAr[i];
-			if (hs.expanders[key] && aAr[i] == hs.expanders[key].a) {
-				activeI = j;
-			}
-			j++;
-		}
-	}
-	return hsAr[activeI + op];
+	else expanders[topmostKey].focus();
 },
 
 getParam : function (a, param) {
-	try {
-		var s = a.onclick.toString();
-		var oneLine = s.replace(/\s/g, ' ');
-		var sParams = oneLine.replace(/.*?hs.(htmlE|e)xpand\s*?\(\s*?this\s*?,\s*?\{(.*?)\}.*?$/, '$2');
-		if (hs.safari) { // stupid bug
-			for (var i = 0; i < hs.overrides.length; i++) {
-				sParams = sParams.replace(hs.overrides[i] +':', ','+ hs.overrides[i] +':').replace(/^\s*?,/, '');
-			}
-		}	
-		if (oneLine == sParams) return null;
-		eval('var arr = {'+ sParams +'};');
-		for (var x in arr) {
-			if (x == param) return arr[x];
-		}
-	} catch (e) {
-		return null;
-	}
+	a.getParams = a.onclick;
+	var p = a.getParams ? a.getParams() : null;
+	a.getParams = null;
+	
+	return (p && typeof p[param] != 'undefined') ? p[param] : 
+		(typeof hs[param] != 'undefined' ? hs[param] : null);
 },
 
 getSrc : function (a) {
 	var src = hs.getParam(a, 'src');
 	if (src) return src;
-	return a.rel.replace(/_slash_/g, '/') || a.href;
+	return a.href;
 },
 
-cloneNode : function (id) {
-	if (!hs.$(id) && !hs.origNodes[id]) return null;
-	var clone;
-	if (hs.origNodes[id]) {
-		clone = hs.origNodes[id].cloneNode(1);
-		hs.setId(clone, /-hsOrig$/, 1);
+getNode : function (id) {
+	var node = hs.$(id), clone = hs.clones[id], a = {};
+	if (!node && !clone) return null;
+	if (!clone) {
+		clone = node.cloneNode(true);
+		clone.id = '';
+		hs.clones[id] = clone;
+		return node;
 	} else {
-		clone = hs.$(id).cloneNode(1);
-		hs.origNodes[id] = hs.$(id);
-		hs.setId(hs.$(id), '-hsOrig');
-	}
-	return clone;
-},
-
-setId : function (d, suff, remove) {
-	if (d.id) d.id = remove ? d.id.replace(suff, '') : d.id + suff;
-	if (d.name) d.name = remove ? d.name.replace(suff, '') : d.name + suff;
-	if (hs.geckoBug && hs.geckoBug(d)) return;
-	var a = d.childNodes;		
-	for (var i = 0; i < a.length; i++) {
-		if (a[i]) hs.setId(a[i], suff, remove);
+		return clone.cloneNode(true);
 	}
 },
 
-purge : function(d) {
-	var a = d.attributes, i, l, n;
-    if (a) {
-        l = a.length;
-        for (i = 0; i < l; i += 1) {
-            n = a[i].name;
-            if (typeof d[n] === 'function') {
-                d[n] = null;
-            }
-        }
-    }
-    if (hs.geckoBug && hs.geckoBug(d)) return;
-	a = d.childNodes;
-    if (a) {
-        l = a.length;
-        for (i = 0; i < l; i += 1) {
-            hs.purge(d.childNodes[i]);
-        }
-    }
+discardElement : function(d) {
+	if (d) hs.garbageBin.appendChild(d);
+	hs.garbageBin.innerHTML = '';
+},
+transit : function (adj, exp) {
+	var last = exp || hs.getExpander();
+	exp = last;
+	if (hs.upcoming) return false;
+	else hs.last = last;
+	hs.removeEventListener(document, window.opera ? 'keypress' : 'keydown', hs.keyHandler);
+	try {
+		hs.upcoming = adj;
+		adj.onclick(); 		
+	} catch (e){
+		hs.last = hs.upcoming = null;
+	}
+	try {
+		exp.close();
+	} catch (e) {}
+	return false;
 },
 
 previousOrNext : function (el, op) {
-	if (typeof el == 'object') var activeKey = hs.getWrapperKey(el);
-	else if (typeof el == 'number') var activeKey = el;
-	if (hs.expanders[activeKey]) {
-		//hs.toggleImagesExpandEl = hs.getAdjacentAnchor(activeKey, op);
-		try { hs.getAdjacentAnchor(activeKey, op).onclick(); } catch (e) {}
-		hs.expanders[activeKey].doClose();
-	}
-	
-	return false;
+	var exp = hs.getExpander(el);
+	if (exp) return hs.transit(exp.getAdjacentAnchor(op), exp);
+	else return false;
 },
 
 previous : function (el) {
@@ -324,1146 +306,1584 @@ next : function (el) {
 keyHandler : function(e) {
 	if (!e) e = window.event;
 	if (!e.target) e.target = e.srcElement; // ie
-	if (e.target.form) return; // form element has focus
+	if (typeof e.target.form != 'undefined') return true; // form element has focus
+	var exp = hs.getExpander();
 	
 	var op = null;
 	switch (e.keyCode) {
+		case 70: // f
+			if (exp) exp.doFullExpand();
+			return true;
+		case 32: // Space
 		case 34: // Page Down
 		case 39: // Arrow right
-		case 40: // Arrow left
+		case 40: // Arrow down
 			op = 1;
 			break;
+		case 8:  // Backspace
 		case 33: // Page Up
 		case 37: // Arrow left
-		case 38: // Arrow down
+		case 38: // Arrow up
 			op = -1;
 			break;
 		case 27: // Escape
 		case 13: // Enter
-			if (hs.expanders[hs.focusKey]) hs.expanders[hs.focusKey].doClose();
+			op = 0;
+	}
+	if (op !== null) {hs.removeEventListener(document, window.opera ? 'keypress' : 'keydown', hs.keyHandler);
+		if (!hs.enableKeyListener) return true;
+		
+		if (e.preventDefault) e.preventDefault();
+    	else e.returnValue = false;
+    	if (exp) {
+			if (op == 0) {
+				exp.close();
+			} else {
+				hs.previousOrNext(exp.key, op);
+			}
 			return false;
+		}
 	}
-	if (op != null) {
-		hs.removeEventListener(document, 'keydown', hs.keyHandler);
-		if (hs.expanders[hs.focusKey] && !hs.expanders[hs.focusKey].enableKeyListener) return true;
-		return hs.previousOrNext(hs.focusKey, op);
-	}
-	else return true;
+	return true;
 },
+
 
 registerOverlay : function (overlay) {
-	hs.push(hs.overlays, overlay);
+	hs.push(hs.overlays, hs.extend(overlay, { hsId: 'hsId'+ hs.idCounter++ } ));
 },
 
-getWrapperKey : function (el) {
-	var key = -1;
+
+getWrapperKey : function (element, expOnly) {
+	var el, re = /^highslide-wrapper-([0-9]+)$/;
+	// 1. look in open expanders
+	el = element;
 	while (el.parentNode)	{
+		if (el.id && re.test(el.id)) return el.id.replace(re, "$1");
 		el = el.parentNode;
-		if (el.id && el.id.match(/^highslide-wrapper-[0-9]+$/)) {
-			key = el.id.replace(/^highslide-wrapper-([0-9]+)$/, "$1");
-			break;
-		}
 	}
-	return key;
-},
-
-cleanUp : function () {
-	if (hs.toggleImagesExpandEl) { 
-		hs.toggleImagesExpandEl.onclick();
-		hs.toggleImagesExpandEl = null;
-	} else {
-		for (i = 0; i < hs.expanders.length; i++) {
-			if (hs.expanders[i] && hs.expanders[i].isExpanded) hs.focusTopmost();
-		}		
-	}
-},
-
-mouseClickHandler : function(e) 
-{
-	if (!e) e = window.event;
-	if (e.button > 1) return true;
-	if (!e.target) e.target = e.srcElement;
-	
-	
-	var fobj = e.target;
-	while (fobj.parentNode
-		&& !(fobj.className && fobj.className.match(/highslide-(image|move|html)/)))
-	{
-		fobj = fobj.parentNode;
-	}
-
-	if (!fobj.parentNode) return;
-	
-	hs.dragKey = hs.getWrapperKey(fobj);
-	if (fobj.className.match(/highslide-(image|move)/)) {
-		var isDraggable = true;
-		var wLeft = parseInt(hs.expanders[hs.dragKey].wrapper.style.left);
-		var wTop = parseInt(hs.expanders[hs.dragKey].wrapper.style.top);			
-	}
-
-	if (e.type == 'mousedown') {
-		if (isDraggable) // drag or focus
-		{
-			hs.dragObj = hs.expanders[hs.dragKey].content;
-
-			if (fobj.className.match('highslide-image')) hs.dragObj.style.cursor = 'move';
-			
-			hs.wLeft = wLeft;
-			hs.wTop = wTop;
-			
-			hs.dragX = e.clientX;
-			hs.dragY = e.clientY;
-			hs.addEventListener(document, 'mousemove', hs.mouseMoveHandler);
-			if (e.preventDefault) e.preventDefault(); // FF
-			
-			if (hs.dragObj.className.match(/highslide-(image|html)-blur/)) {
-				hs.expanders[hs.dragKey].focus();
-				hs.hasFocused = true;
+	// 2. look in thumbnail
+	if (!expOnly) {
+		el = element;
+		while (el.parentNode)	{
+			if (el.tagName && hs.isHsAnchor(el)) {
+				for (var key = 0; key < hs.expanders.length; key++) {
+					var exp = hs.expanders[key];
+					if (exp && exp.a == el) return key;
+				}
 			}
-			return false;
-		}
-		else if (fobj.className.match(/highslide-html/)) { // just focus
-			hs.expanders[hs.dragKey].focus();
-			hs.expanders[hs.dragKey].redoShowHide();
-			hs.hasFocused = false; // why??
-		}
-		
-	} else if (e.type == 'mouseup') {
-		hs.removeEventListener(document, 'mousemove', hs.mouseMoveHandler);
-		if (isDraggable && hs.expanders[hs.dragKey]) {
-			if (fobj.className.match('highslide-image')) {
-				fobj.style.cursor = hs.styleRestoreCursor;
-			}
-			var hasMoved = wLeft != hs.wLeft || wTop != hs.wTop;
-			if (!hasMoved && !hs.hasFocused && !fobj.className.match(/highslide-move/)) {
-				hs.expanders[hs.dragKey].doClose();
-			} else if (hasMoved || (!hasMoved && hs.hasHtmlExpanders)) {
-				hs.expanders[hs.dragKey].redoShowHide();
-			}
-			hs.hasFocused = false;
-		
-		} else if (fobj.className.match('highslide-image-blur')) {
-			fobj.style.cursor = hs.styleRestoreCursor;		
+			el = el.parentNode;
 		}
 	}
+	return null; 
 },
 
-mouseMoveHandler : function(e)
-{
-	if (!hs.expanders[hs.dragKey] || !hs.expanders[hs.dragKey].wrapper) return;
-	if (!e) e = window.event;
-
-	var exp = hs.expanders[hs.dragKey];
-	var w = exp.wrapper;
-	w.style.left = hs.wLeft + e.clientX - hs.dragX +'px';
-	w.style.top  = hs.wTop + e.clientY - hs.dragY +'px';
-	
-	if (exp.objOutline) {
-		var o = exp.objOutline;
-		o.outer.style.left = (parseInt(w.style.left) - o.offset) +'px';
-		o.outer.style.top = (parseInt(w.style.top) - o.offset) +'px';
-	}
-	
-	return false;
-},
-
-addEventListener : function (el, event, func) {
-	if (document.addEventListener) el.addEventListener(event, func, false);
-	else if (document.attachEvent) el.attachEvent('on'+ event, func);
-	else el['on'+ event] = func;
-},
-
-removeEventListener : function (el, event, func) {
-	if (document.removeEventListener) el.removeEventListener(event, func, false);
-	else if (document.detachEvent) el.detachEvent('on'+ event, func);
-	else el[event] = null;
+getExpander : function (el, expOnly) {
+	if (typeof el == 'undefined') return hs.expanders[hs.focusKey] || null;
+	if (typeof el == 'number') return hs.expanders[el] || null;
+	if (typeof el == 'string') el = hs.$(el);
+	return hs.expanders[hs.getWrapperKey(el, expOnly)] || null;
 },
 
 isHsAnchor : function (a) {
 	return (a.onclick && a.onclick.toString().replace(/\s/g, ' ').match(/hs.(htmlE|e)xpand/));
 },
 
+reOrder : function () {
+	for (var i = 0; i < hs.expanders.length; i++)
+		if (hs.expanders[i] && hs.expanders[i].isExpanded) hs.focusTopmost();
+},
+
+mouseClickHandler : function(e) 
+{	
+	if (!e) e = window.event;
+	if (e.button > 1) return true;
+	if (!e.target) e.target = e.srcElement;
+	
+	var el = e.target;
+	while (el.parentNode
+		&& !(/highslide-(image|move|html|resize)/.test(el.className)))
+	{
+		el = el.parentNode;
+	}
+	var exp = hs.getExpander(el);
+	if (exp && (exp.isClosing || !exp.isExpanded)) return true;
+		
+	if (exp && e.type == 'mousedown') {
+		if (e.target.form) return true;
+		var match = el.className.match(/highslide-(image|move|resize)/);
+		if (match) {
+			hs.dragArgs = { 
+				exp: exp , 
+				type: match[1], 
+				left: exp.x.pos, 
+				width: exp.x.size, 
+				top: exp.y.pos, 
+				height: exp.y.size, 
+				clickX: e.clientX, 
+				clickY: e.clientY
+			};
+			
+			
+			hs.addEventListener(document, 'mousemove', hs.dragHandler);
+			if (e.preventDefault) e.preventDefault(); // FF
+			
+			if (/highslide-(image|html)-blur/.test(exp.content.className)) {
+				exp.focus();
+				hs.hasFocused = true;
+			}
+			return false;
+		}
+	} else if (e.type == 'mouseup') {
+		
+		hs.removeEventListener(document, 'mousemove', hs.dragHandler);
+		
+		if (hs.dragArgs) {
+			if (hs.styleRestoreCursor && hs.dragArgs.type == 'image') 
+				hs.dragArgs.exp.content.style.cursor = hs.styleRestoreCursor;
+			var hasDragged = hs.dragArgs.hasDragged;
+			
+			if (!hasDragged &&!hs.hasFocused && !/(move|resize)/.test(hs.dragArgs.type)) {
+				exp.close();
+			} 
+			else if (hasDragged || (!hasDragged && hs.hasHtmlExpanders)) {
+				hs.dragArgs.exp.doShowHide('hidden');
+			}
+			hs.hasFocused = false;
+			hs.dragArgs = null;
+		
+		} else if (/highslide-image-blur/.test(el.className)) {
+			el.style.cursor = hs.styleRestoreCursor;		
+		}
+	}
+	return false;
+},
+
+dragHandler : function(e)
+{
+	if (!hs.dragArgs) return true;
+	if (!e) e = window.event;
+	var a = hs.dragArgs, exp = a.exp;
+	
+	a.dX = e.clientX - a.clickX;
+	a.dY = e.clientY - a.clickY;	
+	
+	var distance = Math.sqrt(Math.pow(a.dX, 2) + Math.pow(a.dY, 2));
+	if (!a.hasDragged) a.hasDragged = (a.type != 'image' && distance > 0)
+		|| (distance > (hs.dragSensitivity || 5));
+	
+	if (a.hasDragged && e.clientX > 5 && e.clientY > 5) {
+		
+		if (a.type == 'resize') exp.resize(a);
+		else {
+			exp.moveTo(a.left + a.dX, a.top + a.dY);
+			if (a.type == 'image') exp.content.style.cursor = 'move';
+		}
+	}
+	return false;
+},
+
+wrapperMouseHandler : function (e) {
+	try {
+		if (!e) e = window.event;
+		var over = /mouseover/i.test(e.type); 
+		if (!e.target) e.target = e.srcElement; // ie
+		if (!e.relatedTarget) e.relatedTarget = 
+			over ? e.fromElement : e.toElement; // ie
+		var exp = hs.getExpander(e.target);
+		if (!exp.isExpanded) return;
+		if (!exp || !e.relatedTarget || hs.getExpander(e.relatedTarget, true) == exp 
+			|| hs.dragArgs) return;
+		for (var i = 0; i < exp.overlays.length; i++) (function() {
+			var o = hs.$('hsId'+ exp.overlays[i]);
+			if (o && o.hideOnMouseOut) {
+				if (over) hs.setStyles(o, { visibility: 'visible', display: '' });
+				hs.animate(o, { opacity: over ? o.opacity : 0 }, o.dur);
+			}
+		})();	
+	} catch (e) {}
+},
+addEventListener : function (el, event, func) {
+	if (el == document && event == 'ready') {
+		hs.push(hs.onReady, func);
+	}
+	try {
+		el.addEventListener(event, func, false);
+	} catch (e) {
+		try {
+			el.detachEvent('on'+ event, func);
+			el.attachEvent('on'+ event, func);
+		} catch (e) {
+			el['on'+ event] = func;
+		}
+	} 
+},
+
+removeEventListener : function (el, event, func) {
+	try {
+		el.removeEventListener(event, func, false);
+	} catch (e) {
+		try {
+			el.detachEvent('on'+ event, func);
+		} catch (e) {
+			el['on'+ event] = null;
+		}
+	}
+},
+
 preloadFullImage : function (i) {
 	if (hs.continuePreloading && hs.preloadTheseImages[i] && hs.preloadTheseImages[i] != 'undefined') {
 		var img = document.createElement('img');
-		img.onload = function() { hs.preloadFullImage(i + 1); };
+		img.onload = function() { 
+			img = null;
+			hs.preloadFullImage(i + 1);
+		};
 		img.src = hs.preloadTheseImages[i];
 	}
 },
-
 preloadImages : function (number) {
 	if (number && typeof number != 'object') hs.numberOfImagesToPreload = number;
-	var re, j = 0;
 	
-	var aTags = document.getElementsByTagName('A');
-	for (i = 0; i < aTags.length; i++) {
-		a = aTags[i];
-		re = hs.isHsAnchor(a);
-		if (re && re[0] == 'hs.expand') {
-			if (j < hs.numberOfImagesToPreload) {
-				hs.preloadTheseImages[j] = hs.getSrc(a); 
-				j++;
-			}
-		}
+	var arr = hs.getAnchors();
+	for (var i = 0; i < arr.images.length && i < hs.numberOfImagesToPreload; i++) {
+		hs.push(hs.preloadTheseImages, hs.getSrc(arr.images[i]));
 	}
 	
 	// preload outlines
-	new HsOutline(hs.outlineType, function () { hs.preloadFullImage(0)} );
+	if (hs.outlineType)	new hs.Outline(hs.outlineType, function () { hs.preloadFullImage(0)} );
+	else
+	
+	hs.preloadFullImage(0);
 	
 	// preload cursor
-	var cur = document.createElement('img');
-	cur.src = hs.graphicsDir + hs.restoreCursor;
+	if (hs.restoreCursor) var cur = hs.createElement('img', { src: hs.graphicsDir + hs.restoreCursor });
 },
 
-genContainer : function () {
+
+init : function () {
 	if (!hs.container) {
-		hs.container = hs.createElement('div', 
-			null, 
-			{ position: 'absolute', left: 0, top: 0, width: '100%', zIndex: hs.zIndexCounter }, 
-			document.body
+	
+		hs.ieLt7 = hs.ie && hs.uaVersion < 7;
+		hs.ieLt9 = hs.ie && hs.uaVersion < 9;
+		
+		hs.getPageSize();
+		for (var x in hs.langDefaults) {
+			if (typeof hs[x] != 'undefined') hs.lang[x] = hs[x];
+			else if (typeof hs.lang[x] == 'undefined' && typeof hs.langDefaults[x] != 'undefined') 
+				hs.lang[x] = hs.langDefaults[x];
+		}
+		
+		hs.container = hs.createElement('div', {
+				className: 'highslide-container'
+			}, {
+				position: 'absolute',
+				left: 0, 
+				top: 0, 
+				width: '100%', 
+				zIndex: hs.zIndexCounter,
+				direction: 'ltr'
+			}, 
+			document.body,
+			true
 		);
-	}	
+		hs.loading = hs.createElement('a', {
+				className: 'highslide-loading',
+				title: hs.lang.loadingTitle,
+				innerHTML: hs.lang.loadingText,
+				href: 'javascript:;'
+			}, {
+				position: 'absolute',
+				top: '-9999px',
+				opacity: hs.loadingOpacity,
+				zIndex: 1
+			}, hs.container
+		);
+		hs.garbageBin = hs.createElement('div', null, { display: 'none' }, hs.container);
+		
+		// http://www.robertpenner.com/easing/ 
+		Math.linearTween = function (t, b, c, d) {
+			return c*t/d + b;
+		};
+		Math.easeInQuad = function (t, b, c, d) {
+			return c*(t/=d)*t + b;
+		};
+		
+		hs.hideSelects = hs.ieLt7;
+		hs.hideIframes = ((window.opera && hs.uaVersion < 9) || navigator.vendor == 'KDE' 
+			|| (hs.ieLt7 && hs.uaVersion < 5.5));
+	}
+},
+ready : function() {
+	if (hs.isReady) return;
+	hs.isReady = true;
+	for (var i = 0; i < hs.onReady.length; i++) hs.onReady[i]();
+},
+
+updateAnchors : function() {
+	var el, els, all = [], images = [],groups = {}, re;
+		
+	for (var i = 0; i < hs.openerTagNames.length; i++) {
+		els = document.getElementsByTagName(hs.openerTagNames[i]);
+		for (var j = 0; j < els.length; j++) {
+			el = els[j];
+			re = hs.isHsAnchor(el);
+			if (re) {
+				hs.push(all, el);
+				if (re[0] == 'hs.expand') hs.push(images, el);
+				var g = hs.getParam(el, 'slideshowGroup') || 'none';
+				if (!groups[g]) groups[g] = [];
+				hs.push(groups[g], el);
+			}
+		}
+	}
+	hs.anchors = { all: all, groups: groups, images: images };
+	return hs.anchors;
+	
+},
+
+getAnchors : function() {
+	return hs.anchors || hs.updateAnchors();
+},
+
+
+close : function(el) {
+	var exp = hs.getExpander(el);
+	if (exp) exp.close();
+	return false;
 }
 }; // end hs object
+hs.fx = function( elem, options, prop ){
+	this.options = options;
+	this.elem = elem;
+	this.prop = prop;
 
-//-----------------------------------------------------------------------------
-HsOutline = function (outlineType, onLoad) {
-	if (!outlineType) return;
-	if (onLoad) this.onLoad = onLoad;
-	this.outlineType = outlineType;
-	this.outline = new Array();
-	var v = hs.ieVersion();
-	
-	hs.genContainer();
-	
-	this.hasAlphaImageLoader = hs.ie && v >= 5.5 && v < 8;
-	this.hasPngSupport = !hs.ie || (hs.ie && v >= 8);
-	this.hasOutline = this.outlineType && (this.hasAlphaImageLoader || this.hasPngSupport);
-	
-	this.outer = hs.createElement(
-		'table',
-		{	
-			cellSpacing: 0 // saf
-		},
-		{
-			visibility: 'hidden',
-			position: 'absolute',
-			zIndex: hs.zIndexCounter++,
-			borderCollapse: 'collapse'
-		},
-		hs.container
-	);
-	this.tbody = hs.createElement('tbody', null, null, this.outer);
-	
-	this.preloadOutlineElement(1); // recursive
+	if (!options.orig) options.orig = {};
+};
+hs.fx.prototype = {
+	update: function(){
+		(hs.fx.step[this.prop] || hs.fx.step._default)(this);
+		
+		if (this.options.step)
+			this.options.step.call(this.elem, this.now, this);
+
+	},
+	custom: function(from, to, unit){
+		this.startTime = (new Date()).getTime();
+		this.start = from;
+		this.end = to;
+		this.unit = unit;// || this.unit || "px";
+		this.now = this.start;
+		this.pos = this.state = 0;
+
+		var self = this;
+		function t(gotoEnd){
+			return self.step(gotoEnd);
+		}
+
+		t.elem = this.elem;
+
+		if ( t() && hs.timers.push(t) == 1 ) {
+			hs.timerId = setInterval(function(){
+				var timers = hs.timers;
+
+				for ( var i = 0; i < timers.length; i++ )
+					if ( !timers[i]() )
+						timers.splice(i--, 1);
+
+				if ( !timers.length ) {
+					clearInterval(hs.timerId);
+				}
+			}, 13);
+		}
+	},
+	step: function(gotoEnd){
+		var t = (new Date()).getTime();
+		if ( gotoEnd || t >= this.options.duration + this.startTime ) {
+			this.now = this.end;
+			this.pos = this.state = 1;
+			this.update();
+
+			this.options.curAnim[ this.prop ] = true;
+
+			var done = true;
+			for ( var i in this.options.curAnim )
+				if ( this.options.curAnim[i] !== true )
+					done = false;
+
+			if ( done ) {
+				if (this.options.complete) this.options.complete.call(this.elem);
+			}
+			return false;
+		} else {
+			var n = t - this.startTime;
+			this.state = n / this.options.duration;
+			this.pos = this.options.easing(n, 0, 1, this.options.duration);
+			this.now = this.start + ((this.end - this.start) * this.pos);
+			this.update();
+		}
+		return true;
+	}
+
 };
 
-HsOutline.prototype.preloadOutlineElement = function (i) {	
-	if (this.outline[i] && this.outline[i].onload) { // Gecko multiple onloads bug
-		this.outline[i].onload = null;
+hs.extend( hs.fx, {
+	step: {
+
+		opacity: function(fx){
+			hs.setStyles(fx.elem, { opacity: fx.now });
+		},
+
+		_default: function(fx){
+			try {
+				if ( fx.elem.style && fx.elem.style[ fx.prop ] != null )
+					fx.elem.style[ fx.prop ] = fx.now + fx.unit;
+				else
+					fx.elem[ fx.prop ] = fx.now;
+			} catch (e) {}
+		}
+	}
+});
+
+hs.Outline =  function (outlineType, onLoad) {
+	this.onLoad = onLoad;
+	this.outlineType = outlineType;
+	var v = hs.uaVersion, tr;
+	
+	this.hasAlphaImageLoader = hs.ie && hs.uaVersion < 7;
+	if (!outlineType) {
+		if (onLoad) onLoad();
 		return;
 	}
 	
-	this.offset = this.hasOutline ? 10 : 0;
-	if (i == 1 || i == 4 || i == 6) this.tr = hs.createElement('tr', null, null, this.tbody);
-	if (i == 5) this.inner = hs.createElement('td', null, { padding: 0, margin: 0, border: 0, position: 'relative' }, this.tr);
+	hs.init();
+	this.table = hs.createElement(
+		'table', { 
+			cellSpacing: 0 
+		}, {
+			visibility: 'hidden',
+			position: 'absolute',
+			borderCollapse: 'collapse',
+			width: 0
+		},
+		hs.container,
+		true
+	);
+	var tbody = hs.createElement('tbody', null, null, this.table, 1);
 	
-	var files = Array (0,8,1,2,7,3,6,5,4);
-	var src = hs.graphicsDir + "outlines/"+ this.outlineType +"/"+ files[i] +".png";
-	
-	if (this.hasAlphaImageLoader) {
-		var bgKey = 'filter';
-		var bgValue = "progid:DXImageTransform.Microsoft.AlphaImageLoader("
-					+ "enabled=true, sizingMethod=scale src='"+ src + "') ";
-	} else if (this.hasPngSupport || this.hasIe7Bug) {		
-		var bgKey = 'background';
-		var bgValue = 'url('+ src +')';
+	this.td = [];
+	for (var i = 0; i <= 8; i++) {
+		if (i % 3 == 0) tr = hs.createElement('tr', null, { height: 'auto' }, tbody, true);
+		this.td[i] = hs.createElement('td', null, null, tr, true);
+		var style = i != 4 ? { lineHeight: 0, fontSize: 0} : { position : 'relative' };
+		hs.setStyles(this.td[i], style);
 	}
-	var styles = { lineHeight: 0, fontSize: 0, padding: 0, margin: 0, border: 0 };
-	if (this.hasOutline) styles[bgKey] = bgValue;
-		
-	var td = hs.createElement('td', null, styles);
-		
-	var img = hs.createElement('img', null, { visibility: 'hidden', display: 'block', padding: 0, margin: 0, border: 0 }, td); // for onload trigger
+	this.td[4].className = outlineType +' highslide-outline';
 	
-	var dim = 2 * this.offset;
-	hs.setStyles (td, { height: dim +'px', width: dim +'px'} );
-		
+	this.preloadGraphic(); 
+};
+
+hs.Outline.prototype = {
+preloadGraphic : function () {
+	var src = hs.graphicsDir + (hs.outlinesDir || "outlines/")+ this.outlineType +".png";
+				
+	var appendTo = hs.safari && hs.uaVersion < 525 ? hs.container : null;
+	this.graphic = hs.createElement('img', null, { position: 'absolute', 
+		top: '-9999px' }, appendTo, true); // for onload trigger
+	
 	var pThis = this;
-	if (i < 8) img.onload = function() { pThis.preloadOutlineElement(i + 1); };				
-	else img.onload = function() { 
-		hs.pendingOutlines[pThis.outlineType] = pThis;
-		if (pThis.onLoad) pThis.onLoad(); 
-	};
+	this.graphic.onload = function() { pThis.onGraphicLoad(); };
 	
-	this.tr.appendChild(td);
-	if (this.hasOutline) img.src = src;
-	else img.onload();
-};
+	this.graphic.src = src;
+},
 
-HsOutline.prototype.destroy = function() {
-	hs.purge(this.outer);
-	try { this.outer.parentNode.removeChild(this.outer); } catch (e) {}
-};
-
-//-----------------------------------------------------------------------------
-// The expander object
-HsExpander = function(a, params, contentType) {
-	hs.continuePreloading = false;
-		
-	// override inline parameters
-	for (i = 0; i < hs.overrides.length; i++) {
-		var name = hs.overrides[i];
-		if (params && typeof params[name] != 'undefined') this[name] = params[name];
-		else this[name] = hs[name];
-	}
-	
-	if (params && params.thumbnailId) {
-		var el = hs.$(params.thumbnailId);
-	
-	} else { // first img within anchor
-		for (i = 0; i < a.childNodes.length; i++) {
-			if (a.childNodes[i].tagName && a.childNodes[i].tagName == 'IMG') {
-				var el = a.childNodes[i];
-				break;
-			}			
+onGraphicLoad : function () {
+	var o = this.offset = this.graphic.width / 4,
+		pos = [[0,0],[0,-4],[-2,0],[0,-8],0,[-2,-8],[0,-2],[0,-6],[-2,-2]],
+		dim = { height: (2*o) +'px', width: (2*o) +'px' };
+	for (var i = 0; i <= 8; i++) {
+		if (pos[i]) {
+			if (this.hasAlphaImageLoader) {
+				var w = (i == 1 || i == 7) ? '100%' : this.graphic.width +'px';
+				var div = hs.createElement('div', null, { width: '100%', height: '100%', position: 'relative', overflow: 'hidden'}, this.td[i], true);
+				hs.createElement ('div', null, { 
+						filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale, src='"+ this.graphic.src + "')", 
+						position: 'absolute',
+						width: w, 
+						height: this.graphic.height +'px',
+						left: (pos[i][0]*o)+'px',
+						top: (pos[i][1]*o)+'px'
+					}, 
+				div,
+				true);
+			} else {
+				hs.setStyles(this.td[i], { background: 'url('+ this.graphic.src +') '+ (pos[i][0]*o)+'px '+(pos[i][1]*o)+'px'});
+			}
+			
+			if (window.opera && (i == 3 || i ==5)) 
+				hs.createElement('div', null, dim, this.td[i], true);
+			
+			hs.setStyles (this.td[i], dim);
 		}
 	}
-	if (!el) el = a;
+	this.graphic = null;
+	if (hs.pendingOutlines[this.outlineType]) hs.pendingOutlines[this.outlineType].destroy();
+	hs.pendingOutlines[this.outlineType] = this;
+	if (this.onLoad) this.onLoad();
+},
+	
+setPosition : function (pos, offset, vis, dur, easing) {
+	var exp = this.exp,
+		stl = exp.wrapper.style,
+		offset = offset || 0,
+		pos = pos || {
+			x: exp.x.pos + offset,
+			y: exp.y.pos + offset,
+			w: exp.x.get('wsize') - 2 * offset,
+			h: exp.y.get('wsize') - 2 * offset
+		};
+	if (vis) this.table.style.visibility = (pos.h >= 4 * this.offset) 
+		? 'visible' : 'hidden';
+	hs.setStyles(this.table, {
+		left: (pos.x - this.offset) +'px',
+		top: (pos.y - this.offset) +'px',
+		width: (pos.w + 2 * this.offset) +'px'
+	});
+	
+	pos.w -= 2 * this.offset;
+	pos.h -= 2 * this.offset;
+	hs.setStyles (this.td[4], {
+		width: pos.w >= 0 ? pos.w +'px' : 0,
+		height: pos.h >= 0 ? pos.h +'px' : 0
+	});
+	if (this.hasAlphaImageLoader) this.td[3].style.height 
+		= this.td[5].style.height = this.td[4].style.height;	
+	
+},
+	
+destroy : function(hide) {
+	if (hide) this.table.style.visibility = 'hidden';
+	else hs.discardElement(this.table);
+}
+};
+
+hs.Dimension = function(exp, dim) {
+	this.exp = exp;
+	this.dim = dim;
+	this.ucwh = dim == 'x' ? 'Width' : 'Height';
+	this.wh = this.ucwh.toLowerCase();
+	this.uclt = dim == 'x' ? 'Left' : 'Top';
+	this.lt = this.uclt.toLowerCase();
+	this.ucrb = dim == 'x' ? 'Right' : 'Bottom';
+	this.rb = this.ucrb.toLowerCase();
+	this.p1 = this.p2 = 0;
+};
+hs.Dimension.prototype = {
+get : function(key) {
+	switch (key) {
+		case 'loadingPos':
+			return this.tpos + this.tb + (this.t - hs.loading['offset'+ this.ucwh]) / 2;
+		case 'wsize':
+			return this.size + 2 * this.cb + this.p1 + this.p2;
+		case 'fitsize':
+			return this.clientSize - this.marginMin - this.marginMax;
+		case 'maxsize':
+			return this.get('fitsize') - 2 * this.cb - this.p1 - this.p2 ;
+		case 'opos':
+			return this.pos - (this.exp.outline ? this.exp.outline.offset : 0);
+		case 'osize':
+			return this.get('wsize') + (this.exp.outline ? 2*this.exp.outline.offset : 0);
+		case 'imgPad':
+			return this.imgSize ? Math.round((this.size - this.imgSize) / 2) : 0;
+		
+	}
+},
+calcBorders: function() {
+	// correct for borders
+	this.cb = (this.exp.content['offset'+ this.ucwh] - this.t) / 2;
+	
+	this.marginMax = hs['margin'+ this.ucrb];
+},
+calcThumb: function() {
+	this.t = this.exp.el[this.wh] ? parseInt(this.exp.el[this.wh]) : 
+		this.exp.el['offset'+ this.ucwh];
+	this.tpos = this.exp.tpos[this.dim];
+	this.tb = (this.exp.el['offset'+ this.ucwh] - this.t) / 2;
+	if (this.tpos == 0 || this.tpos == -1) {
+		this.tpos = (hs.page[this.wh] / 2) + hs.page['scroll'+ this.uclt];		
+	};
+},
+calcExpanded: function() {
+	var exp = this.exp;
+	this.justify = 'auto';
 	
 	
+	// size and position
+	this.pos = this.tpos - this.cb + this.tb;
+	
+	if (this.maxHeight && this.dim == 'x')
+		exp.maxWidth = Math.min(exp.maxWidth || this.full, exp.maxHeight * this.full / exp.y.full); 
+		
+	this.size = Math.min(this.full, exp['max'+ this.ucwh] || this.full);
+	this.minSize = exp.allowSizeReduction ? 
+		Math.min(exp['min'+ this.ucwh], this.full) :this.full;
+	if (exp.isImage && exp.useBox)	{
+		this.size = exp[this.wh];
+		this.imgSize = this.full;
+	}
+	if (this.dim == 'x' && hs.padToMinWidth) this.minSize = exp.minWidth;
+	this.marginMin = hs['margin'+ this.uclt];
+	this.scroll = hs.page['scroll'+ this.uclt];
+	this.clientSize = hs.page[this.wh];
+},
+setSize: function(i) {
+	var exp = this.exp;
+	if (exp.isImage && (exp.useBox || hs.padToMinWidth)) {
+		this.imgSize = i;
+		this.size = Math.max(this.size, this.imgSize);
+		exp.content.style[this.lt] = this.get('imgPad')+'px';
+	} else
+	this.size = i;
+	
+	exp.content.style[this.wh] = i +'px';
+	exp.wrapper.style[this.wh] = this.get('wsize') +'px';
+	if (exp.outline) exp.outline.setPosition();
+	if (this.dim == 'x' && exp.overlayBox) exp.sizeOverlayBox(true);
+},
+setPos: function(i) {
+	this.pos = i;
+	this.exp.wrapper.style[this.lt] = i +'px';	
+	
+	if (this.exp.outline) this.exp.outline.setPosition();
+	
+}
+};
+
+hs.Expander = function(a, params, custom, contentType) {
+	if (document.readyState && hs.ie && !hs.isReady) {
+		hs.addEventListener(document, 'ready', function() {
+			new hs.Expander(a, params, custom, contentType);
+		});
+		return;
+	} 
+	this.a = a;
+	this.custom = custom;
+	this.contentType = contentType || 'image';
+	this.isImage = !this.isHtml;
+	
+	hs.continuePreloading = false;
+	this.overlays = [];
+	hs.init();
+	var key = this.key = hs.expanders.length;
+	// override inline parameters
+	for (var i = 0; i < hs.overrides.length; i++) {
+		var name = hs.overrides[i];
+		this[name] = params && typeof params[name] != 'undefined' ?
+			params[name] : hs[name];
+	}
+	if (!this.src) this.src = a.href;
+	
+	// get thumb
+	var el = (params && params.thumbnailId) ? hs.$(params.thumbnailId) : a;
+	el = this.thumb = el.getElementsByTagName('img')[0] || el;
+	this.thumbsUserSetId = el.id || a.id;
+	
+	// check if already open
+	for (var i = 0; i < hs.expanders.length; i++) {
+		if (hs.expanders[i] && hs.expanders[i].a == a) {
+			hs.expanders[i].focus();
+			return false;
+		}
+	}	
+
 	// cancel other
-	for (i = 0; i < hs.expanders.length; i++) {
+	if (!hs.allowSimultaneousLoading) for (var i = 0; i < hs.expanders.length; i++) {
 		if (hs.expanders[i] && hs.expanders[i].thumb != el && !hs.expanders[i].onLoadStarted) {
 			hs.expanders[i].cancelLoading();
 		}
 	}
-	// check if already open
-	for (i = 0; i < hs.expanders.length; i++) {
-		if (hs.expanders[i] && hs.expanders[i].thumb == el) {
-			hs.expanders[i].focus();
-			return false;
-		}		
-	}
-
-	if (!hs.allowMultipleInstances) {
-		var prev = hs.expandedImagesCounter - 1;
-		if (hs.expanders[prev]) hs.expanders[prev].doClose();
+	hs.expanders[key] = this;
+	if (!hs.allowMultipleInstances && !hs.upcoming) {
+		if (hs.expanders[key-1]) hs.expanders[key-1].close();
+		if (typeof hs.focusKey != 'undefined' && hs.expanders[hs.focusKey])
+			hs.expanders[hs.focusKey].close();
 	}
 	
-	this.key = hs.expandedImagesCounter++;
-	hs.expanders[this.key] = this;
-	if (contentType == 'html') {
-		this.isHtml = true;
-		this.contentType = 'html';
-	} else {
-		this.isImage = true;
-		this.contentType = 'image';
-	}
-	
-	this.a = a;
-	
-	this.thumbsUserSetId = el.id || a.id;
-	this.thumb = el;		
-	
-	this.overlays = new Array();
-
-	var pos = hs.position(el); 
-	
-	// instanciate the wrapper
+	// initiate metrics
+	this.el = el;
+	this.tpos = this.pageOrigin || hs.getPosition(el);
+	hs.getPageSize();
+	var x = this.x = new hs.Dimension(this, 'x');
+	x.calcThumb();
+	var y = this.y = new hs.Dimension(this, 'y');
+	y.calcThumb();
 	this.wrapper = hs.createElement(
-		'div',
-		{
+		'div', {
 			id: 'highslide-wrapper-'+ this.key,
-			className: this.wrapperClassName
-		},
-		{
+			className: 'highslide-wrapper '+ this.wrapperClassName
+		}, {
 			visibility: 'hidden',
 			position: 'absolute',
-			zIndex: hs.zIndexCounter++
-		}
-	);
+			zIndex: hs.zIndexCounter += 2
+		}, null, true );
 	
-	// store properties of thumbnail
-	this.thumbWidth = el.width ? el.width : el.offsetWidth;		
-	this.thumbHeight = el.height ? el.height : el.offsetHeight;
-	this.thumbLeft = pos.x;
-	this.thumbTop = pos.y;
-	this.thumbClass = el.className;
+	this.wrapper.onmouseover = this.wrapper.onmouseout = hs.wrapperMouseHandler;
+	if (this.contentType == 'image' && this.outlineWhileAnimating == 2)
+		this.outlineWhileAnimating = 0;
 	
-	// thumb borders
-	this.thumbOffsetBorderW = (this.thumb.offsetWidth - this.thumbWidth) / 2;
-	this.thumbOffsetBorderH = (this.thumb.offsetHeight - this.thumbHeight) / 2;
+	// get the outline
+	if (!this.outlineType) {
+		this[this.contentType +'Create']();
 	
-	// get the wrapper
-	hs.genContainer();
-	if (hs.pendingOutlines[this.outlineType]) {
+	} else if (hs.pendingOutlines[this.outlineType]) {
 		this.connectOutline();
 		this[this.contentType +'Create']();
-	} else if (!this.outlineType) {
-		this[this.contentType +'Create']();
+	
 	} else {
-		this.displayLoading();
-		var pThis = this;
-		new HsOutline(this.outlineType, 
-			function () { 
-				pThis.connectOutline();
-				pThis[pThis.contentType +'Create']();
+		this.showLoading();
+		var exp = this;
+		new hs.Outline(this.outlineType, 
+			function () {
+				exp.connectOutline();
+				exp[exp.contentType +'Create']();
 			} 
 		);
 	}
-	
+	return true;
 };
 
-HsExpander.prototype.connectOutline = function(x, y) {	
-	var w = hs.pendingOutlines[this.outlineType];
-	this.objOutline = w;
+hs.Expander.prototype = {
+error : function(e) {
+	if (hs.debug) alert ('Line '+ e.lineNumber +': '+ e.message);
+	else window.location.href = this.src;
+},
+
+connectOutline : function() {
+	var outline = this.outline = hs.pendingOutlines[this.outlineType];
+	outline.exp = this;
+	outline.table.style.zIndex = this.wrapper.style.zIndex - 1;
 	hs.pendingOutlines[this.outlineType] = null;
-};
+},
 
-HsExpander.prototype.displayLoading = function() {
+showLoading : function() {
 	if (this.onLoadStarted || this.loading) return;
-		
-	this.originalCursor = this.a.style.cursor;
-	this.a.style.cursor = 'wait';
-	
-	if (!hs.loading) {
-		hs.loading = hs.createElement('a',
-			{
-				className: 'highslide-loading',
-				title: hs.loadingTitle,
-				innerHTML: hs.loadingText
-			},
-			{
-				position: 'absolute'
-			}, hs.container
-		);
-		if (hs.ie) hs.loading.style.filter = 'alpha(opacity='+ (100*hs.loadingOpacity) +')';
-		else hs.loading.style.opacity = hs.loadingOpacity;
-	}
 	
 	this.loading = hs.loading;
-	this.loading.href = 'javascript:hs.expanders['+ this.key +'].cancelLoading()';
-	this.loading.visibility = 'visible';		
+	var exp = this;
+	this.loading.onclick = function() {
+		exp.cancelLoading();
+	};
+	var exp = this, 
+		l = this.x.get('loadingPos') +'px',
+		t = this.y.get('loadingPos') +'px';
+	setTimeout(function () { 
+		if (exp.loading) hs.setStyles(exp.loading, { left: l, top: t, zIndex: hs.zIndexCounter++ })}
+	, 100);
+},
+
+imageCreate : function() {
+	var exp = this;
 	
-	this.loading.style.left = (this.thumbLeft + this.thumbOffsetBorderW 
-		+ (this.thumbWidth - this.loading.offsetWidth) / 2) +'px';
-	this.loading.style.top = (this.thumbTop 
-		+ (this.thumbHeight - this.loading.offsetHeight) / 2) +'px';
-	setTimeout(
-		"if (hs.expanders["+ this.key +"] && hs.expanders["+ this.key +"].loading) "
-		+ "hs.expanders["+ this.key +"].loading.style.visibility = 'visible';", 
-		100
-	);
-};
-
-HsExpander.prototype.imageCreate = function() {
-	var img = document.createElement('img');
-	var key = this.key;
-
 	var img = document.createElement('img');
     this.content = img;
-    img.onload = function () { if (hs.expanders[key]) hs.expanders[key].onLoad();  };
-    img.className = 'highslide-image '+ this.thumbClass;
-    img.style.visibility = 'hidden'; // prevent flickering in IE
-    img.style.display = 'block';
-	img.style.position = 'absolute';
-    img.style.zIndex = 3;
-    img.title = hs.restoreTitle;
-    img.onmouseover = function () { 
-    	if (hs.expanders[key]) hs.expanders[key].onMouseOver(); 
-    };
-    img.onmouseout = function (e) { 
-    	var rel = e ? e.relatedTarget : event.toElement;
-		if (hs.expanders[key]) hs.expanders[key].onMouseOut(rel);
+    img.onload = function () {
+    	if (hs.expanders[exp.key]) exp.contentLoaded(); 
 	};
-    if (hs.safari) hs.container.appendChild(img);
-    if (hs.ie) img.src = null;
-	img.src = hs.getSrc(this.a);
+    if (hs.blockRightClick) img.oncontextmenu = function() { return false; };
+    img.className = 'highslide-image';
+    hs.setStyles(img, {
+    	visibility: 'hidden',
+    	display: 'block',
+    	position: 'absolute',
+		maxWidth: '9999px',
+		zIndex: 3
+	});
+    img.title = hs.lang.restoreTitle;
+	if (hs.safari && hs.uaVersion < 525) hs.container.appendChild(img);
+    if (hs.ie && hs.flushImgSize) img.src = null;
+	img.src = this.src;
 	
-	this.displayLoading();
-};
+	this.showLoading();
+},
 
-HsExpander.prototype.onLoad = function() {	
-	try { 
-	
+contentLoaded : function() {
+	try {	
 		if (!this.content) return;
-		if (this.onLoadStarted) return; // old Gecko loop
+		this.content.onload = null;
+		if (this.onLoadStarted) return;
 		else this.onLoadStarted = true;
 		
-			   
+		var x = this.x, y = this.y;
+		
 		if (this.loading) {
-			this.loading.style.visibility = 'hidden';
+			hs.setStyles(this.loading, { top: '-9999px' });
 			this.loading = null;
-			this.a.style.cursor = this.originalCursor || '';
-		}
-		if (this.isImage) {			
-			this.newWidth = this.content.width;
-			this.newHeight = this.content.height;
-			this.fullExpandWidth = this.newWidth;
-			this.fullExpandHeight = this.newHeight;
+		}	
+			x.full = this.content.width;
+			y.full = this.content.height;
 			
-			this.content.width = this.thumbWidth;
-			this.content.height = this.thumbHeight;
-			
-		} else if (this.htmlGetSize) this.htmlGetSize();
+			hs.setStyles(this.content, {
+				width: x.t +'px',
+				height: y.t +'px'
+			});
+			this.wrapper.appendChild(this.content);
+			hs.container.appendChild(this.wrapper);
 		
-		// identify caption div		
-		var modMarginBottom = hs.marginBottom;
-		if (!this.captionId && this.thumbsUserSetId)  this.captionId = 'caption-for-'+ this.thumbsUserSetId;
-		if (this.captionId) {
-			this.caption = hs.cloneNode(this.captionId);
+		x.calcBorders();
+		y.calcBorders();
+		
+		hs.setStyles (this.wrapper, {
+			left: (x.tpos + x.tb - x.cb) +'px',
+			top: (y.tpos + x.tb - y.cb) +'px'
+		});
+		this.getOverlays();
+		
+		var ratio = x.full / y.full;
+		x.calcExpanded();
+		this.justify(x);
+		
+		y.calcExpanded();
+		this.justify(y);
+		if (this.overlayBox) this.sizeOverlayBox(0, 1);
+
+		
+		if (this.allowSizeReduction) {
+				this.correctRatio(ratio);
+			if (this.isImage && this.x.full > (this.x.imgSize || this.x.size)) {
+				this.createFullExpand();
+				if (this.overlays.length == 1) this.sizeOverlayBox();
+			}
 		}
-		if (this.captionTemplateId) {
-			var s = (this.caption) ? this.caption.innerHTML : '';
-			this.caption = hs.cloneNode(this.captionTemplateId);
-			if (this.caption) this.caption.innerHTML
-				= this.caption.innerHTML.replace(/\s/g, ' ').replace('{caption}', s);
-		}
+		this.show();
 		
-		var modMarginBottom = hs.marginBottom;
-		if (this.caption) modMarginBottom += this.spaceForCaption;
-		
-		this.wrapper.appendChild(this.content);
-		this.content.style.position = 'relative'; // Saf
-		if (this.caption) this.wrapper.appendChild(this.caption);
-		this.wrapper.style.left = this.thumbLeft +'px';
-		this.wrapper.style.top = this.thumbTop +'px';
-		hs.container.appendChild(this.wrapper);
-		
-		// correct for borders
-		this.offsetBorderW = (this.content.offsetWidth - this.thumbWidth) / 2;
-		this.offsetBorderH = (this.content.offsetHeight - this.thumbHeight) / 2;
-		var modMarginRight = hs.marginRight + 2 * this.offsetBorderW;
-		modMarginBottom += 2 * this.offsetBorderH;
-		
-		var ratio = this.newWidth / this.newHeight;
-		var minWidth = this.allowSizeReduction ? this.minWidth : this.newWidth;
-		var minHeight = this.allowSizeReduction ? this.minHeight : this.newHeight;
-		
-		var justify = { x: 'auto', y: 'auto' };
-		if (this.align == 'center') {
-			justify.x = 'center';
-			justify.y = 'center';
-		} else {
-			if (this.anchor.match(/^top/)) justify.y = null;
-			if (this.anchor.match(/right$/)) justify.x = 'max';
-			if (this.anchor.match(/^bottom/)) justify.y = 'max';
-			if (this.anchor.match(/left$/)) justify.x = null;
-		}
-		
-		client = new hs.clientInfo();		
-		
-		// justify
-		this.x = { 
-			min: parseInt(this.thumbLeft) - this.offsetBorderW + this.thumbOffsetBorderW,
-			span: this.newWidth,
-			minSpan: this.newWidth < minWidth ? this.newWidth : minWidth,
-			justify: justify.x,
-			target: this.targetX,
-			marginMin: hs.marginLeft, 
-			marginMax: modMarginRight,
-			scroll: client.scrollLeft,
-			clientSpan: client.width,
-			thumbSpan: this.thumbWidth
-		};
-		var oldRight = this.x.min + parseInt(this.thumbWidth);
-		this.x = this.justify(this.x);
-
-		this.y = { 
-			min: parseInt(this.thumbTop) - this.offsetBorderH + this.thumbOffsetBorderH,
-			span: this.newHeight,
-			minSpan: this.newHeight < minHeight ? this.newHeight : minHeight,
-			justify: justify.y,
-			target: this.targetY,
-			marginMin: hs.marginTop, 
-			marginMax: modMarginBottom, 
-			scroll: client.scrollTop,
-			clientSpan: client.height,
-			thumbSpan: this.thumbHeight
-		};
-		var oldBottom = this.y.min + parseInt(this.thumbHeight);
-		this.y = this.justify(this.y);
-	
-		if (this.isHtml) this.htmlSizeOperations();	
-		if (this.isImage) this.correctRatio(ratio);
-
-		var x = this.x;
-		var y = this.y;	
-
-		// Selectbox bug
-		var imgPos = {x: x.min - 20, y: y.min - 20, w: x.span + 40, h: y.span + 40 + this.spaceForCaption};
-		hs.hideSelects = (hs.ie && hs.ieVersion() < 7);
-		if (hs.hideSelects) this.showHideElements('SELECT', 'hidden', imgPos);
-		// Iframes bug
-		hs.hideIframes = (window.opera || navigator.vendor == 'KDE' || (hs.ie && hs.ieVersion() < 5.5));
-		if (hs.hideIframes) this.showHideElements('IFRAME', 'hidden', imgPos);
-		
-		// Make outline ready	
-		if (this.objOutline && !this.outlineWhileAnimating) this.positionOutline(x.min, y.min, x.span, y.span);
-		var o2 = this.objOutline ? this.objOutline.offset : 0;
-		
-		// Apply size change		
-		this.changeSize(
-			1,
-			this.thumbLeft + this.thumbOffsetBorderW - this.offsetBorderW,
-			this.thumbTop + this.thumbOffsetBorderH - this.offsetBorderH,
-			this.thumbWidth,
-			this.thumbHeight,
-			x.min,
-			y.min,
-			x.span,
-			y.span, 
-			hs.expandDuration,
-			hs.expandSteps,
-			hs.outlineStartOffset,
-			o2
-		);
-
 	} catch (e) {
-		if (hs.expanders[this.key] && hs.expanders[this.key].a) 
-			window.location.href = hs.getSrc(hs.expanders[this.key].a);
+		this.error(e);
 	}
-};
+},
 
-HsExpander.prototype.justify = function (p) {
+justify : function (p, moveOnly) {
+	var tgtArr, tgt = p.target, dim = p == this.x ? 'x' : 'y';
 	
-	var tgt, dim = p == this.x ? 'x' : 'y';
-	if (p.target && p.target.match(/ /)) {
-		tgt = p.target.split(' ');
-		p.target = tgt[0];
-	}
-	if (p.target && hs.$(p.target)) {
-		p.min = hs.position(hs.$(p.target))[dim];
-		if (tgt && tgt[1] && tgt[1].match(/^[-]?[0-9]+px$/)) p.min += parseInt(tgt[1]);
-		
-	} else if (p.justify == 'auto' || p.justify == 'center') {
 		var hasMovedMin = false;
-		var allowReduce = true;
 		
-		// calculate p.min
-		if (p.justify == 'center') p.min = Math.round(p.scroll + (p.clientSpan - p.span - p.marginMax) / 2);
-		else p.min = Math.round(p.min - ((p.span - p.thumbSpan) / 2)); // auto
-		
-		if (p.min < p.scroll + p.marginMin) {
-			p.min = p.scroll + p.marginMin;
+		var allowReduce = p.exp.allowSizeReduction;
+			p.pos = Math.round(p.pos - ((p.get('wsize') - p.t) / 2));
+		if (p.pos < p.scroll + p.marginMin) {
+			p.pos = p.scroll + p.marginMin;
 			hasMovedMin = true;		
 		}
-		
-		if (p.span < p.minSpan) {
-			p.span = p.minSpan;
+		if (!moveOnly && p.size < p.minSize) {
+			p.size = p.minSize;
 			allowReduce = false;
 		}
-		// calculate right/newWidth
-		if (p.min + p.span > p.scroll + p.clientSpan - p.marginMax) {
-			if (hasMovedMin && allowReduce) p.span = p.clientSpan - p.marginMin - p.marginMax; // can't expand more
-			else if (p.span < p.clientSpan - p.marginMin - p.marginMax) { // move newTop up
-				p.min = p.scroll + p.clientSpan - p.span - p.marginMin - p.marginMax;
-			} else { // image larger than client
-				p.min = p.scroll + p.marginMin;
-				if (allowReduce) p.span = p.clientSpan - p.marginMin - p.marginMax;
-			}
-			
+		if (p.pos + p.get('wsize') > p.scroll + p.clientSize - p.marginMax) {
+			if (!moveOnly && hasMovedMin && allowReduce) {
+				p.size = Math.min(p.size, p.get(dim == 'y' ? 'fitsize' : 'maxsize'));
+			} else if (p.get('wsize') < p.get('fitsize')) {
+				p.pos = p.scroll + p.clientSize - p.marginMax - p.get('wsize');
+			} else { // image larger than viewport
+				p.pos = p.scroll + p.marginMin;
+				if (!moveOnly && allowReduce) p.size = p.get(dim == 'y' ? 'fitsize' : 'maxsize');
+			}			
 		}
 		
-		if (p.span < p.minSpan) {
-			p.span = p.minSpan;
+		if (!moveOnly && p.size < p.minSize) {
+			p.size = p.minSize;
 			allowReduce = false;
 		}
 		
-	} else if (p.justify == 'max') {
-		p.min = Math.floor(p.min - p.span + p.thumbSpan);
-	}
+	
 		
-	if (p.min < p.marginMin) {
-		tmpMin = p.min;
-		p.min = p.marginMin; 
-		if (allowReduce) p.span = p.span - (p.min - tmpMin);
+	if (p.pos < p.marginMin) {
+		var tmpMin = p.pos;
+		p.pos = p.marginMin; 
+		
+		if (allowReduce && !moveOnly) p.size = p.size - (p.pos - tmpMin);
+		
 	}
-	return p;
-};
+},
 
-HsExpander.prototype.correctRatio = function(ratio) {
-	var x = this.x;
-	var y = this.y;
-	var changed = false;
-	if (x.span / y.span > ratio) { // width greater
-		var tmpWidth = x.span;
-		x.span = y.span * ratio;
-		if (x.span < x.minSpan) { // below minWidth
-			x.span = x.minSpan;	
-			y.span = x.span / ratio;
+correctRatio : function(ratio) {
+	var x = this.x, 
+		y = this.y,
+		changed = false,
+		xSize = Math.min(x.full, x.size),
+		ySize = Math.min(y.full, y.size),
+		useBox = (this.useBox || hs.padToMinWidth);
+	
+	if (xSize / ySize > ratio) { // width greater
+		xSize = ySize * ratio;
+		if (xSize < x.minSize) { // below minWidth
+			xSize = x.minSize;
+			ySize = xSize / ratio;
 		}
 		changed = true;
 	
-	} else if (x.span / y.span < ratio) { // height greater
-		var tmpHeight = y.span;
-		y.span = x.span / ratio;
+	} else if (xSize / ySize < ratio) { // height greater
+		ySize = xSize / ratio;
 		changed = true;
 	}
 	
-	if (changed) {
-		x.min = parseInt(this.thumbLeft) - this.offsetBorderW + this.thumbOffsetBorderW;
-		x.minSpan = x.span;
-		this.x = this.justify(x);
-		
-		y.min = parseInt(this.thumbTop) - this.offsetBorderH + this.thumbOffsetBorderH;
-		y.minSpan = y.span;
-		this.y = this.justify(y);
+	if (hs.padToMinWidth && x.full < x.minSize) {
+		x.imgSize = x.full;
+		y.size = y.imgSize = y.full;
+	} else if (this.useBox) {
+		x.imgSize = xSize;
+		y.imgSize = ySize;
+	} else {
+		x.size = xSize;
+		y.size = ySize;
 	}
-};
-
-HsExpander.prototype.changeSize = function(dir, x1, y1, w1, h1, x2, y2, w2, h2, dur, steps, oo1, oo2) {
-	dW = (w2 - w1) / steps;
-	dH = (h2 - h1) / steps;
-	dX = (x2 - x1) / steps;
-	dY = (y2 - y1) / steps;
-	dOo = (oo2 - oo1) /steps;
-	for (i = 1; i <= steps; i++) {
-		w1 += dW;
-		h1 += dH;
-		x1 += dX;
-		y1 += dY;
-		oo1 += dOo;
-		
-		var obj = "hs.expanders["+ this.key +"]";
-		var s = "if ("+ obj +") {";
-		if (i == 1) {
-			s += obj +".content.style.visibility = 'visible';"
-				+ "if ("+ obj +".thumb.tagName == 'IMG' && hs.hideThumbOnExpand) "+ obj +".thumb.style.visibility = 'hidden';"
-		}
-		if (i == steps) {
-			w1 = w2;
-			h1 = h2;
-			x1 = x2;
-			y1 = y2;
-			oo1 = oo2;
-		}
-		s += obj +"."+ this.contentType +"SetSize("+ Math.round(w1) +", "+ Math.round(h1) +", "
-			+ Math.round(x1) +", "+ Math.round(y1) +", "+ Math.round(oo1);
-		if (i == steps) s += ', '+ dir;
-		s += ");}";
-		setTimeout(s, Math.round(i * (dur / steps)));
+	changed = this.fitOverlayBox(this.useBox ? null : ratio, changed);
+	if (useBox && y.size < y.imgSize) {
+		y.imgSize = y.size;
+		x.imgSize = y.size * ratio;
 	}
-};
-
-HsExpander.prototype.imageSetSize = function (w, h, x, y, offset, end) {
-	try {
-		this.content.width = w;
-		this.content.height = h;
-		
-		if (this.objOutline && this.outlineWhileAnimating) {
-			var o = this.objOutline.offset - offset;
-			this.positionOutline(x + o, y + o, w - 2 * o, h - 2 * o, 1);
+	if (changed || useBox) {
+		x.pos = x.tpos - x.cb + x.tb;
+		x.minSize = x.size;
+		this.justify(x, true);
+	
+		y.pos = y.tpos - y.cb + y.tb;
+		y.minSize = y.size;
+		this.justify(y, true);
+		if (this.overlayBox) this.sizeOverlayBox();
+	}
+	
+	
+},
+fitOverlayBox : function(ratio, changed) {
+	var x = this.x, y = this.y;
+	if (this.overlayBox) {
+		while (y.size > this.minHeight && x.size > this.minWidth 
+				&&  y.get('wsize') > y.get('fitsize')) {
+			y.size -= 10;
+			if (ratio) x.size = y.size * ratio;
+			this.sizeOverlayBox(0, 1);
+			changed = true;
 		}
-		
-		hs.setStyles ( this.wrapper,
-			{
-				'visibility': 'visible',
-				'left': x +'px',
-				'top': y +'px'
+	}
+	return changed;
+},
+
+show : function () {
+	var x = this.x, y = this.y;
+	this.doShowHide('hidden');
+	
+	// Apply size change
+	this.changeSize(
+		1, {
+			wrapper: {
+				width : x.get('wsize'),
+				height : y.get('wsize'),
+				left: x.pos,
+				top: y.pos
+			},
+			content: {
+				left: x.p1 + x.get('imgPad'),
+				top: y.p1 + y.get('imgPad'),
+				width:x.imgSize ||x.size,
+				height:y.imgSize ||y.size
 			}
-		);
-		var exp = 'hs.expanders['+ this.key +']';
-		if (end == 1) setTimeout('if ('+ exp +')'+ exp +'.onExpanded()', 0); // jerk in IE
-		else if (end == -1) setTimeout('if ('+ exp +')'+ exp +'.onEndClose()', 0);
-	} catch (e) {
-		window.location.href = hs.getSrc(this.a);
+		},
+		hs.expandDuration
+	);
+},
+
+changeSize : function(up, to, dur) {
+	
+	if (this.outline && !this.outlineWhileAnimating) {
+		if (up) this.outline.setPosition();
+		else this.outline.destroy();
 	}
-};
+	
+	
+	if (!up) this.destroyOverlays();
+	
+	var exp = this,
+		x = exp.x,
+		y = exp.y,
+		easing = this.easing;
+	if (!up) easing = this.easingClose || easing;
+	var after = up ?
+		function() {
+				
+			if (exp.outline) exp.outline.table.style.visibility = "visible";
+			setTimeout(function() {
+				exp.afterExpand();
+			}, 50);
+		} :
+		function() {
+			exp.afterClose();
+		};
+	if (up) hs.setStyles( this.wrapper, {
+		width: x.t +'px',
+		height: y.t +'px'
+	});
+	if (this.fadeInOut) {
+		hs.setStyles(this.wrapper, { opacity: up ? 0 : 1 });
+		hs.extend(to.wrapper, { opacity: up });
+	}
+	hs.animate( this.wrapper, to.wrapper, {
+		duration: dur,
+		easing: easing,
+		step: function(val, args) {
+			if (exp.outline && exp.outlineWhileAnimating && args.prop == 'top') {
+				var fac = up ? args.pos : 1 - args.pos;
+				var pos = {
+					w: x.t + (x.get('wsize') - x.t) * fac,
+					h: y.t + (y.get('wsize') - y.t) * fac,
+					x: x.tpos + (x.pos - x.tpos) * fac,
+					y: y.tpos + (y.pos - y.tpos) * fac
+				};
+				exp.outline.setPosition(pos, 0, 1);				
+			}
+		}
+	});
+	hs.animate( this.content, to.content, dur, easing, after);
+	if (up) {
+		this.wrapper.style.visibility = 'visible';
+		this.content.style.visibility = 'visible';
+		this.a.className += ' highslide-active-anchor';
+	}
+},
 
-HsExpander.prototype.positionOutline = function(x, y, w, h, vis) {
-	if (!this.objOutline) return;
-	var o = this.objOutline;
-	if (vis) o.outer.style.visibility = 'visible';
-	o.outer.style.left = (x - o.offset) +'px';
-	o.outer.style.top = (y - o.offset) +'px';
-	o.outer.style.width = (w + 2 * (this.offsetBorderW + o.offset)) +'px';
-	w += 2 * (this.offsetBorderW - o.offset);
-	h += + 2 * (this.offsetBorderH - o.offset);
-	o.inner.style.width = w >= 0 ? w +'px' : 0;
-	o.inner.style.height = h >= 0 ? h +'px' : 0;
-};
 
-HsExpander.prototype.onExpanded = function() {
-	if (this.objOutline) this.objOutline.outer.style.visibility = 'visible';
-	this.isExpanded = true;
+
+
+afterExpand : function() {
+	this.isExpanded = true;	
 	this.focus();
-	if (this.isHtml && this.objectLoadTime == 'after') this.writeExtendedContent();
-	this.createCustomOverlays();
-	if (hs.showCredits) this.writeCredits();
+	if (hs.upcoming && hs.upcoming == this.a) hs.upcoming = null;
+	this.prepareNextOutline();
+	var p = hs.page, mX = hs.mouse.x + p.scrollLeft, mY = hs.mouse.y + p.scrollTop;
+	this.mouseIsOver = this.x.pos < mX && mX < this.x.pos + this.x.get('wsize')
+		&& this.y.pos < mY && mY < this.y.pos + this.y.get('wsize');	
+	if (this.overlayBox) this.showOverlays();
 	
-	if (this.caption) this.writeCaption();
-	
-	if (this.fullExpandWidth > this.x.span) this.createFullExpand();
-	if (!this.caption) this.onDisplayFinished();
-};
+},
 
-HsExpander.prototype.onDisplayFinished = function() {
+
+prepareNextOutline : function() {
 	var key = this.key;
 	var outlineType = this.outlineType;
-	new HsOutline(outlineType, function () { if (hs.expanders[key]) hs.expanders[key].preloadNext();	});
-};
+	new hs.Outline(outlineType, 
+		function () { try { hs.expanders[key].preloadNext(); } catch (e) {} });
+},
 
-HsExpander.prototype.preloadNext = function() {
-	var nextA = hs.getAdjacentAnchor(this.key, 1);
-	if (nextA) {
-		var img = document.createElement('img');
-		img.src = hs.getSrc(nextA);
+
+preloadNext : function() {
+	var next = this.getAdjacentAnchor(1);
+	if (next && next.onclick.toString().match(/hs\.expand/)) 
+		var img = hs.createElement('img', { src: hs.getSrc(next) });
+},
+
+
+getAdjacentAnchor : function(op) {
+	var current = this.getAnchorIndex(), as = hs.anchors.groups[this.slideshowGroup || 'none'];
+	return (as && as[current + op]) || null;
+},
+
+getAnchorIndex : function() {
+	var arr = hs.getAnchors().groups[this.slideshowGroup || 'none'];
+	if (arr) for (var i = 0; i < arr.length; i++) {
+		if (arr[i] == this.a) return i; 
 	}
-};
+	return null;
+},
 
-HsExpander.prototype.cancelLoading = function() {
-	this.a.style.cursor = this.originalCursor;	
-	if (this.loading) hs.loading.style.visibility = 'hidden';		
+
+cancelLoading : function() {
+	hs.discardElement (this.wrapper);
 	hs.expanders[this.key] = null;
-};
+	if (this.loading) hs.loading.style.left = '-9999px';
+},
 
-HsExpander.prototype.writeCredits = function () {
-	var credits = hs.createElement('a',
-		{
-			href: hs.creditsHref,
-			className: 'highslide-credits',
-			innerHTML: hs.creditsText,
-			title: hs.creditsTitle
+writeCredits : function () {
+	this.credits = hs.createElement('a', {
+		href: hs.creditsHref,
+		target: hs.creditsTarget,
+		className: 'highslide-credits',
+		innerHTML: hs.lang.creditsText,
+		title: hs.lang.creditsTitle
+	});
+	this.createOverlay({ 
+		overlayId: this.credits, 
+		position: this.creditsPosition || 'top left' 
+	});
+},
+
+getInline : function(types, addOverlay) {
+	for (var i = 0; i < types.length; i++) {
+		var type = types[i], s = null;
+		if (!this[type +'Id'] && this.thumbsUserSetId)  
+			this[type +'Id'] = type +'-for-'+ this.thumbsUserSetId;
+		if (this[type +'Id']) this[type] = hs.getNode(this[type +'Id']);
+		if (!this[type] && !this[type +'Text'] && this[type +'Eval']) try {
+			s = eval(this[type +'Eval']);
+		} catch (e) {}
+		if (!this[type] && this[type +'Text']) {
+			s = this[type +'Text'];
 		}
-	);
-	this.createOverlay(credits, 'top left');
-};
-
-HsExpander.prototype.writeCaption = function() {
-	try {
-		this.wrapper.style.width = this.wrapper.offsetWidth +'px';	
-		this.caption.style.visibility = 'hidden';
-		this.caption.style.position = 'relative';
-		if (hs.ie) this.caption.style.zoom = 1;  
-		this.caption.className += ' highslide-display-block';
-		
-		var capHeight = this.caption.offsetHeight;
-		var slideHeight = (capHeight < this.content.height) ? capHeight : this.content.height;
-		this.caption.style.top = '-'+ slideHeight +'px';
-		
-		this.caption.style.zIndex = 2;
-		
-		var step = 1;
-		if (slideHeight > 400) step = 4;
-		else if (slideHeight > 200) step = 2;
-		else if (slideHeight > 100) step = 1;
-		if (hs.captionSlideSpeed) step = step * hs.captionSlideSpeed;
-		else step = slideHeight;
-
-		var t = 0;
-		for (var top = -slideHeight; top <= 0; top += step, t += 10) {
-			var end = (top >= 0) ? 1 : 0;
-			var eval = "if (hs.expanders["+ this.key +"]) { "
-				+ "hs.expanders["+ this.key +"].placeCaption("+ top +", "+ end +");"
-				+ "}";			
-			setTimeout (eval, t);
-		}
-	
-	} catch (e) {}	
-};
-
-HsExpander.prototype.placeCaption = function(top, end) {
-	if (!this.caption) return;
-	this.caption.style.top = top +'px';
-	this.caption.style.visibility = 'visible';
-	if (this.objOutline) this.objOutline.inner.style.height 
-		= (this.wrapper.offsetHeight + top - 2 * this.objOutline.offset) +'px';
-	if (end) this.onDisplayFinished();
-};
-
-HsExpander.prototype.showHideElements = function (tagName, visibility, imgPos) {
-	var els = document.getElementsByTagName(tagName);
-	if (els) {			
-		for (i = 0; i < els.length; i++) {
-			if (els[i].nodeName == tagName) {  
-				var hiddenBy = els[i].getAttribute('hidden-by');
-				 
-				if (visibility == 'visible' && hiddenBy) {
-					hiddenBy = hiddenBy.replace('['+ this.key +']', '');
-					els[i].setAttribute('hidden-by', hiddenBy);
-					if (!hiddenBy) els[i].style.visibility = 'visible';				
-					
-				} else if (visibility == 'hidden') { // hide if behind
-					var elPos = hs.position(els[i]);
-					elPos.w = els[i].offsetWidth;
-					elPos.h = els[i].offsetHeight;
-				
-					var clearsX = (elPos.x + elPos.w < imgPos.x || elPos.x > imgPos.x + imgPos.w);
-					var clearsY = (elPos.y + elPos.h < imgPos.y || elPos.y > imgPos.y + imgPos.h);
-					var wrapperKey = hs.getWrapperKey(els[i]);
-					if (!clearsX && !clearsY && wrapperKey != this.key) { // element falls behind image
-						if (!els[i].currentStyle || (els[i].currentStyle && els[i].currentStyle['visibility'] != 'hidden')) { // IE
-							if (!hiddenBy) {
-								els[i].setAttribute('hidden-by', '['+ this.key +']');
-							} else if (!hiddenBy.match('['+ this.key +']')) {
-								els[i].setAttribute('hidden-by', hiddenBy + '['+ this.key +']');
-							}
-							els[i].style.visibility = 'hidden';	  
-						}
-					} else if (hiddenBy == '['+ this.key +']' || hs.focusKey == wrapperKey) { // on move
-						els[i].setAttribute('hidden-by', '');
-						els[i].style.visibility = 'visible';
-					} else if (hiddenBy && hiddenBy.match('['+ this.key +']')) {
-						els[i].setAttribute('hidden-by', hiddenBy.replace('['+ this.key +']', ''));
+		if (!this[type] && !s) {
+			this[type] = hs.getNode(this.a['_'+ type + 'Id']);
+			if (!this[type]) {
+				var next = this.a.nextSibling;
+				while (next && !hs.isHsAnchor(next)) {
+					if ((new RegExp('highslide-'+ type)).test(next.className || null)) {
+						if (!next.id) this.a['_'+ type + 'Id'] = next.id = 'hsId'+ hs.idCounter++;
+						this[type] = hs.getNode(next.id);
+						break;
 					}
-				}   
+					next = next.nextSibling;
+				}
+			}
+		}
+		
+		if (!this[type] && s) this[type] = hs.createElement('div', 
+				{ className: 'highslide-'+ type, innerHTML: s } );
+		
+		if (addOverlay && this[type]) {
+			var o = { position: (type == 'heading') ? 'above' : 'below' };
+			for (var x in this[type+'Overlay']) o[x] = this[type+'Overlay'][x];
+			o.overlayId = this[type];
+			this.createOverlay(o);
+		}
+	}
+},
+
+
+// on end move and resize
+doShowHide : function(visibility) {
+	if (hs.hideSelects) this.showHideElements('SELECT', visibility);
+	if (hs.hideIframes) this.showHideElements('IFRAME', visibility);
+	if (hs.geckoMac) this.showHideElements('*', visibility);
+},
+showHideElements : function (tagName, visibility) {
+	var els = document.getElementsByTagName(tagName);
+	var prop = tagName == '*' ? 'overflow' : 'visibility';
+	for (var i = 0; i < els.length; i++) {
+		if (prop == 'visibility' || (document.defaultView.getComputedStyle(
+				els[i], "").getPropertyValue('overflow') == 'auto'
+				|| els[i].getAttribute('hidden-by') != null)) {
+			var hiddenBy = els[i].getAttribute('hidden-by');
+			if (visibility == 'visible' && hiddenBy) {
+				hiddenBy = hiddenBy.replace('['+ this.key +']', '');
+				els[i].setAttribute('hidden-by', hiddenBy);
+				if (!hiddenBy) els[i].style[prop] = els[i].origProp;
+			} else if (visibility == 'hidden') { // hide if behind
+				var elPos = hs.getPosition(els[i]);
+				elPos.w = els[i].offsetWidth;
+				elPos.h = els[i].offsetHeight;
+			
+				
+					var clearsX = (elPos.x + elPos.w < this.x.get('opos') 
+						|| elPos.x > this.x.get('opos') + this.x.get('osize'));
+					var clearsY = (elPos.y + elPos.h < this.y.get('opos') 
+						|| elPos.y > this.y.get('opos') + this.y.get('osize'));
+				var wrapperKey = hs.getWrapperKey(els[i]);
+				if (!clearsX && !clearsY && wrapperKey != this.key) { // element falls behind image
+					if (!hiddenBy) {
+						els[i].setAttribute('hidden-by', '['+ this.key +']');
+						els[i].origProp = els[i].style[prop];
+						els[i].style[prop] = 'hidden';
+						
+					} else if (hiddenBy.indexOf('['+ this.key +']') == -1) {
+						els[i].setAttribute('hidden-by', hiddenBy + '['+ this.key +']');
+					}
+				} else if ((hiddenBy == '['+ this.key +']' || hs.focusKey == wrapperKey)
+						&& wrapperKey != this.key) { // on move
+					els[i].setAttribute('hidden-by', '');
+					els[i].style[prop] = els[i].origProp || '';
+				} else if (hiddenBy && hiddenBy.indexOf('['+ this.key +']') > -1) {
+					els[i].setAttribute('hidden-by', hiddenBy.replace('['+ this.key +']', ''));
+				}
+						
 			}
 		}
 	}
-};
+},
 
-HsExpander.prototype.focus = function() {
+focus : function() {
+	this.wrapper.style.zIndex = hs.zIndexCounter += 2;
 	// blur others
-	for (i = 0; i < hs.expanders.length; i++) {
+	for (var i = 0; i < hs.expanders.length; i++) {
 		if (hs.expanders[i] && i == hs.focusKey) {
 			var blurExp = hs.expanders[i];
 			blurExp.content.className += ' highslide-'+ blurExp.contentType +'-blur';
-			if (blurExp.caption) {
-				hs.setId(blurExp.caption, '-hsBlur'+i);
-				blurExp.caption.className += ' highslide-caption-blur';
-			}
-			if (blurExp.isImage) {
-				blurExp.content.style.cursor = hs.ie ? 'hand' : 'pointer';
-				blurExp.content.title = hs.focusTitle;	
-			} else { hs.setId(blurExp.innerContent, '-hsBlur'+i); }
+				blurExp.content.style.cursor = hs.ieLt7 ? 'hand' : 'pointer';
+				blurExp.content.title = hs.lang.focusTitle;
 		}
 	}
 	
 	// focus this
-	this.wrapper.style.zIndex = hs.zIndexCounter++;
-	if (this.objOutline) this.objOutline.outer.style.zIndex = this.wrapper.style.zIndex;
-	
+	if (this.outline) this.outline.table.style.zIndex 
+		= this.wrapper.style.zIndex - 1;
 	this.content.className = 'highslide-'+ this.contentType;
-	if (this.caption) {
-		hs.setId(this.caption, '-hsBlur' + this.key, 1);
-		this.caption.className = this.caption.className.replace(' highslide-caption-blur', '');
-	}
-	
-	if (this.isImage) {
-		this.content.title = hs.restoreTitle;
+		this.content.title = hs.lang.restoreTitle;
 		
-		hs.styleRestoreCursor = window.opera ? 'pointer' : 'url('+ hs.graphicsDir + hs.restoreCursor +'), pointer';
-		if (hs.ie && hs.ieVersion() < 6) hs.styleRestoreCursor = 'hand';
-		this.content.style.cursor = hs.styleRestoreCursor;
-	} else {
-		hs.setId(this.innerContent, '-hsBlur' + this.key, 1);
-	}
-	
+		if (hs.restoreCursor) {
+			hs.styleRestoreCursor = window.opera ? 'pointer' : 'url('+ hs.graphicsDir + hs.restoreCursor +'), pointer';
+			if (hs.ieLt7 && hs.uaVersion < 6) hs.styleRestoreCursor = 'hand';
+			this.content.style.cursor = hs.styleRestoreCursor;
+		}
+		
 	hs.focusKey = this.key;	
-	hs.addEventListener(document, 'keydown', hs.keyHandler);
-};
+	hs.addEventListener(document, window.opera ? 'keypress' : 'keydown', hs.keyHandler);	
+},
+moveTo: function(x, y) {
+	this.x.setPos(x);
+	this.y.setPos(y);
+},
+resize : function (e) {
+	var w, h, r = e.width / e.height;
+	w = Math.max(e.width + e.dX, Math.min(this.minWidth, this.x.full));
+	if (this.isImage && Math.abs(w - this.x.full) < 12) w = this.x.full;
+	h = w / r;
+	if (h < Math.min(this.minHeight, this.y.full)) {
+		h = Math.min(this.minHeight, this.y.full);
+		if (this.isImage) w = h * r;
+	}
+	this.resizeTo(w, h);
+},
+resizeTo: function(w, h) {
+	this.y.setSize(h);
+	this.x.setSize(w);
+	this.wrapper.style.height = this.y.get('wsize') +'px';
+},
 
-HsExpander.prototype.doClose = function() {
-	hs.removeEventListener(document, 'keydown', hs.keyHandler);
+close : function() {
+	if (this.isClosing || !this.isExpanded) return;
+	this.isClosing = true;
+	
+	hs.removeEventListener(document, window.opera ? 'keypress' : 'keydown', hs.keyHandler);
+	
 	try {
-		if (!hs.expanders[this.key]) return;
+		this.content.style.cursor = 'default';
+		this.changeSize(
+			0, {
+				wrapper: {
+					width : this.x.t,
+					height : this.y.t,
+					left: this.x.tpos - this.x.cb + this.x.tb,
+					top: this.y.tpos - this.y.cb + this.y.tb
+				},
+				content: {
+					left: 0,
+					top: 0,
+					width: this.x.t,
+					height: this.y.t
+				}
+			}, hs.restoreDuration
+		);
+	} catch (e) { this.afterClose(); }
+},
 
-		this.isClosing = true;
+createOverlay : function (o) {
+	var el = o.overlayId;
+	if (typeof el == 'string') el = hs.getNode(el);
+	if (o.html) el = hs.createElement('div', { innerHTML: o.html });
+	if (!el || typeof el == 'string') return;
+	el.style.display = 'block';
+	this.genOverlayBox();
+	var width = o.width && /^[0-9]+(px|%)$/.test(o.width) ? o.width : 'auto';
+	if (/^(left|right)panel$/.test(o.position) && !/^[0-9]+px$/.test(o.width)) width = '200px';
+	var overlay = hs.createElement(
+		'div', {
+			id: 'hsId'+ hs.idCounter++,
+			hsId: o.hsId
+		}, {
+			position: 'absolute',
+			visibility: 'hidden',
+			width: width,
+			direction: hs.lang.cssDirection || '',
+			opacity: 0
+		},this.overlayBox,
+		true
+	);
+	
+	overlay.appendChild(el);
+	hs.extend(overlay, {
+		opacity: 1,
+		offsetX: 0,
+		offsetY: 0,
+		dur: (o.fade === 0 || o.fade === false || (o.fade == 2 && hs.ie)) ? 0 : 250
+	});
+	hs.extend(overlay, o);
+	
 		
-		var x = parseInt(this.wrapper.style.left);
-		var y = parseInt(this.wrapper.style.top);
-		var w = (this.isImage) ? this.content.width : parseInt(this.content.style.width);
-		var h = (this.isImage) ? this.content.height : parseInt(this.content.style.height);
+	if (this.gotOverlays) {
+		this.positionOverlay(overlay);
+		if (!overlay.hideOnMouseOut || this.mouseIsOver) 
+			hs.animate(overlay, { opacity: overlay.opacity }, overlay.dur);
+	}
+	hs.push(this.overlays, hs.idCounter - 1);
+},
+positionOverlay : function(overlay) {
+	var p = overlay.position || 'middle center',
+		offX = overlay.offsetX,
+		offY = overlay.offsetY;
+	if (overlay.parentNode != this.overlayBox) this.overlayBox.appendChild(overlay);
+	if (/left$/.test(p)) overlay.style.left = offX +'px'; 
+	
+	if (/center$/.test(p))	hs.setStyles (overlay, { 
+		left: '50%',
+		marginLeft: (offX - Math.round(overlay.offsetWidth / 2)) +'px'
+	});	
+	
+	if (/right$/.test(p)) overlay.style.right = - offX +'px';
 		
-		if (this.objOutline && this.outlineWhileAnimating) this.positionOutline(x, y, w, h);
-		else if (this.objOutline) this.objOutline.destroy();
-		
-		// remove children
-		var n = this.wrapper.childNodes.length;
-		for (i = n - 1; i >= 0 ; i--) {
-			var child = this.wrapper.childNodes[i];
-			if (child != this.content) {
-				hs.purge(this.wrapper.childNodes[i]);
-				this.wrapper.removeChild(this.wrapper.childNodes[i]);
+	if (/^leftpanel$/.test(p)) { 
+		hs.setStyles(overlay, {
+			right: '100%',
+			marginRight: this.x.cb +'px',
+			top: - this.y.cb +'px',
+			bottom: - this.y.cb +'px',
+			overflow: 'auto'
+		});		 
+		this.x.p1 = overlay.offsetWidth;
+	
+	} else if (/^rightpanel$/.test(p)) {
+		hs.setStyles(overlay, {
+			left: '100%',
+			marginLeft: this.x.cb +'px',
+			top: - this.y.cb +'px',
+			bottom: - this.y.cb +'px',
+			overflow: 'auto'
+		});
+		this.x.p2 = overlay.offsetWidth;
+	}
+
+	if (/^top/.test(p)) overlay.style.top = offY +'px'; 
+	if (/^middle/.test(p))	hs.setStyles (overlay, { 
+		top: '50%', 
+		marginTop: (offY - Math.round(overlay.offsetHeight / 2)) +'px'
+	});	
+	if (/^bottom/.test(p)) overlay.style.bottom = - offY +'px';
+	if (/^above$/.test(p)) {
+		hs.setStyles(overlay, {
+			left: (- this.x.p1 - this.x.cb) +'px',
+			right: (- this.x.p2 - this.x.cb) +'px',
+			bottom: '100%',
+			marginBottom: this.y.cb +'px',
+			width: 'auto'
+		});
+		this.y.p1 = overlay.offsetHeight;
+	
+	} else if (/^below$/.test(p)) {
+		hs.setStyles(overlay, {
+			position: 'relative',
+			left: (- this.x.p1 - this.x.cb) +'px',
+			right: (- this.x.p2 - this.x.cb) +'px',
+			top: '100%',
+			marginTop: this.y.cb +'px',
+			width: 'auto'
+		});
+		this.y.p2 = overlay.offsetHeight;
+		overlay.style.position = 'absolute';
+	}
+},
+
+getOverlays : function() {	
+	this.getInline(['heading', 'caption'], true);
+	if (this.heading && this.dragByHeading) this.heading.className += ' highslide-move';
+	if (hs.showCredits) this.writeCredits();
+	for (var i = 0; i < hs.overlays.length; i++) {
+		var o = hs.overlays[i], tId = o.thumbnailId, sg = o.slideshowGroup;
+		if ((!tId && !sg) || (tId && tId == this.thumbsUserSetId)
+				|| (sg && sg === this.slideshowGroup)) {
+			this.createOverlay(o);
+		}
+	}
+	var os = [];
+	for (var i = 0; i < this.overlays.length; i++) {
+		var o = hs.$('hsId'+ this.overlays[i]);
+		if (/panel$/.test(o.position)) this.positionOverlay(o);
+		else hs.push(os, o);
+	}
+	for (var i = 0; i < os.length; i++) this.positionOverlay(os[i]);
+	this.gotOverlays = true;
+},
+genOverlayBox : function() {
+	if (!this.overlayBox) this.overlayBox = hs.createElement (
+		'div', {
+			className: this.wrapperClassName
+		}, {
+			position : 'absolute',
+			width: (this.x.size || (this.useBox ? this.width : null) 
+				|| this.x.full) +'px',
+			height: (this.y.size || this.y.full) +'px',
+			visibility : 'hidden',
+			overflow : 'hidden',
+			zIndex : hs.ie ? 4 : 'auto'
+		},
+		hs.container,
+		true
+	);
+},
+sizeOverlayBox : function(doWrapper, doPanels) {
+	var overlayBox = this.overlayBox, 
+		x = this.x,
+		y = this.y;
+	hs.setStyles( overlayBox, {
+		width: x.size +'px', 
+		height: y.size +'px'
+	});
+	if (doWrapper || doPanels) {
+		for (var i = 0; i < this.overlays.length; i++) {
+			var o = hs.$('hsId'+ this.overlays[i]);
+			var ie6 = (hs.ieLt7 || document.compatMode == 'BackCompat');
+			if (o && /^(above|below)$/.test(o.position)) {
+				if (ie6) {
+					o.style.width = (overlayBox.offsetWidth + 2 * x.cb
+						+ x.p1 + x.p2) +'px';
+				}
+				y[o.position == 'above' ? 'p1' : 'p2'] = o.offsetHeight;
+			}
+			if (o && ie6 && /^(left|right)panel$/.test(o.position)) {
+				o.style.height = (overlayBox.offsetHeight + 2* y.cb) +'px';
 			}
 		}
-		if (this.isHtml) this.htmlOnClose();
-		
-		this.wrapper.style.width = 'auto';
-		this.content.style.cursor = 'default';
-		var o2 = this.objOutline ? this.objOutline.offset : 0;
-		
-		this.changeSize(
-			-1,
-			x,
-			y,
-			w,
-			h,
-			this.thumbLeft - this.offsetBorderW + this.thumbOffsetBorderW,
-			this.thumbTop - this.offsetBorderH + this.thumbOffsetBorderH,
-			this.thumbWidth,
-			this.thumbHeight, 
-			hs.restoreDuration,
-			hs.restoreSteps,
-			o2,
-			hs.outlineStartOffset
-		);
-		
-	} catch (e) {
-		hs.expanders[this.key].onEndClose();
 	}
-};
-
-HsExpander.prototype.onEndClose = function () {
-	this.thumb.style.visibility = 'visible';
-	
-	if (hs.hideSelects) this.showHideElements('SELECT', 'visible');
-	if (hs.hideIframes) this.showHideElements('IFRAME', 'visible');
-	
-	if (this.objOutline && this.outlineWhileAnimating) this.objOutline.destroy();
-	hs.purge(this.wrapper);
-	this.wrapper.parentNode.removeChild(this.wrapper);
-	hs.expanders[this.key] = null;
-
-	hs.cleanUp();
-};
-
-HsExpander.prototype.createOverlay = function (el, position, hideOnMouseOut, opacity) {
-	if (typeof el == 'string') el = hs.cloneNode(el);
-	if (!el || typeof el == 'string' || !this.isImage) return;
-	
-	if (!position) var position = 'center center';
-	var overlay = hs.createElement(
-		'div',
-		null,
-		{
-			'position' : 'absolute',
-			'zIndex' : 3,
-			'visibility': 'hidden'
-		},
-		this.wrapper
-	);
-	if (opacity && opacity < 1) {
-		if (hs.ie) overlay.style.filter = 'alpha(opacity='+ (opacity * 100) +')';
-		else overlay.style.opacity = opacity;
+	if (doWrapper) {
+		hs.setStyles(this.content, {
+			top: y.p1 +'px'
+		});
+		hs.setStyles(overlayBox, {
+			top: (y.p1 + y.cb) +'px'
+		});
 	}
-	el.className += ' highslide-display-block';
-	overlay.appendChild(el);	
-	
-	var left = this.offsetBorderW;
-	var dLeft = this.content.width - overlay.offsetWidth;
-	var top = this.offsetBorderH;
-	var dTop = this.content.height - overlay.offsetHeight;
-	
-	if (position.match(/^bottom/)) top += dTop;
-	if (position.match(/^center/)) top += dTop / 2;
-	if (position.match(/right$/)) left += dLeft;
-	if (position.match(/center$/)) left += dLeft / 2;
-	
-	hs.setStyles(overlay, { 'left': left+'px', 'top': top+'px', visibility: 'visible' } );
-	
-	if (hideOnMouseOut) overlay.setAttribute('hideOnMouseOut', true);
-	
-	hs.push(this.overlays, overlay);
-};
+},
 
-HsExpander.prototype.createCustomOverlays = function() {
-	for (i = 0; i < hs.overlays.length; i++) {
-		var o = hs.overlays[i];
-		if (o.thumbnailId == null || o.thumbnailId == this.thumbsUserSetId) {
-			this.createOverlay(o.overlayId, o.position, o.hideOnMouseOut, o.opacity);
+showOverlays : function() {
+	var b = this.overlayBox;
+	b.className = '';
+	hs.setStyles(b, {
+		top: (this.y.p1 + this.y.cb) +'px',
+		left: (this.x.p1 + this.x.cb) +'px',
+		overflow : 'visible'
+	});
+	if (hs.safari) b.style.visibility = 'visible';
+	this.wrapper.appendChild (b);
+	for (var i = 0; i < this.overlays.length; i++) {
+		var o = hs.$('hsId'+ this.overlays[i]);
+		o.style.zIndex = o.zIndex || 4;
+		if (!o.hideOnMouseOut || this.mouseIsOver) {
+			o.style.visibility = 'visible';
+			hs.setStyles(o, { visibility: 'visible', display: '' });
+			hs.animate(o, { opacity: o.opacity }, o.dur);
 		}
 	}
-};
+},
 
-HsExpander.prototype.onMouseOver = function () {
-	for (i = 0; i < this.overlays.length; i++) {
-		this.overlays[i].style.visibility = 'visible';
-	}
-};
+destroyOverlays : function() {
+	if (!this.overlays.length) return;
+	hs.discardElement(this.overlayBox);
+},
 
-HsExpander.prototype.onMouseOut = function(rel) {
-	var hideThese = new Array();
-	var j = 0;
-	for (i = 0; i < this.overlays.length; i++) {
-		var node = rel;
-		while (node && node.parentNode) {
-			if (node == this.overlays[i]) return;
-			node = node.parentNode;
-		}
-		
-		if (this.overlays[i].getAttribute('hideOnMouseOut')) {
-			hideThese[j] = this.overlays[i];
-			j++;
-		}
-	}
-	for (i = 0; i < hideThese.length; i++) {		
-		hideThese[i].style.visibility = 'hidden';
-	}
-};
 
-HsExpander.prototype.createFullExpand = function () {
-	var a = hs.createElement(
-		'a',
-		{
+
+createFullExpand : function () {
+	this.fullExpandLabel = hs.createElement(
+		'a', {
 			href: 'javascript:hs.expanders['+ this.key +'].doFullExpand();',
-			title: hs.fullExpandTitle
-		},
-		{
-			background: 'url('+ hs.graphicsDir + hs.fullExpandIcon+')',
-			display: 'block',
-			margin: '0 10px 10px 0',
-			width: '45px',
-			height: '44px'
+			title: hs.lang.fullExpandTitle,
+			className: 'highslide-full-expand'
 		}
 	);
 	
-	this.createOverlay(a, 'bottom right', true, 0.75);
-	this.fullExpandIcon = a;
-};
+	this.createOverlay({ 
+		overlayId: this.fullExpandLabel, 
+		position: hs.fullExpandPosition, 
+		hideOnMouseOut: true, 
+		opacity: hs.fullExpandOpacity
+	});
+},
 
-HsExpander.prototype.doFullExpand = function () {
+doFullExpand : function () {
 	try {
-		hs.purge(this.fullExpandIcon);
-		this.fullExpandIcon.parentNode.removeChild(this.fullExpandIcon);
+		if (this.fullExpandLabel) hs.discardElement(this.fullExpandLabel);
+		
 		this.focus();
-		
-		this.x.min = parseInt(this.wrapper.style.left) - (this.fullExpandWidth - this.content.width) / 2;
-		if (this.x.min < hs.marginLeft) this.x.min = hs.marginLeft;		
-		this.wrapper.style.left = this.x.min +'px';
-		
-		var borderOffset = this.wrapper.offsetWidth - this.content.width;		
-		
-		this.content.width = this.fullExpandWidth;
-		this.content.height = this.fullExpandHeight;
-		
-		this.x.span = this.content.width;
-		this.wrapper.style.width = (this.x.span + borderOffset) +'px';
-		
-		this.y.span = this.wrapper.offsetHeight - 2 * this.offsetBorderH;
-		this.positionOutline(this.x.min, this.y.min, this.x.span, this.y.span);
-		
-		// reposition overlays
-		for (x in this.overlays) {
-			hs.purge(this.overlays[x]);
-			this.overlays[x].parentNode.removeChild(this.overlays[x]);
-		}		
-		if (hs.showCredits) this.writeCredits();
-		this.createCustomOverlays();
-		
-		this.redoShowHide();
+		var xSize = this.x.size,
+        	ySize = this.y.size;
+        this.resizeTo(this.x.full, this.y.full);
+       
+        var xpos = this.x.pos - (this.x.size - xSize) / 2;
+        if (xpos < hs.marginLeft) xpos = hs.marginLeft;
+       
+        var ypos = this.y.pos - (this.y.size - ySize) / 2;
+        if (ypos < hs.marginTop) ypos = hs.marginTop;
+       
+        this.moveTo(xpos, ypos);
+		this.doShowHide('hidden');
 	
 	} catch (e) {
-		window.location.href = hs.expanders[this.key].content.src;
+		this.error(e);
 	}
-};
+},
 
-// on end move and resize
-HsExpander.prototype.redoShowHide = function() {
-	var imgPos = {
-		x: parseInt(this.wrapper.style.left) - 20, 
-		y: parseInt(this.wrapper.style.top) - 20, 
-		w: this.content.offsetWidth + 40, 
-		h: this.content.offsetHeight + 40 + this.spaceForCaption
-	};
-	if (hs.hideSelects) this.showHideElements('SELECT', 'hidden', imgPos);
-	if (hs.hideIframes) this.showHideElements('IFRAME', 'hidden', imgPos);
+
+afterClose : function () {
+	this.a.className = this.a.className.replace('highslide-active-anchor', '');
+	
+	this.doShowHide('visible');
+		if (this.outline && this.outlineWhileAnimating) this.outline.destroy();
+		hs.discardElement(this.wrapper);
+	
+	hs.expanders[this.key] = null;		
+	hs.reOrder();
+}
 
 };
+hs.langDefaults = hs.lang;
+// history
+var HsExpander = hs.Expander;
+if (hs.ie && window == window.top) {
+	(function () {
+		try {
+			document.documentElement.doScroll('left');
+		} catch (e) {
+			setTimeout(arguments.callee, 50);
+			return;
+		}
+		hs.ready();
+	})();
+}
+hs.addEventListener(document, 'DOMContentLoaded', hs.ready);
+hs.addEventListener(window, 'load', hs.ready);
 
 // set handlers
+hs.addEventListener(document, 'ready', function() {
+	if (hs.expandCursor) {
+		var style = hs.createElement('style', { type: 'text/css' }, null, 
+			document.getElementsByTagName('HEAD')[0]), 
+			backCompat = document.compatMode == 'BackCompat';
+			
+		
+		function addRule(sel, dec) {
+			if (hs.ie && (hs.uaVersion < 9 || backCompat)) {
+				var last = document.styleSheets[document.styleSheets.length - 1];
+				if (typeof(last.addRule) == "object") last.addRule(sel, dec);
+			} else {
+				style.appendChild(document.createTextNode(sel + " {" + dec + "}"));
+			}
+		}
+		function fix(prop) {
+			return 'expression( ( ( ignoreMe = document.documentElement.'+ prop +
+				' ? document.documentElement.'+ prop +' : document.body.'+ prop +' ) ) + \'px\' );';
+		}
+		if (hs.expandCursor) addRule ('.highslide img', 
+			'cursor: url('+ hs.graphicsDir + hs.expandCursor +'), pointer !important;');
+	}
+});
+hs.addEventListener(window, 'resize', function() {
+	hs.getPageSize();
+});
+hs.addEventListener(document, 'mousemove', function(e) {
+	hs.mouse = { x: e.clientX, y: e.clientY	};
+});
 hs.addEventListener(document, 'mousedown', hs.mouseClickHandler);
 hs.addEventListener(document, 'mouseup', hs.mouseClickHandler);
-//hs.addEventListener(window, 'load', hs.preloadImages);
+
+hs.addEventListener(document, 'ready', hs.getAnchors);
+hs.addEventListener(window, 'load', hs.preloadImages);
+}
