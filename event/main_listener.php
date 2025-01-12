@@ -23,7 +23,6 @@ class main_listener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'core.display_forums_modify_template_vars'	=> 'display_forums_modify_template_vars',
 			'core.user_setup'				=> 'load_language_on_setup',
 			'core.page_header'				=> 'add_page_header_link',
 			'core.viewonline_overwrite_location'	=> 'viewonline_page',
@@ -103,8 +102,8 @@ class main_listener implements EventSubscriberInterface
 			'U_TVSHOW_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'tvshow_action')),
 			'U_NEWS'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'news')),
 			'U_NEWS_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'news_action')),
-			'U_PORTAL'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'portal')),
-			'U_PORTAL_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'portal_action')),
+			'U_CG_PORTAL'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'portal')),
+			'U_CG_PORTAL_ACTION'	=> $this->helper->route('hs11_codegenerator_controller', array('name' => 'portal_action')),
 			'PHPBB_IS_32'				=> ($this->files_factory !== null) ? true : false,
 		));
 		
@@ -123,19 +122,5 @@ class main_listener implements EventSubscriberInterface
 			$event['location_url'] = $this->helper->route('hs11_codegenerator_controller', array('name' => 'main'));
 		}
 	}
-
-	/**
-	 * A sample PHP event
-	 * Modifies the names of the forums on index
-	 *
-	 * @param \phpbb\event\data	$event	Event object
-	 *
-	 * public function display_forums_modify_template_vars($event)
-	 * {
-	 *	$forum_row = $event['forum_row'];
-	 *	$forum_row['FORUM_NAME'] .= ' :: Code Generator Event ::';
-	 *	$event['forum_row'] = $forum_row;
-	 * }
-	 */
 	
 }
