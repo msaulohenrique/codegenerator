@@ -57,7 +57,7 @@ class main
 	 */
 	public function handle($name)
 	{
-	    // MUSIC
+// MUSIC
     	$artista = $this->request->variable('artista', '');
     	$album = $this->request->variable('album', '');
     	$poster = $this->request->variable('poster', '');
@@ -177,10 +177,14 @@ $this->template->assign_vars(array(
 	$autor = $this->request->variable('autor', '');
 	$paginas = $this->request->variable('paginas', '');
 	$tamanho = $this->request->variable('tamanho', '');
-	$genero = $this->request->variable('genero', '');
+	$genero = utf8_encode($this->request->variable('genero', ''));
 	$formato = $this->request->variable('formato', '');
-	$grupo = $this->request->variable('grupo', '');
-	$uploader = $this->request->variable('uploader', '');
+	$editora = $this->request->variable('editora', '');
+	$idioma = $this->request->variable('idioma', '');
+	$edicao = $this->request->variable('edicao', '');
+	$premiacoes = $this->request->variable('premiacoes', '');
+	$curiosidades = $this->request->variable('curiosidades', '');
+	$outras_info = $this->request->variable('outras_info', '');
 	$http = $this->request->variable('http', '');
 	$compartilhamento_http = $this->request->variable('compartilhamento_http', '');
     $compartilhamento_torrent = $this->request->variable('compartilhamento_torrent', '');
@@ -196,8 +200,12 @@ $this->template->assign_vars(array(
 		'A_TAMANHO'=> $tamanho,
 		'A_GENERO'=> $genero,
 		'A_FORMATO'=> $formato,
-		'A_GRUPO'=> $grupo,
-		'A_UPLOADER'=> $uploader,
+		'A_EDITORA'=> $editora,
+		'A_IDIOMA'=> $idioma,
+		'A_EDICAO'=> $edicao,
+		'A_PREMIACOES'=> $premiacoes,
+		'A_CURIOSIDADES'=> $curiosidades,
+		'A_OUTRAS_INFO'=> $outras_info,
 		'A_HTTP'=> $http,
 		'A_COMPARTILHAMENTO_HTTP'=> $compartilhamento_http,
 		'A_COMPARTILHAMENTO_TORRENT'=> $compartilhamento_torrent,

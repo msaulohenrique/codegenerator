@@ -16,11 +16,11 @@
 <p>* Selecione o código abaixo precionando CTRL+A, depois CTRL+C, logo depois vá ao fórum na parte em que deseja postar e clique com o botão direito COLAR ou precione CTRL+V.</p>
 		<hr />
 		<div style="text-align: center;">
-<textarea name="message" id="message" rows="1" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">{A_COMPARTILHAMENTO_HTTP}{A_COMPARTILHAMENTO_TORRENT}{A_COMPARTILHAMENTO_MAGNET}{A_COMPARTILHAMENTO_ED2K} {A_NOME} ({% if A_NOME_EPI %}{A_NOME_EPI}/{A_TEMPORADA}{% elseif A_TEMPORADA %}{A_TEMPORADA}{% endif %})</textarea>
+<textarea name="message" id="message" rows="1" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">{A_COMPARTILHAMENTO_HTTP}{A_COMPARTILHAMENTO_TORRENT}{A_COMPARTILHAMENTO_MAGNET}{A_COMPARTILHAMENTO_ED2K} {A_TRADUZIDO} ({% if A_NOME_EPI %}{A_NOME_EPI}/{A_TEMPORADA}{% elseif A_TEMPORADA %}{A_TEMPORADA}{% endif %})</textarea>
 <br />
 <textarea name="message" id="message" rows="15" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">
-[table][tr][td2col]LINK DA IMAGEM DO TOPO[/td2col][/tr]
-[tr][td2col][b][size=150]{A_NOME}[/size][/b]
+[table]{% if PROFILE_CG_IMAGE_TOP_VALUE_RAW %}[tr][td2col][img]<img src="{PROFILE_CG_IMAGE_TOP_VALUE_RAW}" class="header-customizado" />[/img][/td2col][/tr]{% endif %}
+[tr][td2col][b][size=150]{A_TRADUZIDO}[/size][/b]
 [size=100]({% if A_NOME_EPI %}{A_NOME_EPI}/{A_TEMPORADA}{% elseif A_TEMPORADA %}{A_TEMPORADA}{% endif %})[/size]
 [/td2col][/tr]
 [tr][tdrodape]Poster[/tdrodape][tdrodape]Sinopse[/tdrodape][/tr]
@@ -32,10 +32,10 @@ Clique na imagem para ver em tamanho real
 [/center][/td2col][/tr]
 [tr][tdrodape]Dados do Anime[/tdrodape][tdrodape]Dados Técnicos[/tdrodape][/tr]
 [tr][tdvtop]
-[b]Nome Original do Anime:[/b] {A_NOME}
-{% if A_NOME_EPI %}
-[b]Nome do episódio:[/b] {A_NOME_EPI}
-{% endif %}
+{% if A_NOME %}[b]Nome Original do Anime:[/b] {A_NOME}{% endif %}
+
+{% if A_NOME_EPI %}[b]Nome do episódio:[/b] {A_NOME_EPI}{% endif %}
+
 [b]Nome da Temporada:[/b] {A_TEMPORADA}
 [b]Idioma do Áudio:[/b] {A_IDIOMA}
 [b]Tempo de Duração:[/b] {A_DURACAO}
@@ -43,25 +43,36 @@ Clique na imagem para ver em tamanho real
 [/tdvtop][tdvtop]
 [b]Qualidade do Vídeo:[/b] {A_QUALIDADE}
 {% if A_VIDEO_C %}[b]Vídeo Codec:[/b] {A_VIDEO_C}{% endif %}
+
 {% if A_VIDEO_B %}[b]Vídeo Bitrate:[/b] {A_VIDEO_B}{% endif %}
+
 {% if A_AUDIO_C %}[b]Áudio Codec:[/b] {A_AUDIO_C}{% endif %}
+
 {% if A_AUDIO_B %}[b]Áudio Bitrate:[/b] {A_AUDIO_B}{% endif %}
+
 [b]Legenda:[/b] {A_LEGENDAS}
 {% if A_FORMATO %}[b]Formato do Vídeo:[/b] {A_FORMATO}{% endif %}
+
 [b]Resolução:[/b] {A_RESOLUCAO}
 {% if A_FRAME_R %}[b]Frame Rate:[/b] {A_FRAME_R}{% endif %}
+
 [/tdvtop][/tr]
 [tr][td2rodape]Informações Gerais[/td2rodape][/tr]
 [tr][td2col][left]
 [b]Quantidade de Mídias:[/b] {A_MIDIAS}
 [b]Tamanho:[/b] {A_TAMANHO}
+[b]Tipo de Compartilhamento:[/b] {A_COMPARTILHAMENTO_HTTP}{A_COMPARTILHAMENTO_TORRENT}{A_COMPARTILHAMENTO_MAGNET}{A_COMPARTILHAMENTO_ED2K}
 {% if A_FAN %}[b]Fansubber:[/b] {A_FAN}{% endif %}
+
 {% if A_RIP %}[b]Ripado por:[/b] {A_RIP}{% endif %}
 [/left][/td2col][/tr]
-{% if L_OTHER_INFORMATION %}[tr][td2rodape]Outras Informações[/td2rodape][/tr]
-[tr][tdvtop][left]{L_OTHER_INFORMATION}[/left][/tdvtop][/tr]{% endif %}
+{% if A_OUTRAS_INFO %}[tr][td2rodape]Outras Informações[/td2rodape][/tr]
+[tr][tdvtop][left]{A_OUTRAS_INFO}[/left][/tdvtop][/tr]{% endif %}
 [tr][td2rodape]Download[/td2rodape][/tr]
-[tr][td2col][center]{A_HTTP}[/center][/td2col][/tr][/table]
+[tr][td2col]
+[center][color=red][b]Sempre que baixar, comente e/ou agradeça ao autor do Tópico. Isso fará com que ele fique motivado a postar outros Tópicos.[/b][/color][/center]
+[center]{A_HTTP}[/center]
+[/td2col][/tr][/table]
 </textarea>
 			</div>
 	<span class="corners-bottom"><span></span></span></div>

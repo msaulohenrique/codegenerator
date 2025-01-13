@@ -1,0 +1,165 @@
+<!-- DEFINE $CG_PAGE = 'ebooks' -->
+<!-- INCLUDE overall_header.html -->
+
+	<h2>{L_CODE_GENERATOR}</h2>
+<div class="panel bg3">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<div style="width: 100%;">
+	<!-- INCLUDE codegenerator/menu.html -->
+	<div id="cp-main" class="cp-main ucp-main panel-container">
+	<h2>{L_CAT_BOOKS}</h2>
+	<form name="formfs" onSubmit="return erro();" method="post" action="{U_EBOOK_ACTION}">
+	
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<p>{L_FIELDS_REQUIRED}</p>
+	
+		<dt><label><h3>{L_DATA_FILE}</h3></label></dt>
+		
+		<fieldset>
+		<dl>
+		<dt><label>* {L_NAME}:</label></dt>
+		<dd><input type="text" name="nome"  class=":required inputbox" id="nome"></dd>
+		
+		<dt><label>Edição:</label></dt>
+		<dd><input type="text" name="edicao"  class="inputbox" id="edicao"></dd>
+
+		<dt><label>* {L_AUTHOR}:</label></dt>
+		<dd><input type="text" name="autor"  class=":required inputbox" id="autor"></dd>
+		
+		<dt><label>* Editora:</label></dt>
+		<dd><input type="text" name="editora"  class=":required inputbox" id="editora"></dd>
+	
+		<dt><label>* {L_PAGES}:</label></dt>
+		<dd><input type="text" name="paginas" class=":required inputbox" id="paginas"></dd>
+
+		<dt><label>* {L_SIZE}:</label></dt>
+		<dd><input type="text" name="tamanho"  class=":required inputbox" id="tamanho"></dd>
+
+		<dt><label>* {L_POSTER}: </label></dt>
+		<dd><input type="text" name="poster" class=":required inputbox" id="poster"></dd>
+
+		<dt><label>* {L_FORMAT}:</label></dt>
+		<dd><select name="formato" id="select" class=":required">
+		  <option selected="selected" value="">{L_SELECT}</option>
+		  <option>ePUB</option>
+		  <option>PDF</option>
+		  <option>DOC</option>
+		  <option>JPEG</option>
+		  <option>Outro</option>
+		</select></dd>
+
+		<dt><label>* {L_GENRE}: </label></dt>
+		<dd><select name="genero" id="select3" class=":required">
+			  <option selected="selected" value="">{L_SELECT}</option>
+			  <option value="Animais de Estimação">Animais de Estimação</option>
+              <option value="Antiguidades e Coleções">Antiguidades e Coleções</option>
+              <option value="Arte">Arte</option>
+              <option value="Artes Performáticas">Artes Performáticas</option>
+              <option value="Artesanatos e Hobbies">Artesanatos e Hobbies</option>
+              <option value="Atualidades">Atualidades</option>
+              <option value="Auto-Ajuda">Auto-Ajuda</option>
+              <option value="Biografia">Biografia</option>
+              <option value="Casa e Lar">Casa e Lar</option>
+              <option value="Ciência">Ciência</option>
+              <option value="Ciência Política">Ciência Política</option>
+              <option value="Ciências Sociais">Ciências Sociais</option>
+              <option value="Coleções">Coleções</option>
+              <option value="Comunicação">Comunicação</option>
+              <option value="Culinária">Culinária</option>
+              <option value="Direito">Direito</option>
+              <option value="Educação">Educação</option>
+              <option value="Esoterismo">Esoterismo</option>
+              <option value="Esportes e Lazer">Esportes e Lazer</option>
+              <option value="Ficção">Ficção</option>
+              <option value="Ficção Infanto-Juvenil">Ficção Infanto-Juvenil</option>
+              <option value="Filosofia">Filosofia</option>
+              <option value="História">História</option>
+              <option value="Humor">Humor</option>
+              <option value="Infanto-Juvenil (Não-Ficção)">Infanto-Juvenil (Não-Ficão)</option>
+              <option value="Informática">Informática</option>
+              <option value="Jogos">Jogos</option>
+              <option value="Literatura">Literatura</option>
+              <option value="Livros Didáticos">Livros Didáticos</option>
+              <option value="Livros Raros">Livros Raros</option>
+              <option value="Línguas Estrangeiras">Línguas Estrangeiras</option>
+              <option value="Medicina">Medicina</option>
+              <option value="Música">Música</option>
+              <option value="Negócios e Economia">Negócios e Economia</option>
+              <option value="Poesia">Poesia</option>
+              <option value="Psicologia e Psiquiatria">Psicologia e Psiquiatria</option>
+              <option value="Referência">Referência</option>
+              <option value="Relacionamentos e Família">Relacionamentos e Família</option>
+              <option value="-" disabled>--------------------</option>
+              <option value="Revista">Revista</option>
+              <option value="Jornal">Jornal</option>
+			</select></dd>
+	
+		<dt><label>* Idioma: </label></dt>
+		<dd><input type="text" name="idioma" class=":required inputbox" id="idioma"></dd>
+		
+	</dl>
+	</fieldset>
+	
+	<fieldset>
+		<hr />
+		<dl>
+		<dt><label>* {L_DESCRIPTION}</label></dt>
+		<dd><textarea class=":required inputbox" name="descricao" rows="3" cols="30" id="descricao"></textarea></dd>
+		</dl>
+		
+		<dl>
+		<dt><label>Premiações</label></dt>
+		<dd><textarea class="inputbox" name="premiacoes" rows="3" cols="30" id="premiacoes"></textarea></dd>
+		</dl>
+		
+		<dl>
+		<dt><label>Curiosidades</label></dt>
+		<dd><textarea class="inputbox" name="curiosidades" rows="3" cols="30" id="curiosidades"></textarea></dd>
+		</dl>
+		
+		<dl>
+		<dt><label>Outras Informações</label></dt>
+		<dd><textarea class="inputbox" name="outras_info" rows="3" cols="30" id="outras_info"></textarea></dd>
+		</dl>
+	</fieldset>
+	
+	<fieldset>
+		<hr />
+        <dt><label>* Compartilhamento:</label></dt>
+		<dd><label><input type="checkbox" name="compartilhamento_http" value="[http]" id="compartilhamento"> http </label>
+		<label><input type="checkbox" name="compartilhamento_torrent" value="[torrent]" id="compartilhamento" onClick="javascript:div('torrent');"> Torrent </label> 
+		<label><input type="checkbox" name="compartilhamento_pando" value="[pando]" id="compartilhamento" onClick="javascript:div('pando');" > Pando </label> 
+		<label><input type="checkbox" name="compartilhamento_ed2k" value="[ed2k]" id="compartilhamento"> Ed2k - Emule </label>
+		<label><input type="checkbox" name="compartilhamento_p2m" value="[p2m]" id="compartilhamento"> P2m </label>
+		</dd>
+    </fieldset>	
+	
+	<fieldset>
+		<hr />
+		<dl>
+		<dt><label>* {L_DOWNLOAD}</label></dt>
+		<dd><textarea class=":required inputbox" name="http" rows="3" cols="30" id="http"></textarea></dd>
+		</dl>
+	</fieldset>
+
+<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<fieldset class="submit-buttons">
+	{S_HIDDEN_FIELDS}<input type="reset" value="{L_RESET}" name="reset" class="button2" />&nbsp; 
+	<input type="submit" name="submit" value="{L_SUBMIT}" class="button1" />
+	{S_FORM_TOKEN}
+</fieldset>
+</form>
+
+</div>
+	<div class="clear"></div>
+	</div><div class="copyright" style="text-align: right;">{L_COPYRIGHT}<br />
+		{L_CODE_GENERATOR_TRANSLATION_INFO}</div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<!-- INCLUDE jumpbox.html -->
+
+<!-- INCLUDE overall_footer.html -->

@@ -1,0 +1,58 @@
+<!-- DEFINE $CG_PAGE = 'ebooks' -->
+<!-- INCLUDE overall_header.html -->
+
+	<h2>{L_CODE_GENERATOR}</h2>
+<div class="panel bg3">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<div style="width: 100%;">
+	<!-- INCLUDE codegenerator/menu.html -->
+	<div id="cp-main" class="cp-main ucp-main panel-container">
+	<h2>{L_CAT_BOOKS}</h2>
+
+
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+<p>* Selecione o código abaixo precionando CTRL+A, depois CTRL+C, logo depois vá ao fórum na parte em que deseja postar e clique com o botão direito COLAR ou precione CTRL+V.</p>
+		<hr />
+		<div style="text-align: center;">
+<textarea name="message" id="message" rows="1" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">{A_COMPARTILHAMENTO_HTTP}{A_COMPARTILHAMENTO_TORRENT}{A_COMPARTILHAMENTO_PANDO}{A_COMPARTILHAMENTO_ED2K}{A_COMPARTILHAMENTO_P2M} {A_NOME} - {A_AUTOR}</textarea>
+</br>
+<textarea name="message" id="message" rows="15" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">
+[table]{% if postrow.PROFILE_cg_image_top_VALUE %}[tr][td2col][img]<img src="{postrow.PROFILE_cg_image_top_VALUE}" class="header-customizado" />[/img][/td2col][/tr]{% endif %}
+[tr][td2col]
+[b][size=5]{A_NOME}[/size][/b] [size=3][b] 
+{% if A_EDICAO %}{A_EDICAO} {% endif %}
+[/b][/size]
+[/td2col][/tr][tr][tdrodape]Capa do Livro[/tdrodape][tdrodape]Sinopse[/tdrodape][/tr][tr][tdvtop][center][poster]{A_POSTER}[/poster][/center][/tdvtop][tdvtop] 
+{A_DESCRICAO}
+[/tdvtop][/tr][tr][tdrodape]Dados do Livro[/tdrodape][tdrodape]Dados do Arquivo[/tdrodape][/tr][tr][tdvtop][b]Nome do Autor: [/b] {A_AUTOR}
+[b]Editora: [/b] {A_EDITORA}
+[b]Qtd. de Páginas: [/b]{A_PAGINAS}
+[b]Formato do Arquivo: [/b]{A_FORMATO}
+[b]Gênero: [/b]{A_GENERO}
+[b]Idioma: [/b]{A_IDIOMA}
+[/tdvtop][tdvtop][b]Tamanho:[/b] {A_TAMANHO}
+[b]Tipo de Compartilhamento:[/b] {A_COMPARTILHAMENTO_HTTP}{A_COMPARTILHAMENTO_TORRENT}{A_COMPARTILHAMENTO_MAGNET}{A_COMPARTILHAMENTO_ED2K}
+[/tdvtop][/tr]
+{% if A_PREMIACOES %}[tr][td2rodape]Premiações[/td2rodape][/tr][tr][td2col][left] {A_PREMIACOES} [/left][/td2col][/tr]{% endif %}
+{% if A_CURIOSIDADES %}[tr][td2rodape]Curiosidades[/td2rodape][/tr][tr][td2col][left] {A_CURIOSIDADES} [/left][/td2col][/tr]{% endif %}
+{% if A_OUTRAS_INFO %}[tr][td2rodape]Outras Informações[/td2rodape][/tr][tr][td2col][left] {A_OUTRAS_INFO} [/left][/td2col][/tr]{% endif %}
+[tr][td2rodape]Download[/td2rodape][/tr][tr][td2col] 
+[center][color=red][b]Sempre que baixar, comente e/ou agradeça ao autor do Tópico. Isso fará com que ele fique motivado a postar outros Tópicos.[/b][/color][/center]
+[center]{A_HTTP}[/center]
+[/td2col][/tr][/table]
+</textarea>
+			</div>
+	<span class="corners-bottom"><span></span></span></div>
+	</div>
+</div>
+	<div class="clear"></div>
+	</div><div class="copyright" style="text-align: right;">{L_COPYRIGHT}<br />
+		{L_CODE_GENERATOR_TRANSLATION_INFO}</div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<!-- INCLUDE jumpbox.html -->
+
+<!-- INCLUDE overall_footer.html -->
