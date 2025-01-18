@@ -17,9 +17,9 @@
 		<hr />
 		<div style="text-align: center;">
 <textarea name="message" id="message" rows="1" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">{A_COMPARTILHAMENTO_HTTP}{A_COMPARTILHAMENTO_TORRENT}{A_COMPARTILHAMENTO_MAGNET}{A_COMPARTILHAMENTO_ED2K} {A_TRADUZIDO} ({% if A_NOME_EPI %}{A_NOME_EPI}/{A_TEMPORADA}{% elseif A_TEMPORADA %}{A_TEMPORADA}{% endif %})</textarea>
-<br />
+<br /> {CG_IMAGE_TOP}
 <textarea name="message" id="message" rows="15" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">
-[table]{% if PROFILE_CG_IMAGE_TOP_VALUE_RAW %}[tr][td2col][img]<img src="{PROFILE_CG_IMAGE_TOP_VALUE_RAW}" class="header-customizado" />[/img][/td2col][/tr]{% endif %}
+[table]{% if CG_IMAGE_TOP %}[tr][td2col][img]{CG_IMAGE_TOP}[/img][/td2col][/tr]{% endif %}	
 [tr][td2col][b][size=150]{A_TRADUZIDO}[/size][/b]
 [size=100]({% if A_NOME_EPI %}{A_NOME_EPI}/{A_TEMPORADA}{% elseif A_TEMPORADA %}{A_TEMPORADA}{% endif %})[/size]
 [/td2col][/tr]

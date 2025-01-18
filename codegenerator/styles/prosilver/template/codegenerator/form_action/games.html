@@ -17,36 +17,41 @@
 <p>* Selecione o código abaixo precionando CTRL+A, depois CTRL+C, logo depois vá ao fórum na parte em que deseja postar e clique com o botão direito COLAR ou precione CTRL+V.</p>
 		<hr />
 			<div style="text-align: center;">
-<textarea name="message" id="message" rows="1" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">{A_COMPARTILHAMENTO_HTTP}{A_COMPARTILHAMENTO_TORRENT}{A_COMPARTILHAMENTO_PANDO}{A_COMPARTILHAMENTO_ED2K}{A_COMPARTILHAMENTO_P2M} {A_NOME} ({A_ANO})</textarea>
+<textarea name="message" id="message" rows="1" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">{A_COMPARTILHAMENTO_HTTP}{A_COMPARTILHAMENTO_TORRENT}{A_COMPARTILHAMENTO_ED2K}{A_COMPARTILHAMENTO_MAGNET} {A_NOME} ({A_ANO})</textarea>
 </br>
 		<textarea name="message" id="message" rows="15" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">
-[divs][center][size=170]{A_NOME}[/size][/center][/divs]
-
-[columns1][center][size=150]{L_POSTER}[/center][/size][divs][poster]{A_POSTER}[/poster][/divs]
-[center][size=150]{L_DESCRIPTION}[/size][/center][divs]{A_DESCRICAO}[/divs]
-[center][size=150]SCREENSHOTS[/size][/center][divs][shot]{A_SCREEN1}[/shot][shot]{A_SCREEN2}[/shot][/divs]
-[center][size=150]{L_OTHER_INFORMATION}[/size][/center][divs]{A_OUTRAS_INFO}[/divs]
-[/columns1][columns2][center][size=150]{L_GAME_DATA}[/size][/center][divs]
-• [b]Nome do Jogo:[/b] {A_NOME}
-• [b]Fabricante:[/b] {A_FABRICANTE}
-• [b]Ano Lançamento:[/b] {A_ANO}
-• [b]Site Oficial:[/b] [url={A_SITE}]Clique Aqui[/url]
-• [b]Tamanho:[/b] {A_TAMANHO}
-• [b]Distribuidor:[/b] {A_DISTRIBUIDOR}
-• [b]Gênero:[/b] {A_GENERO}
-• [b]Idioma:[/b] {A_IDIOMA}
-• [b]Senha RAR:[/b] {A_SENHA}[/divs]
-[center][size=150]{L_SPECIFICATIONS}[/size][/center][divs]
-• [b]Quant. de Mídias:[/b] {A_MIDIAS}
-• [b]Console (Video Game):[/b] {A_CONSOLE}
-• [b]Sistema (Video):[/b] {A_SISTEMA}
-• [b]Multiplay:[/b] {A_MULTIPLAY}
-• [b]N.º Jogadores:[/b] {A_JOGADORES}
-• [b]Compartilhamento:[/b] {A_COMPARTILHAMENTO}
-• [b]Grupo:[/b] {A_GRUPO}
-• [b]Uploader:[/b] {A_UPLOADER}[/divs]
-[center][size=150]Download[/size][/center][divs][center]{A_HTTP}[/center][/divs]
-[/columns2]</textarea>
+[table]
+[tr][td2col][img]IMAGEM TOPO[/img][/td2col][/tr]
+[tr][td2col][b][size=5]{A_NOME}[/size][/b][/td2col][/tr][tr][tdrodape]Capa[/tdrodape][tdrodape]Descri&ccedil;&atilde;o[/tdrodape][/tr][tr][tdvtop][center][poster]{L_POSTER}[/poster][/center][/tdvtop][tdvtop]{A_DESCRICAO}[/tdvtop][/tr]
+[tr][td2rodape]ScreenShots[/td2rodape][/tr][tr][td2col][center]
+[ashot]{A_SCREEN1}[/ashot] {% endif %}
+[ashot]{A_SCREEN2}[/ashot] {% endif %}
+{% if A_SCREEN3 %}[ashot]{A_SCREEN3}[/ashot] {% endif %}
+{% if A_SCREEN4 %}[ashot]{A_SCREEN4}[/ashot] {% endif %}
+Clique na imagem para ver em tamanho real[/center][/td2col][/tr]
+[tr][tdrodape]Dados do Jogo[/tdrodape][tdrodape]Dados do Arquivo[/tdrodape][/tr][tr][tdvtop]
+[b]Categoria:[/b] {A_FABRICANTE}
+{% if A_FABRICANTE %}[b]Fabricante:[/b] {A_FABRICANTE} {% endif %}
+{% if A_DISTRIBUIDOR %}[b]Distribuidora:[/b] {A_DISTRIBUIDOR} {% endif %}
+{% if A_IDIOMA %}[b]Multiplayers:[/b] {A_MULTIPLAY} {% endif %}
+[b]Console:[/b] {A_CONSOLE}
+[b]Sistema/Vídeo:[/b] {A_SISTEMA}
+{% if A_IDIOMA %}[b]Idioma:[/b] {A_IDIOMA} {% endif %}
+{% if A_ANO %}[b]Ano de Lan&ccedil;amento:[/b] {A_ANO} {% endif %}
+{% if A_YOUTUBE %}[b]Site Oficial:[/b] {A_OUTRAS_INFO} {% endif %}
+{% if A_YOUTUBE %}[b]Tutorial:[/b] {A_OUTRAS_INFO} {% endif %}
+[/tdvtop][tdvtop]
+[b]Quantidade de Mídias:[/b] {A_MIDIAS}
+[b]Tamanho:[/b] {A_TAMANHO}
+{% if A_YOUTUBE %}[b]Release:[/b] {A_OUTRAS_INFO} {% endif %}
+[b]Tipo de Compartilhamento:[/b] {A_COMPARTILHAMENTO_HTTP}{A_COMPARTILHAMENTO_TORRENT}{A_COMPARTILHAMENTO_ED2K}{A_COMPARTILHAMENTO_MAGNET}[/tdvtop][/tr]
+{% if A_YOUTUBE %} [tr][td2rodape]V&iacute;deo / Trailer [/td2rodape][/tr][tr][td2col][center][youtube]{A_YOUTUBE}[/youtube][/center][/tr][/td2col]{% endif %}
+{% if A_OUTRAS_INFO %}[tr][td2rodape]{L_OTHER_INFORMATION}[/td2rodape][/tr][tr][td2col][center]{A_OUTRAS_INFO} [/center][/td2col][/tr]{% endif %}
+[tr][td2rodape]Download[/td2rodape][/tr][tr][td2col]
+[center][color=red][b]Sempre que baixar, comente e/ou agradeça ao autor do Tópico. Isso fará com que ele fique motivado a postar outros Tópicos.[/b][/color][/center]
+{A_HTTP}
+[/td2col][/tr][/table]
+</textarea>
 			</div>
 
 <span class="corners-bottom"><span></span></span></div>

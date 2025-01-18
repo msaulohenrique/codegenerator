@@ -2,11 +2,12 @@ services:
     hs11.codegenerator.controller:
         class: hs11\codegenerator\controller\main
         arguments:
-            - '@config'
-            - '@controller.helper'
-            - '@request'
-            - '@template'
-            - '@user'
+            - '@config'               # Serviço de configuração
+            - '@controller.helper'    # Helper do controlador
+            - '@request'              # Gerenciador de requisições
+            - '@template'             # Gerenciador de templates
+            - '@user'                 # Serviço de usuário
+            - '@profilefields.manager' # Gerenciador de campos personalizados
 
     hs11.codegenerator.listener:
         class: hs11\codegenerator\event\main_listener
@@ -14,7 +15,7 @@ services:
             - '@controller.helper'
             - '@template'
             - '@user'
-            - '%core.php_ext%'
-            - '@?files.factory'
+            - '%core.php_ext%'        # Parâmetro de extensão de arquivo
+            - '@?files.factory'       # Dependência opcional
         tags:
             - { name: event.listener }
